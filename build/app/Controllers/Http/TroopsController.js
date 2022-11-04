@@ -106,6 +106,8 @@ class TroopsController {
                     api_key: api_key.id,
                     phone: phone,
                     text: message.text,
+                    type: "buttonsMessage",
+                    footerText: "Admin TS",
                     buttons: JSON.parse(message.buttons)
                 });
             }
@@ -132,7 +134,7 @@ class TroopsController {
                 phone: phone,
                 text: message.text,
                 type: "buttonsMessage",
-                footerText: "TS Admin",
+                footerText: "Admin TS",
                 buttons: JSON.parse(message.buttons)
             });
         }

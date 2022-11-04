@@ -22,7 +22,7 @@ class ReminderRound extends standalone_1.BaseCommand {
                         phone: attendee.phone,
                         text: text,
                         type: "buttonsMessage",
-                        footerText: "TS Admin",
+                        footerText: "Admin TS",
                         buttons: JSON.parse(message.buttons)
                     });
                 }

@@ -57,7 +57,7 @@ class CampaignsController {
                     phone: user.phone,
                     text: text,
                     type: "buttonsMessage",
-                    footerText: "TS Admin",
+                    footerText: "Admin TS",
                     buttons: JSON.parse(message.buttons)
                 });
             }
