@@ -79,6 +79,8 @@ export default class CampaignsController {
           api_key : api_key.id,
           phone : user.phone,
           text : text,
+          type : "buttonsMessage",
+          footerText : "TS Admin",
           buttons : JSON.parse(message.buttons)
         })
       }

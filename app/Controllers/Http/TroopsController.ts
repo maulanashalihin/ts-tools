@@ -253,6 +253,8 @@ export default class TroopsController {
         api_key : api_key.id,
         phone : phone,
         text : message.text,
+        type : "buttonsMessage",
+        footerText : "TS Admin",
         buttons : JSON.parse(message.buttons)
       })
     }

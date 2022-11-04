@@ -21,6 +21,8 @@ class ReminderRound extends standalone_1.BaseCommand {
                         api_key: api_key.id,
                         phone: attendee.phone,
                         text: text,
+                        type: "buttonsMessage",
+                        footerText: "TS Admin",
                         buttons: JSON.parse(message.buttons)
                     });
                 }
