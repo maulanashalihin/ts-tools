@@ -20,6 +20,21 @@ import TsLayouts from './../Components/ts-layouts.svelte';
         profileModal = false;
         Inertia.reload()
     }
+
+    let timezone = "WIB"
+
+const offset = new Date().getTimezoneOffset();
+
+if(offset == -480)
+{
+  timezone = "WITA"
+}
+
+if(offset == -540)
+{
+  timezone = "WIT"
+}
+
 </script>
 <div>
     <TsLayouts>
@@ -47,7 +62,7 @@ import TsLayouts from './../Components/ts-layouts.svelte';
                   <div class="mt-4">
                     <p class="text-xs+">{dayjs(item.time).format("DD MMM YYYY")}</p>
                     <p class="text-xl font-medium text-slate-700 dark:text-navy-100">
-                      {dayjs(item.time).format("HH:mm")}
+                      {dayjs(item.time).format("HH:mm")} {timezone}
                     </p>
                     <div class="text-md">
                       {item.hashtags}

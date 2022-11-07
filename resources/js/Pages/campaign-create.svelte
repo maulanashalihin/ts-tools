@@ -14,6 +14,11 @@
       status : "tweet submission"
     }
 
+    if(campaign.time)
+    {
+      campaign.campaign_time = dayjs(campaign.time).format("YYYY-MM-DDTHH:mm")
+    }
+
     let quill;
 
     function saveCampaign()
@@ -59,6 +64,21 @@
         theme: 'snow'   // Specify theme in configuration
       });
     })
+
+    let timezone = "WIB"
+
+const offset = new Date().getTimezoneOffset();
+
+if(offset == -480)
+{
+  timezone = "WITA"
+}
+
+if(offset == -540)
+{
+  timezone = "WIT"
+}
+
   
 
   </script>
@@ -131,7 +151,7 @@
                       <div class="space-y-1">
                         <label  for="hashtag" class="font-medium">Waktu Campaign</label>
                         <input bind:value={campaign.campaign_time} class="block border border-gray-200 rounded px-3 py-2 leading-6 w-full focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50" type="datetime-local" id="hashtag" placeholder="Khilafah Ajaran Islam, Jayalah Khilafah" required/>
-                        
+                        <small class="text-gray-400">waktu dalam {timezone}</small>
                       </div>
                       <div class="space-y-1">
                         <label class="font-medium" for="status">Status</label>
