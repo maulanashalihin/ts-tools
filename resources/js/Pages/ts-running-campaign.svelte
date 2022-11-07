@@ -5,6 +5,8 @@ import axios from "axios"
 import Modal from '../Components/Modal.svelte';
 import TsLayouts from './../Components/ts-layouts.svelte';
   import { Inertia } from '@inertiajs/inertia';
+  import { onMount } from 'svelte';
+
 
 export let campaign; 
 
@@ -93,6 +95,14 @@ function UpdateScore()
     attendance.action_score++; 
     axios.put("/score/"+attendance.id)
 }
+ 
+onMount(()=>{
+    var tag = document.createElement('script');
+
+    tag.src = "https://platform.twitter.com/widgets.js";
+    var firstScriptTag = document.getElementsByTagName('script')[0];
+    firstScriptTag.parentNode.insertBefore(tag, firstScriptTag);
+})
 
  
 

@@ -9,7 +9,7 @@ export default class TweetBuzzesController {
     const campaign = await Database.from("campaigns").where("id",params.id).first();
 
 
-    const buzzes = await Database.from("tweet_to_buzzes").where("campaign_id",params.id);
+    const buzzes = await Database.from("tweet_to_buzzes").where("campaign_id",params.id).orderBy("id","desc");
 
     return inertia.render('tweet-buzz',{buzzes,campaign})
   }

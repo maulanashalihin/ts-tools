@@ -9,7 +9,7 @@ export default class MediaController {
     const campaign = await Database.from("campaigns").where("id",params.id).first();
 
 
-    const medias = await Database.from("medias").where("campaign_id",params.id);
+    const medias = await Database.from("medias").where("campaign_id",params.id).orderBy("id","desc");;
 
     return inertia.render('tweet-media',{medias,campaign})
   }

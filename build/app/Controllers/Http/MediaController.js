@@ -8,7 +8,8 @@ const axios_1 = __importDefault(require("axios"));
 class MediaController {
     async index({ inertia, params }) {
         const campaign = await Database_1.default.from("campaigns").where("id", params.id).first();
-        const medias = await Database_1.default.from("medias").where("campaign_id", params.id);
+        const medias = await Database_1.default.from("medias").where("campaign_id", params.id).orderBy("id", "desc");
+        ;
         return inertia.render('tweet-media', { medias, campaign });
     }
     async create({}) { }

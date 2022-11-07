@@ -8,7 +8,7 @@ const axios_1 = __importDefault(require("axios"));
 class TweetBuzzesController {
     async index({ inertia, params }) {
         const campaign = await Database_1.default.from("campaigns").where("id", params.id).first();
-        const buzzes = await Database_1.default.from("tweet_to_buzzes").where("campaign_id", params.id);
+        const buzzes = await Database_1.default.from("tweet_to_buzzes").where("campaign_id", params.id).orderBy("id", "desc");
         return inertia.render('tweet-buzz', { buzzes, campaign });
     }
     async create({}) { }
