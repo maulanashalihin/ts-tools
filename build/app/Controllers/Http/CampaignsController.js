@@ -19,6 +19,10 @@ class CampaignsController {
     async create({ inertia }) {
         return inertia.render("campaign-create");
     }
+    async report({ inertia, params }) {
+        const campaign = await Database_1.default.from("campaigns").where("id", params.id).first();
+        return inertia.render("campaign-report", { campaign });
+    }
     async store({ request, response }) {
         let data = request.all();
         await Database_1.default.table("campaigns").insert(data);

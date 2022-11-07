@@ -21,6 +21,11 @@ export default class CampaignsController {
     return inertia.render("campaign-create")
   }
 
+  public async report({inertia,params}: HttpContextContract) { 
+    const campaign = await Database.from("campaigns").where("id",params.id).first()
+    return inertia.render("campaign-report",{campaign}) 
+  }
+
   public async store({request,response}: HttpContextContract) {
     let data = request.all() 
     await Database.table("campaigns").insert(data)

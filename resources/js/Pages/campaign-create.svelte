@@ -5,7 +5,7 @@
 
     const { default: Layouts } = require("../Components/layouts.svelte");
     export let campaign = {
-      description : '',
+      description : '', 
       hashtag_per_tweet : 1,
       tweet_per_round : 10,
       tweet_love_and_retweet_per_round : 5,
