@@ -307,7 +307,7 @@ onMount(()=>{
         {#each medias as item}
              <!-- content here -->
           
-            <a on:click={()=>{UpdateScore();tweet_done = [...tweet_done,active_tweet.id]}} href="https://twitter.com/intent/tweet?text={encodeURIComponent(active_tweet.content+hashtag_text)}+{item.twitter_url}" rel="noreferrer" target="_blank" class="  py-1  inline-flex">
+            <a on:click={()=>{UpdateScore();tweet_done = [...tweet_done,active_tweet.id];mediaModal = false}} href="https://twitter.com/intent/tweet?text={encodeURIComponent(active_tweet.content+hashtag_text)}+{item.twitter_url}" rel="noreferrer" target="_blank" class="  py-1  inline-flex">
                 <img src="{item.media_url}" alt="">
               </a>
         {/each}
