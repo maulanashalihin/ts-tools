@@ -71,7 +71,7 @@ class CampaignsController {
             const buzzes = await Database_1.default.from("tweet_to_buzzes").where("campaign_id", campaign.id).limit(campaign.tweet_love_and_retweet_per_round).orderBy(Database_1.default.raw('RAND()'));
             const replies = await Database_1.default.from("tweet_to_buzzes").where("campaign_id", campaign.id).limit(campaign.tweet_reply_per_round).orderBy(Database_1.default.raw('RAND()'));
             const medias = await Database_1.default.from("medias").where("campaign_id", campaign.id);
-            const profiles = await Database_1.default.from("troops").select(['twitter_username']).limit(campaign.follow_profile_per_round).orderBy(Database_1.default.raw('RAND()'));
+            const profiles = await Database_1.default.from("campaign_attendances").where("campaign_id", campaign.id).select(['troop_username']).limit(campaign.follow_profile_per_round).orderBy(Database_1.default.raw('RAND()'));
             return inertia.render("ts-running-campaign", { campaign, tweets, attendance, buzzes, replies, medias, profiles });
         }
     }

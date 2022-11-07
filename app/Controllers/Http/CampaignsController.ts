@@ -111,7 +111,7 @@ export default class CampaignsController {
 
       const medias = await Database.from("medias").where("campaign_id",campaign.id);
 
-      const profiles = await Database.from("troops").select(['twitter_username']).limit(campaign.follow_profile_per_round).orderBy(Database.raw('RAND()'))
+      const profiles = await Database.from("campaign_attendances").where("campaign_id",campaign.id).select(['troop_username']).limit(campaign.follow_profile_per_round).orderBy(Database.raw('RAND()'))
 
       return inertia.render("ts-running-campaign",{campaign,tweets,attendance,buzzes,replies,medias,profiles})
     }
