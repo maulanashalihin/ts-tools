@@ -294,8 +294,8 @@ onMount(()=>{
         <div   class="bg-white p-4 flex justify-between ">
            
             <a  class="twitter-follow-button"
-            href="https://twitter.com/{item.twitter_username}">
-          Follow @{item.twitter_username}</a>
+            href="https://twitter.com/{item.troop_username}">
+          Follow @{item.troop_username}</a>
            
         </div> 
        
@@ -346,6 +346,7 @@ onMount(()=>{
                     </div>
                     <input bind:value={attendance.troop_username} class="block border border-gray-200 rounded pl-7 py-2 leading-5 text-sm w-full focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50" type="text" id="troop_username" placeholder="islamictroops" />
                   </div>
+                  <small>pastikan username twitter ini benar (http://twitter.com/{attendance.troop_username})</small>
             </div>
             <button   class="inline-flex w-full justify-center items-center space-x-2 rounded border font-semibold focus:outline-none px-3 py-2 leading-6 border-orange-600 bg-orange-600 text-white hover:text-white hover:bg-amber-800 hover:border-amber-800 focus:ring focus:ring-amber-500 focus:ring-opacity-50 active:bg-orange-600 active:border-orange-600">
                 Deal 🤝
