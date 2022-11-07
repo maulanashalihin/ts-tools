@@ -74,15 +74,20 @@ if(!attendance.round_number)
 
 if(attendance.next_round_time && dayjs().isAfter(attendance.next_round_time))
 {
-    attendance.current_round++;
+    if(attendance.current_round < attendance.round_number)
+    {
+        attendance.current_round++;
     
-    saveAkadTS();
+        saveAkadTS();
+    }
+ 
 }
 
 function saveAkadTS()
 {
     
     attendance.next_round_time = dayjs().add(attendance.next_round_interval,'minute').valueOf();
+    attendance.reminder_round_time = dayjs().add(attendance.next_round_interval,'minute').valueOf();
     attendance.round_number  = attendance.round_number;
 
     axios.put("/attendance/"+attendance.id,attendance)
@@ -332,6 +337,15 @@ onMount(()=>{
                     <option value="{60}">1 Jam</option> 
                     <option value="{120}">2 Jam</option> 
                   </select>
+            </div>
+            <div class="space-y-1">
+                <label class="font-medium" for="troop_username">Twitter Username</label>
+                <div class="relative">
+                    <div class="absolute inset-y-0 left-0 w-10 my-px ml-px flex items-center justify-center pointer-events-none rounded-l text-gray-500">
+                      @
+                    </div>
+                    <input bind:value={attendance.troop_username} class="block border border-gray-200 rounded pl-7 py-2 leading-5 text-sm w-full focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50" type="text" id="troop_username" placeholder="islamictroops" />
+                  </div>
             </div>
             <button   class="inline-flex w-full justify-center items-center space-x-2 rounded border font-semibold focus:outline-none px-3 py-2 leading-6 border-orange-600 bg-orange-600 text-white hover:text-white hover:bg-amber-800 hover:border-amber-800 focus:ring focus:ring-amber-500 focus:ring-opacity-50 active:bg-orange-600 active:border-orange-600">
                 Deal 🤝

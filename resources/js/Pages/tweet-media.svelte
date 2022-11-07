@@ -98,9 +98,7 @@ function saveTweet()
         {#each medias as item}
         <!-- content here -->
         <div class="">
-          {#if item.type == 'photo'}
-            <img alt="Media" src="{item.media_url}">
-          {/if}
+          <img alt="Media" src="{item.media_url}">
           <button on:click={()=>{deleteItem(item)}}  class="text-gray-500 text-xs">hapus</button>
         </div>
    {/each}

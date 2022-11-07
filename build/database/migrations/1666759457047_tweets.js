@@ -18,6 +18,7 @@ class default_1 extends Schema_1.default {
             table.integer("campaign_id").index();
             table.string("status").defaultTo("on review").index();
             table.integer("published_by").index();
+            table.boolean('daily_tweet').index().defaultTo(false);
         });
     }
     async down() {

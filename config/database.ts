@@ -49,6 +49,22 @@ const databaseConfig: DatabaseConfig = {
       healthCheck: false,
       debug: false,
     },
+    dev_mysql: {
+      client: 'mysql2',
+      connection: {
+        host: Env.get('DEV_MYSQL_HOST'),
+        port: Env.get('DEV_MYSQL_PORT'),
+        user: Env.get('DEV_MYSQL_USER'),
+        password: Env.get('DEV_MYSQL_PASSWORD', ''),
+        database: Env.get('DEV_MYSQL_DB_NAME'),
+        ssl : {"rejectUnauthorized":true}
+      },
+      migrations: {
+        naturalSort: true,
+      },
+      healthCheck: false,
+      debug: false,
+    },
 
   }
 }

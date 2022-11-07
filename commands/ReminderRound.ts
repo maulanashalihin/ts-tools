@@ -1,6 +1,7 @@
 import { BaseCommand } from '@adonisjs/core/build/standalone'
 import Database from '@ioc:Adonis/Lucid/Database'
 import axios from 'axios'
+import dayjs from 'dayjs'
 export default class ReminderRound extends BaseCommand {
   /**
    * Command name is used to run the command
@@ -35,9 +36,12 @@ export default class ReminderRound extends BaseCommand {
 
     if(campaign)
     {
-      const  attendances = await Database.from("campaign_attendances").where("campaign_id",campaign.id).where("next_round_time",'<',Date.now());
+      const  attendances = await Database.from("campaign_attendances").where("campaign_id",campaign.id).where("reminder_round_time",'<',Date.now());
 
       for await (const attendee of attendances) {
+
+
+
         const api_key = await Database.from("api_keys").orderBy(Database.raw('RAND()')).first();
 
     
@@ -48,7 +52,7 @@ export default class ReminderRound extends BaseCommand {
 
           let text =  message.text.split('[current_round]').join((attendee.current_round+1));
     
-          axios.post("http://api.dripsender.id/send",{
+          await axios.post("http://api.dripsender.id/send",{
             api_key : api_key.id,
             phone : attendee.phone,
             text : text,
@@ -57,6 +61,8 @@ export default class ReminderRound extends BaseCommand {
             buttons : JSON.parse(message.buttons)
           })
         }
+        await Database.from("campaign_attendances").where("id",attendee.id).update({reminder_round_time : dayjs().add(attendee.next_round_interval,'minute').valueOf()})
+
       }
     }
 

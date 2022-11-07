@@ -23,6 +23,22 @@ const databaseConfig = {
             healthCheck: false,
             debug: false,
         },
+        dev_mysql: {
+            client: 'mysql2',
+            connection: {
+                host: Env_1.default.get('DEV_MYSQL_HOST'),
+                port: Env_1.default.get('DEV_MYSQL_PORT'),
+                user: Env_1.default.get('DEV_MYSQL_USER'),
+                password: Env_1.default.get('DEV_MYSQL_PASSWORD', ''),
+                database: Env_1.default.get('DEV_MYSQL_DB_NAME'),
+                ssl: { "rejectUnauthorized": true }
+            },
+            migrations: {
+                naturalSort: true,
+            },
+            healthCheck: false,
+            debug: false,
+        },
     }
 };
 exports.default = databaseConfig;

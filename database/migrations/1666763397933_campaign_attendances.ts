@@ -19,6 +19,7 @@ export default class extends BaseSchema {
       table.integer("tweet_submit_number").defaultTo(0)
       table.integer("action_score").defaultTo(0)  
       table.bigInteger("next_round_time").index()
+      table.bigInteger("reminder_round_time").index()  
       table.unique(["campaign_id","troop_id"])
     })
   }
