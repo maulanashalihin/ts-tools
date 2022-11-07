@@ -27,6 +27,7 @@ Route_1.default.group(() => {
     Route_1.default.delete("/media/:id", "MediaController.destroy");
     Route_1.default.delete("/tweet-buzz/:id", "TweetBuzzesController.destroy");
     Route_1.default.get("/troops", "TroopsController.index");
+    Route_1.default.put("/troops/:id", "TroopsController.update");
     Route_1.default.get("/download-troops", "TroopsController.download");
     Route_1.default.get("/messages", "MessagesController.index");
     Route_1.default.put("/messages/:id", "MessagesController.update");
@@ -46,7 +47,7 @@ Route_1.default.post("/ts-otp", "TroopsController.verifyOTP");
 Route_1.default.group(() => {
     Route_1.default.get("/", "TroopsController.home");
     Route_1.default.get("/profile", "TroopsController.edit");
-    Route_1.default.post("/profile", "TroopsController.update");
+    Route_1.default.post("/profile", "TroopsController.profile");
     Route_1.default.get("/history", "TroopsController.history");
     Route_1.default.get("/leaderboard", "TroopsController.leaderboard");
     Route_1.default.post("/buzzer", "TroopsController.store");

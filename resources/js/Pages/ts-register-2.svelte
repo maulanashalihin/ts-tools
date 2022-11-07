@@ -66,7 +66,13 @@
                       </div>
                       <div class="space-y-1">
                         <label for="twitter_username" class="font-medium">Username Twittter</label>
-                        <input bind:value={form.twitter_username} class="block border border-gray-200 rounded px-5 py-3 leading-6 w-full focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50" type="text" id="twitter_username" placeholder="islamictroops" />
+                        <!-- <input bind:value={form.twitter_username} class="block border border-gray-200 rounded px-5 py-3 leading-6 w-full focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50" type="text" id="twitter_username" placeholder="islamictroops" /> -->
+                        <div class="relative">
+                          <div class="absolute inset-y-0 left-0 w-10 my-px ml-px flex items-center justify-center pointer-events-none rounded-l text-gray-500">
+                            @
+                          </div>
+                          <input bind:value={form.twitter_username} class="block border border-gray-200 rounded pl-7 py-2 leading-5 text-sm w-full focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50" type="text" id="tk-form-input-groups-prepend-icon-inline-small" placeholder="islamictroops" />
+                        </div>
                       </div>
                      
                      

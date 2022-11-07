@@ -53,7 +53,7 @@ function saveTweet()
 
         <div class="grid gap-4 mb-3">
             <p>Yuk kontribusi memberikan kata-kata hebat anda agar TS kali ini bisa viral dan mengguncang dunia.</p>
-            <p>Tulis tweet ada pada kolom berikut tanpa hashtag apapun</p>
+            <p>Tulis tweet ada pada kolom berikut <strong>tanpa hashtag apapun</strong></p>
             
             
         </div>
@@ -63,7 +63,7 @@ function saveTweet()
             <div class="space-y-1">
               <label class="font-medium" for="description">Tweet {tweets.length + 1}</label>
               <textarea bind:value={new_tweet} class="w-full block border border-gray-200 rounded px-3 py-2 focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50" id="description" rows="4" placeholder="Tulis tweet anda"></textarea>
-              
+              <small class="text-gray-500">tulis tweet tanpa hashtag</small>
             </div>
             <div class="text-right">
                 <button class="bg-orange-600 text-white px-4 py-2 rounded-lg">Kirim</button>

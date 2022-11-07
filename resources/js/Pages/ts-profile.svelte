@@ -41,7 +41,13 @@ function saveProfile()
          
             <div class="space-y-1">
               <label class="font-medium" for="twitter_username">Twitter Username</label>
-              <input bind:value="{user.twitter_username}" class="w-full block border border-gray-200 rounded px-3 py-2 leading-6 focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50" type="text" id="twitter_username" placeholder="Enter your Twitter" />
+            
+              <div class="relative">
+                <div class="absolute inset-y-0 left-0 w-10 my-px ml-px flex items-center justify-center pointer-events-none rounded-l text-gray-500">
+                  @
+                </div>
+                <input bind:value={user.twitter_username} class="block border border-gray-200 rounded pl-7 py-2 leading-5 text-sm w-full focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50" type="text" id="tk-form-input-groups-prepend-icon-inline-small" placeholder="islamictroops" />
+              </div>
             </div>
             <div class="space-y-1">
                 <label class="font-medium" for="phone">Phone</label>

@@ -5,6 +5,18 @@ import axios from "axios"
 import TsLayouts from './../Components/layouts.svelte';
   import { Inertia } from '@inertiajs/inertia';
  export let troops; 
+
+ function editTroop(e,item)
+ {
+    if(e)
+    if(e.target.innerText)
+    {
+      item.twitter_username = e.target.innerText;
+      axios.put("/troops/"+item.id,{twitter_username : item.twitter_username})
+    }
+   
+   
+ }
 </script>
 <div>
 <TsLayouts>
@@ -20,12 +32,15 @@ import TsLayouts from './../Components/layouts.svelte';
               </svg>
               Download</a>
         </div>
+        <div class="text-gray-400 text-sm mt-1">
+            {troops.meta.total} total troops
+        </div>
         <hr class="my-6">
         <div class="grid gap-3">
          {#each troops.data as item}
              <!-- content here -->
              <div class="flex justify-between">
-                <div>
+                <div on:blur={(e)=>{editTroop(e,item)}}  contenteditable="true">
                     {item.twitter_username}
                 </div>
                 <div class="text-gray-400">
@@ -33,10 +48,43 @@ import TsLayouts from './../Components/layouts.svelte';
                 </div>
              </div>
          {/each}
-        </div>
-        
+        </div> 
+        <nav  class="mt-4">
+            <ul class="inline-flex items-center -space-x-px">
+                {#if troops.meta.current_page > 1} 
+              <li>
+                <a href="/troops?page={(troops.meta.current_page-1)}" class="block py-2 px-3 ml-0 leading-tight text-gray-500 bg-white rounded-l-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                  <span class="sr-only">Previous</span>
+                  <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M12.707 5.293a1 1 0 010 1.414L9.414 10l3.293 3.293a1 1 0 01-1.414 1.414l-4-4a1 1 0 010-1.414l4-4a1 1 0 011.414 0z" clip-rule="evenodd"></path></svg>
+                </a>
+              </li>
+              {/if}
+                {#each Array(troops.meta.last_page) as _, i}
+                {#if (i+1) == troops.meta.current_page}
+                <li>
+                    <a href="/troops?page={(i+1)}"  class="z-10 py-2 px-3 leading-tight text-blue-600 bg-blue-50 border border-blue-300 hover:bg-blue-100 hover:text-blue-700 dark:border-gray-700 dark:bg-gray-700 dark:text-white">{i+1}</a>
+                  </li>
+                {:else}
+                <li>
+                    <a href="/troops?page={(i+1)}" class="py-2 px-3 leading-tight text-gray-500 bg-white border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">{i+1}</a>
+                  </li>
+                {/if}
+               
+
+                {/each}
+                {#if troops.meta.current_page < troops.meta.last_page} 
+              <li>
+                <a href="/troops?page={(troops.meta.current_page+1)}" class="block py-2 px-3 leading-tight text-gray-500 bg-white rounded-r-lg border border-gray-300 hover:bg-gray-100 hover:text-gray-700 dark:bg-gray-800 dark:border-gray-700 dark:text-gray-400 dark:hover:bg-gray-700 dark:hover:text-white">
+                  <span class="sr-only">Next</span>
+                  <svg aria-hidden="true" class="w-5 h-5" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M7.293 14.707a1 1 0 010-1.414L10.586 10 7.293 6.707a1 1 0 011.414-1.414l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414 0z" clip-rule="evenodd"></path></svg>
+                </a>
+              </li>
+              {/if}
+            </ul>
+          </nav>
             
     </div>
+    
 
    
 

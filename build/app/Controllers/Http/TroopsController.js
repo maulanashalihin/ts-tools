@@ -38,13 +38,13 @@ class TroopsController {
     async leaderboard({ inertia, auth }) {
         const user = auth.use("buzzer").user;
         if (user) {
-            const leaderboards = await Database_1.default.from("troops").orderBy("score", "desc").limit(25);
+            const leaderboards = await Database_1.default.from("troops").orderBy("score", "desc").limit(100);
             console.log(leaderboards);
             return inertia.render("ts-leaderboard", { user, leaderboards });
         }
     }
     async index({ inertia, request }) {
-        const troops = await Database_1.default.from("troops").select(['id', 'score', 'twitter_username']).orderBy("score", "desc").paginate(request.input("page", 1), 25);
+        const troops = await Database_1.default.from("troops").select(['id', 'score', 'twitter_username']).orderBy("score", "desc").paginate(request.input("page", 1), 100);
         return inertia.render("troops", { troops });
     }
     async download({ response }) {
@@ -55,11 +55,15 @@ class TroopsController {
         }
         return response.header("Content-Type", "text/csv").header("Content-Disposition", "attachment; filename=troops.csv").send(csvData);
     }
-    async update({ auth, request, response }) {
+    async profile({ auth, request, response }) {
         const user = auth.use("buzzer").user;
         if (user)
             await Database_1.default.from("troops").where("id", user.id).update(request.except(['id']));
         return response.redirect().back();
+    }
+    async update({ params, request }) {
+        await Database_1.default.from("troops").where("id", params.id).update(request.except(['id']));
+        return "OK";
     }
     async destroy({}) { }
     async requestOTP({ request }) {
@@ -69,6 +73,12 @@ class TroopsController {
             return {
                 reply: true,
                 text: `Kode OTP anda adalah ${otp}`
+            };
+        }
+        else {
+            return {
+                reply: true,
+                text: `Maaf, Nomor ini belum terdaftar/login`
             };
         }
     }

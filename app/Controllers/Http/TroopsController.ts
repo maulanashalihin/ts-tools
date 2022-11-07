@@ -71,7 +71,7 @@ export default class TroopsController {
 
     if(user)
     {
-      const leaderboards = await Database.from("troops").orderBy("score","desc").limit(25);
+      const leaderboards = await Database.from("troops").orderBy("score","desc").limit(100);
 
       console.log(leaderboards)
 
@@ -84,7 +84,7 @@ export default class TroopsController {
 
     // @ts-ignore:next-line 
 
-    const troops = await Database.from("troops").select(['id','score','twitter_username']).orderBy("score","desc").paginate(request.input("page",1),25);
+    const troops = await Database.from("troops").select(['id','score','twitter_username']).orderBy("score","desc").paginate(request.input("page",1),100);
  
     return inertia.render("troops",{troops})
     
@@ -106,7 +106,7 @@ export default class TroopsController {
 
 
 
-  public async update({auth,request,response}: HttpContextContract) {
+  public async profile({auth,request,response}: HttpContextContract) {
 
      // @ts-ignore:next-line
     const user = auth.use("buzzer").user;
@@ -117,6 +117,17 @@ export default class TroopsController {
     return response.redirect().back()
 
   }
+
+  public async update({params,request}: HttpContextContract) {
+
+    // @ts-ignore:next-line 
+
+ 
+   await Database.from("troops").where("id",params.id).update(request.except(['id']))
+
+   return "OK"
+
+ }
 
   public async destroy({}: HttpContextContract) {}
 
@@ -132,6 +143,11 @@ export default class TroopsController {
           reply : true,
           text : `Kode OTP anda adalah ${otp}`
         }
+     }else{
+      return {
+        reply : true,
+        text : `Maaf, Nomor ini belum terdaftar/login`
+      }
      }
 
     

@@ -66,6 +66,8 @@ Route.get('/login', async ({ inertia,auth,response }) => {
 
     Route.get("/troops","TroopsController.index")
 
+    Route.put("/troops/:id","TroopsController.update")
+
     Route.get("/download-troops","TroopsController.download")
 
     Route.get("/messages","MessagesController.index")
@@ -101,7 +103,7 @@ Route.get('/login', async ({ inertia,auth,response }) => {
 
     Route.get("/profile","TroopsController.edit")
 
-    Route.post("/profile","TroopsController.update")
+    Route.post("/profile","TroopsController.profile")
 
     Route.get("/history","TroopsController.history")
 
