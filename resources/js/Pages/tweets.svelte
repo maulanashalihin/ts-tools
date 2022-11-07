@@ -9,6 +9,8 @@ import Modal from '../Components/Modal.svelte';
 export let campaign; 
 
 export let tweets = [];
+
+export let counts;
  
 
 let new_tweet = ""
@@ -40,6 +42,12 @@ function editTweet(e,item)
 
 export let pathname = "onreview-tweets";
 
+function loadMore()
+{
+  Inertia.reload()
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+}
  
 
 </script>
@@ -106,6 +114,16 @@ export let pathname = "onreview-tweets";
 
 
 -->
+
+<div class="  text-gray-600 text-sm">
+  {#if pathname == 'onreview-tweets'}
+    {counts} belum direview
+  {/if}
+
+  {#if pathname == 'all-tweets'}
+  {tweets.length} total tweet terkumpul
+{/if}
+</div>
         {#each tweets as item}
         <!-- content here -->
         <div class="bg-white p-2 lg:p-8">
@@ -128,6 +146,9 @@ export let pathname = "onreview-tweets";
            </div>
         </div>
    {/each}
+    <div class="my-4 text-center">
+      <button class="border px-3 py-1" on:click={loadMore}>Load More Tweet</button>
+    </div>
     </div>
 
 </Layouts> 

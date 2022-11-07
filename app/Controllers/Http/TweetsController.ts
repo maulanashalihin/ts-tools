@@ -1,3 +1,4 @@
+import Redis from '@ioc:Adonis/Addons/Redis';
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Database from '@ioc:Adonis/Lucid/Database'
 
@@ -6,12 +7,31 @@ export default class TweetsController {
     
     const campaign = await Database.from("campaigns").where("id",params.id).first();
 
-    const tweets = await Database.from("tweets").where("campaign_id",params.id).where("status","on review"); 
+    let incr = await Redis.get("incr:"+campaign.id) as any;
 
+    if(incr)
+    {
+     
+      await Redis.incr("incr:"+campaign.id)
+    }else{
+      incr = 0;
+      await Redis.setex("incr:"+campaign.id,60*5,1);
+    }
+
+   
+
+    const tweets = await Database.from("tweets").where("campaign_id",params.id).where("status","on review").offset(25*incr).limit(25); 
+
+    if(tweets.length < 25)
+    {
+      await Redis.del("incr:"+campaign.id)
+    }
+
+    const counts = await Database.from("tweets").where("campaign_id",params.id).where("status","on review").count("* as total").first();
 
     const pathname = "onreview-tweets"
 
-    return inertia.render("tweets",{campaign,tweets,pathname})
+    return inertia.render("tweets",{campaign,tweets,pathname,counts : counts.total})
   }
 
   public async allTweet({inertia,params}: HttpContextContract) {

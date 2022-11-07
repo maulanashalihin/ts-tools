@@ -3,13 +3,26 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const Redis_1 = __importDefault(global[Symbol.for('ioc.use')]("Adonis/Addons/Redis"));
 const Database_1 = __importDefault(global[Symbol.for('ioc.use')]("Adonis/Lucid/Database"));
 class TweetsController {
     async index({ inertia, params }) {
         const campaign = await Database_1.default.from("campaigns").where("id", params.id).first();
-        const tweets = await Database_1.default.from("tweets").where("campaign_id", params.id).where("status", "on review");
+        let incr = await Redis_1.default.get("incr:" + campaign.id);
+        if (incr) {
+            await Redis_1.default.incr("incr:" + campaign.id);
+        }
+        else {
+            incr = 0;
+            await Redis_1.default.setex("incr:" + campaign.id, 60 * 5, 1);
+        }
+        const tweets = await Database_1.default.from("tweets").where("campaign_id", params.id).where("status", "on review").offset(25 * incr).limit(25);
+        if (tweets.length < 25) {
+            await Redis_1.default.del("incr:" + campaign.id);
+        }
+        const counts = await Database_1.default.from("tweets").where("campaign_id", params.id).where("status", "on review").count("* as total").first();
         const pathname = "onreview-tweets";
-        return inertia.render("tweets", { campaign, tweets, pathname });
+        return inertia.render("tweets", { campaign, tweets, pathname, counts: counts.total });
     }
     async allTweet({ inertia, params }) {
         const campaign = await Database_1.default.from("campaigns").where("id", params.id).first();
