@@ -54,6 +54,8 @@ Route.get('/login', async ({ inertia,auth,response }) => {
 
     Route.get("/campaign/:id/report","CampaignsController.report")
 
+
+
     Route.post("/tweets","TweetsController.store")
 
     Route.put("/tweets/:id","TweetsController.update")

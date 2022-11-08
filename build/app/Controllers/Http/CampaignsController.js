@@ -105,7 +105,14 @@ class CampaignsController {
             });
         return "OK";
     }
-    async destroy({}) { }
+    async destroy({ params, response }) {
+        await Database_1.default.from("campaigns").where("id", params.id).delete();
+        await Database_1.default.from("tweets").where("campaign_id", params.id).delete();
+        await Database_1.default.from("tweet_to_buzzes").where("campaign_id", params.id).delete();
+        await Database_1.default.from("medias").where("campaign_id", params.id).delete();
+        await Database_1.default.from("campaign_attendances").where("campaign_id", params.id).delete();
+        return response.redirect("/home", false, 303);
+    }
 }
 exports.default = CampaignsController;
 //# sourceMappingURL=CampaignsController.js.map

@@ -79,6 +79,15 @@ if(offset == -540)
   timezone = "WIT"
 }
 
+
+function deleteCampaign()
+{
+  let check = window.confirm("Apakah yakin mau menghapus campaign ini?")
+  if(check)
+  {
+    Inertia.delete("/campaign/"+campaign.id)
+  }
+}
   
 
   </script>
@@ -231,6 +240,32 @@ if(offset == -540)
             
               <!-- Notifications -->
                
+              <!-- Form Action with Button -->
+              {#if campaign.id}
+              <div class="flex flex-row-reverse ">
+                <form on:submit|preventDefault={deleteCampaign} class="md:w-2/3 ">
+                  <!-- Card -->
+                  <div class="flex flex-col rounded shadow-sm bg-white overflow-hidden">
+                    <!-- Card Body -->
+                    <div class="p-5 lg:p-6 grow w-full border-l-4 border-red-300">
+                      <h3 class="text-lg font-semibold mb-1">
+                        Campaign Deletion
+                      </h3>
+                      <p class="text-gray-500 mb-4">
+                        Are you sure you would like to delete this campaign? Please be careful since this action cannot be undone!
+                      </p>
+                      <button type="submit" class="inline-flex justify-center items-center space-x-2 border font-semibold focus:outline-none px-3 py-2 leading-5 text-sm rounded border-red-200 bg-red-200 text-red-700 hover:text-red-700 hover:bg-red-300 hover:border-red-300 focus:ring focus:ring-red-500 focus:ring-opacity-50 active:bg-red-200">
+                        Delete Campaign
+                      </button> 
+                    </div>
+                    <!-- END Card Body -->
+                  </div>
+                  <!-- END Card -->
+                </form>
+              </div>
+              {/if}
+              <!-- END Form Action with Button -->
+
               <!-- END Notifications -->
             </div>
      

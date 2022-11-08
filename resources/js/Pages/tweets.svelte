@@ -92,7 +92,7 @@ function loadMore()
             
     </div>
 
-    <div class="container my-3 grid gap-3  lg:my-6 max-w-lg mx-auto ">
+    <div class="container my-3 px-3 grid gap-3  lg:my-6 max-w-lg mx-auto ">
      
         <!-- Pill Tabs -->
 <nav class="flex items-center space-x-1 md:space-x-2">
@@ -133,13 +133,13 @@ function loadMore()
             </div>
            <div>
             <div class="inline-flex mt-3">
-                <button type="button" on:click={()=>{item.status = 'on review';editTweet(null,item)}} class="{item.status == 'on review' ? 'bg-gray-100 text-gray-800' : 'text-gray-400'}   inline-flex justify-center items-center space-x-2 border font-semibold focus:outline-none px-3 py-2 leading-6 rounded-l active:z-1 focus:z-1 -mr-px  border-gray-300   shadow-sm hover:text-gray-800 hover:bg-gray-100 hover:border-gray-300 hover:shadow focus:ring focus:ring-gray-500 focus:ring-opacity-25 active:bg-white active:border-white active:shadow-none">
+                <button type="button" on:click={()=>{item.status = 'on review';editTweet(null,item)}} class="{item.status == 'on review' ? 'bg-gray-100 text-gray-800' : 'text-gray-400'}   inline-flex text-xs justify-center items-center space-x-2 border   focus:outline-none px-2 py-1 leading-6 rounded-l active:z-1 focus:z-1 -mr-px  border-gray-300   shadow-sm hover:text-gray-800 hover:bg-gray-100 hover:border-gray-300 hover:shadow focus:ring focus:ring-gray-500 focus:ring-opacity-25 active:bg-white active:border-white active:shadow-none">
                   on Review
                 </button>
-                <button type="button" on:click={()=>{item.status = 'published';editTweet(null,item)}} class="{item.status == 'published' ? 'bg-gray-100 text-gray-800' : 'text-gray-400'}  inline-flex   justify-center items-center space-x-2 border font-semibold focus:outline-none px-3 py-2 leading-6 active:z-1 focus:z-1 -mr-px border-gray-300 bg-white  shadow-sm hover:text-gray-800 hover:bg-gray-100 hover:border-gray-300 hover:shadow focus:ring focus:ring-gray-500 focus:ring-opacity-25 active:bg-white active:border-white active:shadow-none">
+                <button type="button" on:click={()=>{item.status = 'published';editTweet(null,item)}} class="{item.status == 'published' ? 'bg-green-100 text-green-800' : 'text-gray-400'}  inline-flex text-xs  justify-center items-center space-x-2 border   focus:outline-none px-2 py-1 leading-6 active:z-1 focus:z-1 -mr-px border-gray-300 bg-white  shadow-sm hover:text-gray-800 hover:bg-gray-100 hover:border-gray-300 hover:shadow focus:ring focus:ring-gray-500 focus:ring-opacity-25 active:bg-white active:border-white active:shadow-none">
                   Setuju
                 </button>
-                <button type="button" on:click={()=>{item.status = 'rejected';editTweet(null,item)}} class="{item.status == 'rejected' ? 'bg-gray-100 text-gray-800' : 'text-gray-400'}  inline-flex justify-center items-center space-x-2 border font-semibold focus:outline-none px-3 py-2 leading-6 rounded-r active:z-1 focus:z-1 border-gray-300 bg-white  shadow-sm hover:text-gray-800 hover:bg-gray-100 hover:border-gray-300 hover:shadow focus:ring focus:ring-gray-500 focus:ring-opacity-25 active:bg-white active:border-white active:shadow-none">
+                <button type="button" on:click={()=>{item.status = 'rejected';editTweet(null,item)}} class="{item.status == 'rejected' ? 'bg-red-100 text-red-800' : 'text-gray-400'}  inline-flex text-xs justify-center items-center space-x-2 border   focus:outline-none px-2 py-1 leading-6 rounded-r active:z-1 focus:z-1 border-gray-300 bg-white  shadow-sm hover:text-gray-800 hover:bg-gray-100 hover:border-gray-300 hover:shadow focus:ring focus:ring-gray-500 focus:ring-opacity-25 active:bg-white active:border-white active:shadow-none">
                   Tolak
                 </button>
               </div>

@@ -53,7 +53,7 @@
         -->
   
         
-        <div class="grid lg:grid-cols-3">
+        <div class="grid lg:grid-cols-3 gap-3 lg:gap-6">
           {#each campaigns as item}
              <!-- content here -->
              <div  class="rounded-lg bg-white  justify-between p-4 sm:p-5">

@@ -48,7 +48,7 @@ if(offset == -540)
       
             
             {#if campaigns.length}
-            <div class="grid lg:grid-cols-3">
+            <div class="grid lg:grid-cols-3 gap-3 lg:gap-6">
               {#each campaigns as item}
                  <!-- content here -->
                  <Link href="/c/{item.id}"  class="rounded-lg bg-white  justify-between p-4 sm:p-5">

@@ -167,5 +167,14 @@ export default class CampaignsController {
 
   
 
-  public async destroy({}: HttpContextContract) {}
+  public async destroy({params,response}: HttpContextContract) {
+    
+    await Database.from("campaigns").where("id",params.id).delete()
+    await Database.from("tweets").where("campaign_id",params.id).delete()
+    await Database.from("tweet_to_buzzes").where("campaign_id",params.id).delete()
+    await Database.from("medias").where("campaign_id",params.id).delete()
+    await Database.from("campaign_attendances").where("campaign_id",params.id).delete()
+
+    return response.redirect("/home",false,303)
+  }
 }
