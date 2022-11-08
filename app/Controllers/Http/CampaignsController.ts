@@ -78,7 +78,7 @@ export default class CampaignsController {
 
         let text = message.text.split('[title]').join(campaign.title);
         
-        text =  text.split('[time]').join(dayjs(campaign.time).format("DD-MM-YYYY HH:mm"));
+        text =  text.split('[time]').join(dayjs(campaign.time).subtract(1,'h').format("DD-MM-YYYY HH:mm")+" WIB");
 
         axios.post("http://api.dripsender.id/send",{
           api_key : api_key.id,

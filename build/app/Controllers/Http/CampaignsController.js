@@ -55,7 +55,7 @@ class CampaignsController {
             if (api_key && process.env.NODE_ENV != 'development') {
                 const message = await Database_1.default.from("messages").where("id", "join").first();
                 let text = message.text.split('[title]').join(campaign.title);
-                text = text.split('[time]').join((0, dayjs_1.default)(campaign.time).format("DD-MM-YYYY HH:mm"));
+                text = text.split('[time]').join((0, dayjs_1.default)(campaign.time).subtract(1, 'h').format("DD-MM-YYYY HH:mm") + " WIB");
                 axios_1.default.post("http://api.dripsender.id/send", {
                     api_key: api_key.id,
                     phone: user.phone,
