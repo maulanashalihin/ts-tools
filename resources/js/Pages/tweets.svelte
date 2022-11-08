@@ -54,7 +54,7 @@ function loadMore()
 <div>
 <Layouts>
 
-    <div class="container lg:mt-6 max-w-lg mx-auto bg-white p-4 lg:p-8">
+    <div class="container lg:mt-6 max-w-lg mx-auto bg-white p-4 lg:p-6">
         <div>
            <h1 class="text-2xl">
             {campaign.title}
@@ -92,7 +92,7 @@ function loadMore()
             
     </div>
 
-    <div class="container my-3 px-3 grid gap-3  lg:my-6 max-w-lg mx-auto ">
+    <div class="container my-3 px-3 lg:px-0 grid gap-3  lg:my-6 max-w-lg mx-auto ">
      
         <!-- Pill Tabs -->
 <nav class="flex items-center space-x-1 md:space-x-2">
@@ -126,7 +126,7 @@ function loadMore()
 </div>
         {#each tweets as item}
         <!-- content here -->
-        <div class="bg-white p-2 lg:p-8">
+        <div class="bg-white p-2 lg:p-6">
            
             <div on:blur={(e)=>{editTweet(e,item)}} contenteditable="true">
               {item.content}
