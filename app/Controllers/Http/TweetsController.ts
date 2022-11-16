@@ -58,12 +58,12 @@ export default class TweetsController {
     if(data.published_by)
     {
       await Database.from("campaign_attendances").where("campaign_id",data.campaign_id).where("troop_id",data.published_by).increment({
-        action_score : 5,
+        action_score : 3,
         tweet_submit_number : 1
       })
 
       await Database.from("troops").where("id",data.published_by).increment({
-        score : 5
+        score : 3
       })
     }
     
@@ -77,6 +77,28 @@ export default class TweetsController {
   public async update({params,request}: HttpContextContract) {
 
     await Database.from("tweets").where("id",params.id).update(request.except(['id']))
+
+    if(request.input('status') == 'published')
+    {
+      await Database.from("campaign_attendances").where("campaign_id",request.input('campaign_id')).where("troop_id",request.input('published_by')).increment({
+        action_score : 3
+      })
+
+      await Database.from("troops").where("id",request.input('published_by')).increment({
+        score : 3
+      })
+    }
+
+    if(request.input('status') == 'rejected')
+    {
+      await Database.from("campaign_attendances").where("campaign_id",request.input('campaign_id')).where("troop_id",request.input('published_by')).decrement({
+        action_score : 3
+      })
+
+      await Database.from("troops").where("id",request.input('published_by')).decrement({
+        score : 3
+      })
+    }
   }
 
   public async destroy({}: HttpContextContract) {}

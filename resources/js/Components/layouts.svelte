@@ -31,8 +31,7 @@ import { inertia } from '@inertiajs/inertia-svelte';
 
   
 
-</script>
-<!-- Page Container -->
+</script> 
 <div id="page-container" class="flex flex-col mx-auto w-full min-h-screen bg-gray-100">
   <!-- Page Header -->
   <header id="page-header" class="flex flex-none items-center bg-orange-600 z-1">

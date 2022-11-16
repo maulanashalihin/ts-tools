@@ -17,14 +17,20 @@ let new_tweet = ""
 function saveTweet()
 {
 
-    Inertia.post("/buzzer/tweet",
+    if(new_tweet.length >= 70)
     {
-        content : new_tweet,
-        campaign_id : campaign.id,
-        published_by : user.id
+        Inertia.post("/buzzer/tweet",
+        {
+            content : new_tweet,
+            campaign_id : campaign.id,
+            published_by : user.id
 
-    })
-    new_tweet = ""
+        })
+        new_tweet = ""
+    }else{
+        alert("Panjang Tweet minimal 70 karakter")
+    }
+   
 }
 
 </script>
