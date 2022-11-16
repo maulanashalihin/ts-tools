@@ -36,6 +36,12 @@ export default class ReminderRound extends BaseCommand {
 
     if(campaign)
     {
+
+      if(campaign.status != 'running')
+      {
+        return;
+      }
+
       const  attendances = await Database.from("campaign_attendances").where("campaign_id",campaign.id).where("reminder_round_time",'<',Date.now());
 
       for await (const attendee of attendances) {

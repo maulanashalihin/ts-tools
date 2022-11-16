@@ -12,6 +12,18 @@
       "aliases": [],
       "flags": []
     },
+    "send:riayah_message": {
+      "settings": {
+        "loadApp": true,
+        "stayAlive": false
+      },
+      "commandPath": "./commands/SendRiayahMessage",
+      "commandName": "send:riayah_message",
+      "description": "",
+      "args": [],
+      "aliases": [],
+      "flags": []
+    },
     "dump:rcfile": {
       "settings": {},
       "commandPath": "@adonisjs/core/build/commands/DumpRc",

@@ -16,6 +16,7 @@ Route_1.default.group(() => {
     Route_1.default.get("/home", "CampaignsController.index");
     Route_1.default.resource("/campaign", "CampaignsController");
     Route_1.default.resource("/users", "UsersController");
+    Route_1.default.resource("/riayah", "RiayahsController");
     Route_1.default.get("/campaign/:id/onreview-tweets", "TweetsController.index");
     Route_1.default.get("/campaign/:id/all-tweets", "TweetsController.allTweet");
     Route_1.default.get("/campaign/:id/tweet-buzz", "TweetBuzzesController.index");

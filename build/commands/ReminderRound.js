@@ -12,6 +12,9 @@ class ReminderRound extends standalone_1.BaseCommand {
         this.logger.info('Hello world!');
         const campaign = await Database_1.default.from("campaigns").orderBy("id", 'desc').first();
         if (campaign) {
+            if (campaign.status != 'running') {
+                return;
+            }
             const attendances = await Database_1.default.from("campaign_attendances").where("campaign_id", campaign.id).where("reminder_round_time", '<', Date.now());
             for await (const attendee of attendances) {
                 const api_key = await Database_1.default.from("api_keys").orderBy(Database_1.default.raw('RAND()')).first();

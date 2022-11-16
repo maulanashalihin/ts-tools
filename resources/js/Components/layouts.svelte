@@ -20,6 +20,9 @@ import { inertia } from '@inertiajs/inertia-svelte';
     path : "/troops",
     name : "Troops"
   },{
+    path : "/riayah",
+    name : "Riayah"
+  },{
     path : "/messages",
     name : "Message"
   },{

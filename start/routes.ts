@@ -44,6 +44,8 @@ Route.get('/login', async ({ inertia,auth,response }) => {
 
     Route.resource("/users","UsersController")
 
+    Route.resource("/riayah","RiayahsController")
+
     Route.get("/campaign/:id/onreview-tweets","TweetsController.index")
 
     Route.get("/campaign/:id/all-tweets","TweetsController.allTweet")
