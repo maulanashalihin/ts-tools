@@ -34,60 +34,52 @@ export default class SendRiayahMessage extends BaseCommand {
     
     const campaign = await Database.from("riayahs").where("status","sending").first();
 
-    const api_keys = await Database.from("api_keys")
+  
 
     if(campaign)
     {
-        if(campaign.last_troop_id)
+      const api_keys = await Database.from("api_keys")
+      
+      let troops;
+
+      if(campaign.troop_id)
+      {
+        troops = await Database.from("troops").where("id",">",campaign.troop_id).limit(api_keys.length*6);
+
+      }else{
+        troops = await Database.from("troops").limit(api_keys.length*6);
+      }
+
+      if(troops.length == 0)
+      { 
+        await Database.from("riayahs").where("id",campaign.id).update({status : "done"}); 
+        return;
+      }
+      let api_id = 0;
+
+      for await (const troop of troops) {
+        
+        await axios.post("http://api.dripsender.id/send",{
+          api_key : api_keys[api_id].id,
+          phone : troop.phone,
+          text : campaign.text,
+          type : "buttonsMessage",
+          footerText : "Admin TS",
+          buttons : campaign.buttons.split(',')
+        })
+
+        api_id++;
+
+        if(api_id == api_keys.length)
         {
-
-          let troops;
-
-          if(campaign.troop_id)
-          {
-            troops = await Database.from("troops").where("id",">=",campaign.troop_id).limit(api_keys.length*6);
-
-          }else{
-            troops = await Database.from("troops").limit(api_keys.length*6);
-          }
-
-          if(troops.length <= 1)
-          { 
-            await Database.from("riayahs").where("id",campaign.id).update({status : "done"}); 
-            return;
-          }
-          let api_id = 0;
-
-          for await (const troop of troops) {
-            
-            await axios.post("http://api.dripsender.id/send",{
-              api_key : api_keys[api_id].id,
-              phone : troop.phone,
-              text : campaign.text,
-              type : "buttonsMessage",
-              footerText : "Admin TS",
-              buttons : campaign.buttons.split(',')
-            })
-
-            api_id++;
-
-            if(api_id == api_keys.length)
-            {
-              api_id = 0;
-            }
-            
-          }
-
-
-
-          await Database.from("riayahs").where("id",campaign.id).update({troop_id : troops[troops.length-1].id}); 
-
-        }else{
-          const troop  = await Database.from("troops").orderBy("id","desc").first();
-
-          if(troop)
-          campaign.last_troop_id = troop.id;
+          api_id = 0;
         }
+        
+      }
+
+
+
+      await Database.from("riayahs").where("id",campaign.id).update({troop_id : troops[troops.length-1].id}); 
     }
 
   }
