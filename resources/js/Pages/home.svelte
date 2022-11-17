@@ -79,7 +79,7 @@
                    </div>
                   {:else}
                   <div class="flex -space-x-3 text-sm">
-                    diikuti oleh {item.attendee || 0} orang
+                    <Link href="/campaign/{item.id}/troops">diikuti oleh {item.attendee || 0} orang</Link>
                    </div>
                   {/if}
                  <div class="flex gap-2">

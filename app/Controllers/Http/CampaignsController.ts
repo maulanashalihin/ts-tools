@@ -1,3 +1,4 @@
+import Redis from '@ioc:Adonis/Addons/Redis'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Database from '@ioc:Adonis/Lucid/Database'
 import axios from 'axios'
@@ -24,6 +25,15 @@ export default class CampaignsController {
   public async report({inertia,params}: HttpContextContract) { 
     const campaign = await Database.from("campaigns").where("id",params.id).first()
     return inertia.render("campaign-report",{campaign}) 
+  }
+
+  public async troops({inertia,params}: HttpContextContract) { 
+    
+    const campaign = await Database.from("campaigns").where("id",params.id).first()
+
+    const troops = await Database.from("campaign_attendances").where("campaign_id",campaign.id).orderBy("action_score","desc")
+
+    return inertia.render("campaign-troops",{campaign,troops}) 
   }
 
   public async store({request,response}: HttpContextContract) {
@@ -144,11 +154,28 @@ export default class CampaignsController {
     return "OK"
   }
 
-   public async updateScore({params,auth}: HttpContextContract) {
+   public async updateScore({params,auth,request}: HttpContextContract) {
     
-    await Database.from("campaign_attendances").where("id",params.id).increment({
-      action_score : 1
-    })
+    
+    if(request.input("is_tweet"))
+    {
+      await Database.from("campaign_attendances").where("id",params.id).increment({
+        action_score : 1,
+        tweet_published : 1
+      })
+
+      const time = dayjs().format("YYYY-MM-DD HH:mm")
+
+      const incrTime = Redis.incr("speed"+time)
+
+      await Redis.hset("tweet-speed:"+request.input("campaign_id"),time,incrTime.toString())
+
+    }else{
+      await Database.from("campaign_attendances").where("id",params.id).increment({
+        action_score : 1,
+      })
+    }
+    
 
       // @ts-ignore:next-line
     const user = await auth.use("buzzer").user;

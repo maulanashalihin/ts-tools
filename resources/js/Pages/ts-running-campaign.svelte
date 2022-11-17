@@ -95,10 +95,11 @@ function saveAkadTS()
     setRoundModal = false;
 }
 
-function UpdateScore()
+function UpdateScore(is_tweet)
 {
+
     attendance.action_score++; 
-    axios.put("/score/"+attendance.id)
+    axios.put("/score/"+attendance.id,{is_tweet,campaign_id : campaign.id})
 }
  
 onMount(()=>{
@@ -193,7 +194,7 @@ onMount(()=>{
                 {#if !tweet_done.includes(item.id)}
                     
                 
-                <a on:click={()=>{UpdateScore();tweet_done = [...tweet_done,item.id]}} href="https://twitter.com/intent/tweet?text={encodeURIComponent(item.content+hashtag_text)}" rel="noreferrer" target="_blank" class="  py-1  inline-flex">
+                <a on:click={()=>{UpdateScore(true);tweet_done = [...tweet_done,item.id]}} href="https://twitter.com/intent/tweet?text={encodeURIComponent(item.content+hashtag_text)}" rel="noreferrer" target="_blank" class="  py-1  inline-flex">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mr-1">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M6 12L3.269 3.126A59.768 59.768 0 0121.485 12 59.77 59.77 0 013.27 20.876L5.999 12zm0 0h7.5" />
                       </svg>
@@ -269,7 +270,7 @@ onMount(()=>{
             <div class="  mt-3"> 
                 {#if !reply_done.includes(item.id)}
                  
-                <a on:click={()=>{UpdateScore();reply_done = [...reply_done,item.id]}} href="https://twitter.com/intent/tweet?in_reply_to={item.tweet_id}&text={encodeURIComponent(pickTweet()+hashtag_text)}" rel="noreferrer" target="_blank" class="  py-1  inline-flex">
+                <a on:click={()=>{UpdateScore(true);reply_done = [...reply_done,item.id]}} href="https://twitter.com/intent/tweet?in_reply_to={item.tweet_id}&text={encodeURIComponent(pickTweet()+hashtag_text)}" rel="noreferrer" target="_blank" class="  py-1  inline-flex">
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 mr-1">
                         <path stroke-linecap="round" stroke-linejoin="round" d="M7.5 8.25h9m-9 3H12m-9.75 1.51c0 1.6 1.123 2.994 2.707 3.227 1.129.166 2.27.293 3.423.379.35.026.67.21.865.501L12 21l2.755-4.133a1.14 1.14 0 01.865-.501 48.172 48.172 0 003.423-.379c1.584-.233 2.707-1.626 2.707-3.228V6.741c0-1.602-1.123-2.995-2.707-3.228A48.394 48.394 0 0012 3c-2.392 0-4.744.175-7.043.513C3.373 3.746 2.25 5.14 2.25 6.741v6.018z" />
                       </svg>
@@ -312,7 +313,7 @@ onMount(()=>{
         {#each medias as item}
              <!-- content here -->
           
-            <a on:click={()=>{UpdateScore();tweet_done = [...tweet_done,active_tweet.id];mediaModal = false}} href="https://twitter.com/intent/tweet?text={encodeURIComponent(active_tweet.content+hashtag_text)}+{item.twitter_url}" rel="noreferrer" target="_blank" class="  py-1  inline-flex">
+            <a on:click={()=>{UpdateScore(true);tweet_done = [...tweet_done,active_tweet.id];mediaModal = false}} href="https://twitter.com/intent/tweet?text={encodeURIComponent(active_tweet.content+hashtag_text)}+{item.twitter_url}" rel="noreferrer" target="_blank" class="  py-1  inline-flex">
                 <img src="{item.media_url}" alt="">
               </a>
         {/each}

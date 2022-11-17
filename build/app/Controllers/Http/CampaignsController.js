@@ -3,6 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const Redis_1 = __importDefault(global[Symbol.for('ioc.use')]("Adonis/Addons/Redis"));
 const Database_1 = __importDefault(global[Symbol.for('ioc.use')]("Adonis/Lucid/Database"));
 const axios_1 = __importDefault(require("axios"));
 const dayjs_1 = __importDefault(require("dayjs"));
@@ -22,6 +23,11 @@ class CampaignsController {
     async report({ inertia, params }) {
         const campaign = await Database_1.default.from("campaigns").where("id", params.id).first();
         return inertia.render("campaign-report", { campaign });
+    }
+    async troops({ inertia, params }) {
+        const campaign = await Database_1.default.from("campaigns").where("id", params.id).first();
+        const troops = await Database_1.default.from("campaign_attendances").where("campaign_id", campaign.id).orderBy("action_score", "desc");
+        return inertia.render("campaign-troops", { campaign, troops });
     }
     async store({ request, response }) {
         let data = request.all();
@@ -93,10 +99,21 @@ class CampaignsController {
         await Database_1.default.from("campaign_attendances").where("id", params.id).update(data);
         return "OK";
     }
-    async updateScore({ params, auth }) {
-        await Database_1.default.from("campaign_attendances").where("id", params.id).increment({
-            action_score: 1
-        });
+    async updateScore({ params, auth, request }) {
+        if (request.input("is_tweet")) {
+            await Database_1.default.from("campaign_attendances").where("id", params.id).increment({
+                action_score: 1,
+                tweet_published: 1
+            });
+            const time = (0, dayjs_1.default)().format("YYYY-MM-DD HH:mm");
+            const incrTime = Redis_1.default.incr("speed" + time);
+            await Redis_1.default.hset("tweet-speed:" + request.input("campaign_id"), time, incrTime.toString());
+        }
+        else {
+            await Database_1.default.from("campaign_attendances").where("id", params.id).increment({
+                action_score: 1,
+            });
+        }
         const user = await auth.use("buzzer").user;
         console.log(user);
         if (user)

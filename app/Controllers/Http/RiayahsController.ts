@@ -7,6 +7,7 @@ export default class RiayahsController {
     const campaigns = await Database.from("riayahs").orderBy("id","desc").limit(10);
 
     for await (const campaign of campaigns) {
+      
       campaign.buttons = campaign.buttons.split(",")
     }
     return inertia.render("riayah",{campaigns})

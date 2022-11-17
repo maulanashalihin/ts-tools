@@ -42,12 +42,24 @@ function editTweet(e,item)
 
 export let pathname = "onreview-tweets";
 
+let page = 1;
 function loadMore()
 {
-  Inertia.reload()
-  window.scrollTo({ top: 0, behavior: 'smooth' });
+  if(pathname == "onreview-tweets")
+  {
+    Inertia.reload()
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  }else{
+    axios.get("/only-tweets",{params : {page : 1,campaign_id : campaign.id}}).then(response=>{
+      tweets = tweets.concat(response.data)
+    })
+    page++;
+  }
+ 
 
 }
+
+ 
  
 
 </script>
@@ -121,7 +133,47 @@ function loadMore()
   {/if}
 
   {#if pathname == 'all-tweets'}
-  {tweets.length} total tweet terkumpul
+  <!-- Simple Statistics Grid -->
+<div class="grid grid-cols-2 gap-4 ">
+  {#each counts as item}
+     <!-- content here -->
+     <!-- Card: Simple Widget -->
+  <div class="flex flex-col rounded shadow-sm bg-white overflow-hidden">
+    <!-- Card Body: Simple Widget -->
+    <div class="p-5 lg:p-6 grow w-full">
+      <dl>
+        <dt class="text-2xl font-semibold">
+          {item.total}
+        </dt>
+        <dd class="uppercase font-medium text-sm text-gray-500 tracking-wider">
+          {item.status}
+        </dd>
+      </dl>
+    </div>
+    <!-- END Card Body: Simple Widget -->
+  </div>
+  <!-- END Card: Simple Widget -->
+  {/each}
+ 
+
+  <!-- Card: Simple Widget -->
+  <div class="flex flex-col rounded shadow-sm bg-white overflow-hidden">
+    <!-- Card Body: Simple Widget -->
+    <div class="p-5 lg:p-6 grow w-full">
+      <dl>
+        <dt class="text-2xl font-semibold">
+          {counts.reduce((partialSum, a) => partialSum + a.total, 0)}
+        </dt>
+        <dd class="uppercase font-medium text-sm text-gray-500 tracking-wider">
+          Total
+        </dd>
+      </dl>
+    </div>
+    <!-- END Card Body: Simple Widget -->
+  </div>
+  <!-- END Card: Simple Widget -->
+</div>
+<!-- END Simple Statistics Grid -->
 {/if}
 </div>
         {#each tweets as item}

@@ -26,9 +26,16 @@ class TweetsController {
     }
     async allTweet({ inertia, params }) {
         const campaign = await Database_1.default.from("campaigns").where("id", params.id).first();
-        const tweets = await Database_1.default.from("tweets").where("campaign_id", params.id);
+        const tweets = await Database_1.default.from("tweets").where("campaign_id", params.id).limit(25);
         const pathname = "all-tweets";
-        return inertia.render("tweets", { campaign, tweets, pathname });
+        const counts = await Database_1.default.from("tweets").where("campaign_id", params.id).count("* as total").groupBy('status').distinct('status');
+        console.log(counts);
+        return inertia.render("tweets", { campaign, tweets, pathname, counts });
+    }
+    async onlyTweets({ request }) {
+        const page = request.input("page", 0);
+        const tweets = await Database_1.default.from("tweets").where("campaign_id", request.input("campaign_id")).offset(25 * page).limit(25);
+        return tweets;
     }
     async create({}) { }
     async store({ request, response }) {

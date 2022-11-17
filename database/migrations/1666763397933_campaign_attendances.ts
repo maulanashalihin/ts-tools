@@ -17,6 +17,7 @@ export default class extends BaseSchema {
       table.integer("next_round_interval").defaultTo(60)
       table.integer("current_round").defaultTo(1)
       table.integer("tweet_submit_number").defaultTo(0)
+      table.integer("tweet_published").defaultTo(0)
       table.integer("action_score").defaultTo(0)  
       table.bigInteger("next_round_time").index()
       table.bigInteger("reminder_round_time").index()  

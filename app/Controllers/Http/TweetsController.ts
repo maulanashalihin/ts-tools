@@ -36,13 +36,28 @@ export default class TweetsController {
 
   public async allTweet({inertia,params}: HttpContextContract) {
     
+    
     const campaign = await Database.from("campaigns").where("id",params.id).first();
 
-    const tweets = await Database.from("tweets").where("campaign_id",params.id)
+    const tweets = await Database.from("tweets").where("campaign_id",params.id).limit(25);
 
     const pathname = "all-tweets"
 
-    return inertia.render("tweets",{campaign,tweets,pathname})
+ 
+   const counts =  await Database.from("tweets").where("campaign_id",params.id).count("* as total").groupBy('status').distinct('status')
+
+   console.log(counts)
+
+    return inertia.render("tweets",{campaign,tweets,pathname,counts})
+  }
+
+  public async onlyTweets({request}: HttpContextContract) {
+    
+    const page = request.input("page",0)
+     
+    const tweets = await Database.from("tweets").where("campaign_id",request.input("campaign_id")).offset(25*page).limit(25);  
+
+    return tweets;
   }
 
   

@@ -56,7 +56,11 @@ Route.get('/login', async ({ inertia,auth,response }) => {
 
     Route.get("/campaign/:id/report","CampaignsController.report")
 
+    Route.get("/campaign/:id/troops","CampaignsController.troops")
+ 
 
+    
+    Route.get("/only-tweets","TweetsController.onlyTweets")
 
     Route.post("/tweets","TweetsController.store")
 

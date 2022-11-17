@@ -22,6 +22,8 @@ Route_1.default.group(() => {
     Route_1.default.get("/campaign/:id/tweet-buzz", "TweetBuzzesController.index");
     Route_1.default.get("/campaign/:id/media", "MediaController.index");
     Route_1.default.get("/campaign/:id/report", "CampaignsController.report");
+    Route_1.default.get("/campaign/:id/troops", "CampaignsController.troops");
+    Route_1.default.get("/only-tweets", "TweetsController.onlyTweets");
     Route_1.default.post("/tweets", "TweetsController.store");
     Route_1.default.put("/tweets/:id", "TweetsController.update");
     Route_1.default.post("/tweet-buzz", "TweetBuzzesController.store");
