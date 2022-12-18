@@ -156,7 +156,7 @@ function deleteApiKey(key)
          <li class="p-4 flex justify-between items-center">
             <span class="font-semibold text-sm mr-1">{item.id}</span>
             <span class="flex gap-1"><button class="text-red-500 text-sm" on:click={()=>{deleteApiKey(item)}} >hapus</button>
-                <button class="text-green-500 text-sm" on:click={()=>{deleteApiKey(item)}} >test</button></span>
+                <button class="text-green-500 text-sm" on:click={()=>{testNumber(item)}} >test</button></span>
           </li> 
     {/each}
    
