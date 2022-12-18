@@ -22,7 +22,7 @@ class OmooAuthsController {
         const api_key = await Database_1.default.from("api_keys").orderBy(Database_1.default.raw('RAND()')).first();
         if (api_key && process.env.NODE_ENV != 'development') {
             const message = await Database_1.default.from("messages").where("id", "otp").first();
-            axios_1.default.post("http://api.dripsender.id/send", {
+            axios_1.default.post("https://api.dripsender.id/send", {
                 api_key: api_key.id,
                 phone: phone,
                 text: message.text,

@@ -37,7 +37,7 @@ export default class OmooAuthsController {
     {
 
      const message = await Database.from("messages").where("id","otp").first();
-      axios.post("http://api.dripsender.id/send",{
+      axios.post("https://api.dripsender.id/send",{
         api_key : api_key.id,
         phone : phone,
         text : message.text,
