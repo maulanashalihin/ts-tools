@@ -7,6 +7,24 @@ import TsLayouts from './../Components/layouts.svelte';
 
 export let messages;
 export let api_keys;
+let test_number;
+
+function testNumber(api_key)
+{
+    if(test_number)
+    {
+        axios.post("http://api.dripsender.id/send",{
+        api_key : api_key,
+        phone : test_number,
+        text : "Pesan Test Nomor",
+        type : "buttonsMessage",
+        footerText : "Admin TS",
+        buttons : ['diterima']
+      })
+
+    }
+    
+}
  
 function saveMessage(item)
 {  
@@ -121,6 +139,13 @@ function deleteApiKey(key)
           </div>
         
         <div>
+            <div class="space-y-1">
+                <label for="phone" class="font-medium">Test Number</label>
+                <input bind:value="{test_number}" class="block border px-3 border-gray-200 rounded-l z-1 py-2 leading-5 text-sm w-full active:z-1 focus:z-1 -mr-px focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50" type="text" id="phone" placeholder="xxxxxxxxx" />
+                   
+              </div>
+            
+            <div>
          <div>
          
             
@@ -130,7 +155,8 @@ function deleteApiKey(key)
          <!-- content here -->
          <li class="p-4 flex justify-between items-center">
             <span class="font-semibold text-sm mr-1">{item.id}</span>
-            <span class="text-red-500 text-sm"><button on:click={()=>{deleteApiKey(item)}} >hapus</button></span>
+            <span class="text-red-500 text-sm"><button on:click={()=>{deleteApiKey(item)}} >hapus</button>
+                <button on:click={()=>{testNumber(item)}} >test</button></span>
           </li> 
     {/each}
    
