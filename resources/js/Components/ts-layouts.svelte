@@ -22,6 +22,9 @@ import { inertia } from '@inertiajs/inertia-svelte';
     },{
       path : "/leaderboard",
       name : "Leaderboard"
+    },{
+      path : "/omoo",
+      name : "Omoo"
     }]
 
     let pathname = location.pathname;

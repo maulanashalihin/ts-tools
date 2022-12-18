@@ -1,7 +1,7 @@
 "use strict";
 Object.defineProperty(exports, "__esModule", { value: true });
 const corsConfig = {
-    enabled: false,
+    enabled: (request) => request.url().startsWith('/api'),
     origin: true,
     methods: ['GET', 'HEAD', 'POST', 'PUT', 'DELETE'],
     headers: true,

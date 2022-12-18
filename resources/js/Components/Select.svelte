@@ -53,9 +53,9 @@ import { createEventDispatcher } from 'svelte';
     <div class="relative inline-block w-full">
         <input autocomplete="off" bind:value="{valueText}" on:input={handleInput} on:focus={()=>{show = true}}   class="w-full block border border-gray-200 rounded px-3 py-2 leading-6 focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50" type="text" id="{id}" placeholder="{placeholder}" />
         {#if show}
-        <div role="menu" aria-labelledby="tk-dropdown-simple" class="absolute left-0 origin-top-left mt-2 w-full shadow-xl rounded z-1">
-            <div class="bg-white ring-1 ring-black ring-opacity-5 rounded divide-y divide-gray-100">
-                <div class="p-2 space-y-1">
+        <div role="menu" aria-labelledby="tk-dropdown-simple" class="absolute left-0 origin-top-left mt-2 w-full shadow-xl rounded z-10">
+            <div class="bg-white ring-1 ring-black ring-opacity-5   rounded divide-y divide-gray-100">
+                <div class="p-2 space-y-1 ">
                     {#each show_listed as item}
                          
                          <!-- content here --> 

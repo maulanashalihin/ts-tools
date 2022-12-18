@@ -82,6 +82,16 @@ Route.get('/login', async ({ inertia,auth,response }) => {
 
     Route.get("/messages","MessagesController.index")
 
+    
+
+    Route.get("/omoo-channels","ChannelsController.admins")
+
+    Route.get("/omoo-contents","ContentsController.index")
+
+    Route.put("/omoo-contents/:id","ContentsController.update")
+
+    Route.put("/make-official-channel/:id","ChannelsController.makeOfficial")
+
     Route.put("/messages/:id","MessagesController.update")
 
     Route.post("/logout","AuthController.logout")
@@ -130,9 +140,53 @@ Route.get('/login', async ({ inertia,auth,response }) => {
     Route.put("/score/:id","CampaignsController.updateScore")
 
     Route.post("/buzzer/logout","TroopsController.logout")
+
+    Route.get("/omoo","ChannelsController.index")
+
+    Route.get("/channel/create","ChannelsController.create")
+
+    Route.post('/channel', "ChannelsController.store")
+
+    Route.get("/channel/:id","ChannelsController.show")
+
+    Route.get("/channel/:id/edit","ChannelsController.edit")
+
+    Route.put("/channel/:id","ChannelsController.update")
+
+    Route.resource("/channel/:channel_id/content","ContentsController")
+
+   Route.post('/upload', "UploadsController.store")
     
 
   }).middleware(['buzzer'])
 
   Route.post("/request-otp","TroopsController.requestOTP")
-  
+
+  Route.get("/api/article","GuestArticlesController.index")
+
+  Route.post("/api/login","OmooAuthsController.login")
+
+  Route.post("/api/check-otp","OmooAuthsController.verifyOTP")
+
+  Route.get("/api/check","OmooAuthsController.check")
+
+
+
+  Route.group(()=>{
+
+    Route.get("/contents/home","ContentsController.latest")
+
+    Route.get("/contents/trending","ContentsController.trending")
+
+    Route.get("/contents/official","ContentsController.official")
+
+    Route.put("/contents/:id","ContentsController.update")
+
+    Route.put("/contents/share/:id","ContentsController.share")
+    Route.put("/contents/like/:id","ContentsController.like")
+    Route.put("/contents/dislike/:id","ContentsController.dislike")
+    Route.post("/daily-tweet","ContentsController.dailyTweet")
+
+    Route.post("/logout","OmooAuthsController.logout")
+
+  }).middleware(['api']).prefix("/api")

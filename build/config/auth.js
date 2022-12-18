@@ -44,6 +44,21 @@ const authConfig = {
                 usersTable: 'troops',
             },
         },
+        api: {
+            driver: 'oat',
+            tokenProvider: {
+                type: 'api',
+                driver: 'database',
+                table: 'api_tokens',
+                foreignKey: 'user_id',
+            },
+            provider: {
+                driver: 'database',
+                identifierKey: 'id',
+                uids: ['phone'],
+                usersTable: 'troops',
+            },
+        },
     },
 };
 exports.default = authConfig;

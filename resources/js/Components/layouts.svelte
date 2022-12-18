@@ -28,6 +28,12 @@ import { inertia } from '@inertiajs/inertia-svelte';
   },{
     path : "/users",
     name : "User"
+  },{
+    path : "/omoo-contents",
+    name : "Konten Omoo"
+  },{
+    path : "/omoo-channels",
+    name : "Channel Omoo"
   }]
 
   let pathname = location.pathname;

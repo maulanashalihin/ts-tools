@@ -44,5 +44,6 @@ Server.middleware.register([
 Server.middleware.registerNamed({
 
   auth: () => import('App/Middleware/Auth'),
-  buzzer : () => import('App/Middleware/Buzzer') 
+  buzzer : () => import('App/Middleware/Buzzer'),
+  api : () => import('App/Middleware/Api') 
 })

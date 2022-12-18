@@ -33,6 +33,7 @@ Server_1.default.middleware.register([
 ]);
 Server_1.default.middleware.registerNamed({
     auth: () => Promise.resolve().then(() => __importStar(global[Symbol.for('ioc.use')]('App/Middleware/Auth'))),
-    buzzer: () => Promise.resolve().then(() => __importStar(global[Symbol.for('ioc.use')]('App/Middleware/Buzzer')))
+    buzzer: () => Promise.resolve().then(() => __importStar(global[Symbol.for('ioc.use')]('App/Middleware/Buzzer'))),
+    api: () => Promise.resolve().then(() => __importStar(global[Symbol.for('ioc.use')]('App/Middleware/Api')))
 });
 //# sourceMappingURL=kernel.js.map

@@ -34,6 +34,10 @@ Route_1.default.group(() => {
     Route_1.default.put("/troops/:id", "TroopsController.update");
     Route_1.default.get("/download-troops", "TroopsController.download");
     Route_1.default.get("/messages", "MessagesController.index");
+    Route_1.default.get("/omoo-channels", "ChannelsController.admins");
+    Route_1.default.get("/omoo-contents", "ContentsController.index");
+    Route_1.default.put("/omoo-contents/:id", "ContentsController.update");
+    Route_1.default.put("/make-official-channel/:id", "ChannelsController.makeOfficial");
     Route_1.default.put("/messages/:id", "MessagesController.update");
     Route_1.default.post("/logout", "AuthController.logout");
     Route_1.default.post("/api-keys", "MessagesController.storeApiKey");
@@ -60,6 +64,29 @@ Route_1.default.group(() => {
     Route_1.default.put("/attendance/:id", "CampaignsController.updateAttendance");
     Route_1.default.put("/score/:id", "CampaignsController.updateScore");
     Route_1.default.post("/buzzer/logout", "TroopsController.logout");
+    Route_1.default.get("/omoo", "ChannelsController.index");
+    Route_1.default.get("/channel/create", "ChannelsController.create");
+    Route_1.default.post('/channel', "ChannelsController.store");
+    Route_1.default.get("/channel/:id", "ChannelsController.show");
+    Route_1.default.get("/channel/:id/edit", "ChannelsController.edit");
+    Route_1.default.put("/channel/:id", "ChannelsController.update");
+    Route_1.default.resource("/channel/:channel_id/content", "ContentsController");
+    Route_1.default.post('/upload', "UploadsController.store");
 }).middleware(['buzzer']);
 Route_1.default.post("/request-otp", "TroopsController.requestOTP");
+Route_1.default.get("/api/article", "GuestArticlesController.index");
+Route_1.default.post("/api/login", "OmooAuthsController.login");
+Route_1.default.post("/api/check-otp", "OmooAuthsController.verifyOTP");
+Route_1.default.get("/api/check", "OmooAuthsController.check");
+Route_1.default.group(() => {
+    Route_1.default.get("/contents/home", "ContentsController.latest");
+    Route_1.default.get("/contents/trending", "ContentsController.trending");
+    Route_1.default.get("/contents/official", "ContentsController.official");
+    Route_1.default.put("/contents/:id", "ContentsController.update");
+    Route_1.default.put("/contents/share/:id", "ContentsController.share");
+    Route_1.default.put("/contents/like/:id", "ContentsController.like");
+    Route_1.default.put("/contents/dislike/:id", "ContentsController.dislike");
+    Route_1.default.post("/daily-tweet", "ContentsController.dailyTweet");
+    Route_1.default.post("/logout", "OmooAuthsController.logout");
+}).middleware(['api']).prefix("/api");
 //# sourceMappingURL=routes.js.map

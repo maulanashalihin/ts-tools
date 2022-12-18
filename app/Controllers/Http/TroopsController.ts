@@ -20,7 +20,7 @@ export default class TroopsController {
 
   public async store({auth,request}: HttpContextContract) {
 
-      // @ts-ignore:next-line
+      
     const user = auth.use("buzzer").user;
 
     if(user)
@@ -44,7 +44,7 @@ export default class TroopsController {
 
   public async edit({inertia,auth}: HttpContextContract) {
 
-      // @ts-ignore:next-line
+      
     const user = auth.use("buzzer").user;
 
     return inertia.render("ts-profile",{user})
@@ -52,7 +52,7 @@ export default class TroopsController {
 
   public async history({inertia,auth}: HttpContextContract) {
 
-    // @ts-ignore:next-line
+    
     const user = auth.use("buzzer").user;
 
     if(user)
@@ -66,7 +66,7 @@ export default class TroopsController {
 
   public async leaderboard({inertia,auth}: HttpContextContract) {
 
-    // @ts-ignore:next-line
+    
     const user = auth.use("buzzer").user;
 
     if(user)
@@ -82,7 +82,7 @@ export default class TroopsController {
 
   public async index({inertia,request}: HttpContextContract) {
 
-    // @ts-ignore:next-line 
+     
 
     const troops = await Database.from("troops").select(['id','score','twitter_username']).orderBy("score","desc").paginate(request.input("page",1),100);
  
@@ -108,7 +108,7 @@ export default class TroopsController {
 
   public async profile({auth,request,response}: HttpContextContract) {
 
-     // @ts-ignore:next-line
+     
     const user = auth.use("buzzer").user;
 
     if(user)
@@ -120,7 +120,7 @@ export default class TroopsController {
 
   public async update({params,request}: HttpContextContract) {
 
-    // @ts-ignore:next-line 
+     
 
  
    await Database.from("troops").where("id",params.id).update(request.except(['id']))
@@ -158,12 +158,12 @@ export default class TroopsController {
 
   public async logout({auth,response}: HttpContextContract) {
 
-    // @ts-ignore:next-line
+    
     const check = await auth.use("buzzer").check();
 
     if(check)
     {
-       // @ts-ignore:next-line
+       
       await auth.use('buzzer').logout()
 
       return response.redirect("/ts-login")
@@ -296,7 +296,7 @@ export default class TroopsController {
 
     if(user_id)
     {
-      // @ts-ignore:next-line
+      
       await auth.use('buzzer').loginViaId(user_id)  
 
       await Redis.del('otp:'+otp)

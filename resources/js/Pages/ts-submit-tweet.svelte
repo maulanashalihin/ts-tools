@@ -63,6 +63,7 @@ function saveTweet()
             
             
         </div>
+        {#if tweets.length < 10} 
         <form on:submit|preventDefault={saveTweet}  enctype="multipart/form-data" class="space-y-6">
                        
          
@@ -75,6 +76,7 @@ function saveTweet()
                 <button class="bg-orange-600 text-white px-4 py-2 rounded-lg">Kirim</button>
             </div>
         </form>
+        {/if}
             
     </div>
 
