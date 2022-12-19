@@ -5,6 +5,8 @@ import axios from "axios"
 import Modal from '../Components/Modal.svelte';
 import TsLayouts from './../Components/layouts.svelte'; 
 
+import { validatePhone } from "../Components/helper";
+
 export let messages;
 export let api_keys;
 let test_number;
