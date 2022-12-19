@@ -16,7 +16,7 @@ function testNumber(api_key)
     if(test_number)
     {
       
-        axios.post("/test-api",{test_number : validatePhone(test_number),api_key})
+        axios.post("/test-api",{test_number : validatePhone(test_number),api_key : api_key.id})
     }
     
 }

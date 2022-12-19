@@ -32,7 +32,7 @@ class MessagesController {
     }
     async destroy({}) { }
     async testApi({ request }) {
-        axios_1.default.post("http://api.dripsender.id/send", {
+        await axios_1.default.post("http://api.dripsender.id/send", {
             api_key: request.input("api_key"),
             phone: request.input("test_number"),
             text: "Pesan Test Nomor",

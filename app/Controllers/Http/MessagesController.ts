@@ -44,7 +44,7 @@ export default class MessagesController {
   public async destroy({}: HttpContextContract) {}
 
   public async testApi({request}: HttpContextContract) {
-    axios.post("http://api.dripsender.id/send",{
+   await  axios.post("http://api.dripsender.id/send",{
       api_key : request.input("api_key"),
       phone : request.input("test_number"),
       text : "Pesan Test Nomor",
