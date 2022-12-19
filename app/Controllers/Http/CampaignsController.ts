@@ -179,9 +179,9 @@ export default class CampaignsController {
 
       const time = dayjs().format("YYYY-MM-DDTHH:mm")
 
-      const incrTime = Redis.incr("speed"+time)
+      const incrTime = await Redis.incr("speed"+time)
 
-      await Redis.hset("tweet-speed:"+request.input("campaign_id"),time,incrTime.toString())
+      await Redis.hset("tweet-speed:"+request.input("campaign_id"),time,incrTime)
 
     }else{
       await Database.from("campaign_attendances").where("id",params.id).increment({

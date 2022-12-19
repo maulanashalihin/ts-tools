@@ -114,8 +114,8 @@ class CampaignsController {
                 tweet_published: 1
             });
             const time = (0, dayjs_1.default)().format("YYYY-MM-DDTHH:mm");
-            const incrTime = Redis_1.default.incr("speed" + time);
-            await Redis_1.default.hset("tweet-speed:" + request.input("campaign_id"), time, incrTime.toString());
+            const incrTime = await Redis_1.default.incr("speed" + time);
+            await Redis_1.default.hset("tweet-speed:" + request.input("campaign_id"), time, incrTime);
         }
         else {
             await Database_1.default.from("campaign_attendances").where("id", params.id).increment({
