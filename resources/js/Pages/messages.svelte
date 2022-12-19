@@ -51,8 +51,13 @@ function addApiKey()
 
 function deleteApiKey(key)
 {
-    api_keys = api_keys.filter(item=>item.id != key.id)
+    const check = prompt("are you sure delete this api key?")
+    if(check)
+    {
+        api_keys = api_keys.filter(item=>item.id != key.id)
     axios.delete("/api-keys/"+key.id)
+    }
+    
 }
 
 </script>
