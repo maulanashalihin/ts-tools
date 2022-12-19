@@ -24,6 +24,14 @@ class CampaignsController {
         const campaign = await Database_1.default.from("campaigns").where("id", params.id).first();
         return inertia.render("campaign-report", { campaign });
     }
+    async startCampaign({ params }) {
+        await Database_1.default.from("campaigns").where("id", params.id).update({ status: "running" });
+        return "OK";
+    }
+    async endCampaign({ params }) {
+        await Database_1.default.from("campaigns").where("id", params.id).update({ status: "done" });
+        return "OK";
+    }
     async troops({ inertia, params }) {
         const campaign = await Database_1.default.from("campaigns").where("id", params.id).first();
         const troops = await Database_1.default.from("campaign_attendances").where("campaign_id", campaign.id).orderBy("action_score", "desc");

@@ -19,6 +19,13 @@
       campaign.campaign_time = dayjs(campaign.time).format("YYYY-MM-DDTHH:mm")
     }
 
+    if(campaign.end_time)
+    {
+      campaign.end_time_string = dayjs(campaign.end_time).format("YYYY-MM-DDTHH:mm")
+    }
+
+    
+
     let quill;
 
     function saveCampaign()
@@ -27,6 +34,7 @@
        campaign.description = quill.root.innerHTML;
 
       campaign.time = dayjs(campaign.campaign_time).valueOf()
+      campaign.end_time = dayjs(campaign.end_time_string).valueOf()
      if(campaign.id)
      {
       Inertia.put("/campaign/"+campaign.id,campaign)
@@ -110,7 +118,7 @@ function deleteCampaign()
     
         <!-- Page Section -->
         <div class="container xl:max-w-7xl mx-auto p-4 lg:p-8">
-            
+
  
 
             <div class="space-y-8">
@@ -158,8 +166,13 @@ function deleteCampaign()
                       </div>
                       
                       <div class="space-y-1">
-                        <label  for="hashtag" class="font-medium">Waktu Campaign</label>
+                        <label  for="hashtag" class="font-medium">Waktu Campaign Mulai</label>
                         <input bind:value={campaign.campaign_time} class="block border border-gray-200 rounded px-3 py-2 leading-6 w-full focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50" type="datetime-local" id="hashtag" placeholder="Khilafah Ajaran Islam, Jayalah Khilafah" required/>
+                        <small class="text-gray-400">waktu dalam {timezone}</small>
+                      </div>
+                      <div class="space-y-1">
+                        <label  for="hashtag" class="font-medium">Waktu Campaign Berakhir</label>
+                        <input bind:value={campaign.end_time_string} class="block border border-gray-200 rounded px-3 py-2 leading-6 w-full focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50" type="datetime-local" id="hashtag" placeholder="Khilafah Ajaran Islam, Jayalah Khilafah" required/>
                         <small class="text-gray-400">waktu dalam {timezone}</small>
                       </div>
                       <div class="space-y-1">

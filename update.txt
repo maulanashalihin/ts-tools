@@ -1,0 +1,8 @@
+update 19 desember
+
+1. split data per daerah di halaman download
+2. diberikan countdown
+3. mulai otomatis tweet dan berhenti otomatis
+4. menampilkan video di omoo
+5. reset score setiap tanggal 1
+6. 

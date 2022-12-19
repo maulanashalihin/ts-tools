@@ -27,6 +27,19 @@ export default class CampaignsController {
     return inertia.render("campaign-report",{campaign}) 
   }
 
+  public async startCampaign({params}: HttpContextContract) { 
+      await Database.from("campaigns").where("id",params.id).update({status : "running"})
+    return "OK"
+  }
+
+  public async endCampaign({params}: HttpContextContract) { 
+      await Database.from("campaigns").where("id",params.id).update({status : "done"})
+    return "OK"
+  }
+
+  
+ 
+
   public async troops({inertia,params}: HttpContextContract) { 
     
     const campaign = await Database.from("campaigns").where("id",params.id).first()

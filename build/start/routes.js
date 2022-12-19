@@ -72,6 +72,8 @@ Route_1.default.group(() => {
     Route_1.default.put("/channel/:id", "ChannelsController.update");
     Route_1.default.resource("/channel/:channel_id/content", "ContentsController");
     Route_1.default.post('/upload', "UploadsController.store");
+    Route_1.default.put("/start-campaign/:id", "CampaignsController.startCampaign");
+    Route_1.default.put("/end-campaign/:id", "CampaignsController.endCampaign");
 }).middleware(['buzzer']);
 Route_1.default.post("/request-otp", "TroopsController.requestOTP");
 Route_1.default.get("/api/article", "GuestArticlesController.index");

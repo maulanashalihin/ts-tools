@@ -94,10 +94,10 @@ export default class TroopsController {
     
     const troops = await Database.from("troops")
  
-    let csvData = "name,phone\n";
+    let csvData = "name,phone,city\n";
 
     for await (const item of troops) {
-      csvData+=`${item.twitter_username},${item.phone}\n`
+      csvData+=`${item.twitter_username},${item.phone},${item.city}\n`
     }
 
     return response.header("Content-Type","text/csv").header("Content-Disposition","attachment; filename=troops.csv").send(csvData)

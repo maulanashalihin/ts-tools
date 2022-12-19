@@ -23,6 +23,20 @@ export let replies = [];
 export let attendance;
  
 
+if(Date.now() < campaign.end_time && (campaign.status == 'running'))
+  { 
+      
+      setInterval(()=>{
+        var distance = campaign.end_time - Date.now();
+        campaign.days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        campaign.hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        campaign.minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        campaign.seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        campaign = campaign;;
+
+      },1000)
+  }
 
 
 let hashtag_text = "\n";
@@ -176,6 +190,42 @@ onMount(()=>{
                 {/if}
                 
             </div>
+
+           <div> 
+            <h3 class="font-semibold">
+                Campaign berakhir dalam...
+              </h3>
+            <div class="flex gap-1 mt-1">
+           
+                <div class="h-10 bg-indigo-600 text-white rounded px-2 flex items-center">
+                  <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                  </svg>
+                  
+                </div>  
+              {#if campaign.days}
+              <div class="h-10 bg-indigo-600 text-white rounded px-2 flex items-center">
+                {campaign.days} hari
+            </div> 
+              {/if}
+             
+                {#if campaign.hours}
+                <div class="h-10 bg-indigo-600 text-white rounded px-2 flex items-center">
+                  {campaign.hours} jam
+              </div> 
+                {/if} 
+                {#if campaign.minutes}
+                <div class="h-10 bg-indigo-600 text-white rounded px-2 flex items-center">
+                  {campaign.minutes} menit
+                </div>
+                {/if}
+              {#if campaign.seconds}
+              <div class="h-10 bg-indigo-600 text-white rounded px-2 flex items-center">
+                {campaign.seconds} detik
+            </div>   
+              {/if}                  
+              </div>
+           </div>
             
         </div>
         
@@ -183,6 +233,7 @@ onMount(()=>{
     </div>
 
     <div class="container my-3 grid gap-3  lg:my-6 max-w-lg mx-auto ">
+        
         <div class="font-bold text-lg">
             1. Tweet Konten ini
         </div>

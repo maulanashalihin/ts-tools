@@ -19,6 +19,8 @@ class default_1 extends Schema_1.default {
             table.integer("hashtag_per_tweet").defaultTo(1);
             table.bigInteger("time");
             table.string("campaign_time");
+            table.bigInteger("end_time");
+            table.string("end_time_string");
             table.string("slug").unique();
             table.integer("attendee").defaultTo(0);
             table.integer("follow_profile_per_round").defaultTo(5);

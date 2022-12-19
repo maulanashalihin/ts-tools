@@ -156,6 +156,10 @@ Route.get('/login', async ({ inertia,auth,response }) => {
     Route.resource("/channel/:channel_id/content","ContentsController")
 
    Route.post('/upload', "UploadsController.store")
+
+   Route.put("/start-campaign/:id","CampaignsController.startCampaign")
+
+   Route.put("/end-campaign/:id","CampaignsController.endCampaign")
     
 
   }).middleware(['buzzer'])

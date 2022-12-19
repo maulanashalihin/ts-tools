@@ -35,6 +35,40 @@ if(offset == -540)
   timezone = "WIT"
 }
 
+campaigns.forEach(item=>{ 
+  if(Date.now() > item.time && (item.status == 'tweet submission' || item.status == 'waiting'))
+  {
+    axios.put("/start-campaign/"+item.id)
+    item.status = 'running'
+    campaigns = campaigns;
+  }
+
+  if(Date.now() > item.end_time && (item.status == 'running'))
+  {
+    axios.put("/end-campaign/"+item.id)
+    item.status = 'done'
+    campaigns = campaigns;
+  }
+
+ 
+  if(Date.now() < item.end_time && (item.status == 'running'))
+  { 
+      item.is_countddown = true;
+      setInterval(()=>{
+        var distance = item.end_time - Date.now();
+        item.days = Math.floor(distance / (1000 * 60 * 60 * 24));
+        item.hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+        item.minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+        item.seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+        campaigns = campaigns;
+
+      },1000)
+  }
+
+
+})
+
 </script>
 <div>
     <TsLayouts>
@@ -62,7 +96,7 @@ if(offset == -540)
                   <div class="mt-4">
                     <p class="text-xs+">{dayjs(item.time).format("DD MMM YYYY")}</p>
                     <p class="text-xl font-medium text-slate-700 dark:text-navy-100">
-                      {dayjs(item.time).format("HH:mm")} {timezone}
+                      {dayjs(item.time).format("HH:mm")} {timezone} - {dayjs(item.end_time).format("HH:mm")} {timezone}
                     </p>
                     <div class="text-md">
                       {item.hashtags}
@@ -76,9 +110,41 @@ if(offset == -540)
                         Yuk kontribusi memberikan kata-kata hebat anda agar TS kali ini bisa viral dan mengguncang dunia.
                       </div>
                       {/if}
-                      </div>
+                    </div>
+                   
                     
                      
+                    </div>
+                    <div class="flex gap-1 mt-3">
+                      {#if item.is_countddown}
+                      <div class="h-10 bg-indigo-600 text-white rounded px-2 flex items-center">
+                        <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                          <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
+                        </svg>
+                        
+                    </div> 
+                      {/if}
+                    {#if item.days}
+                    <div class="h-10 bg-indigo-600 text-white rounded px-2 flex items-center">
+                      {item.days} hari
+                  </div> 
+                    {/if}
+                   
+                      {#if item.hours}
+                      <div class="h-10 bg-indigo-600 text-white rounded px-2 flex items-center">
+                        {item.hours} jam
+                    </div> 
+                      {/if} 
+                      {#if item.minutes}
+                      <div class="h-10 bg-indigo-600 text-white rounded px-2 flex items-center">
+                        {item.minutes} menit
+                      </div>
+                      {/if}
+                    {#if item.seconds}
+                    <div class="h-10 bg-indigo-600 text-white rounded px-2 flex items-center">
+                      {item.seconds} detik
+                  </div>   
+                    {/if}                  
                     </div>
                   </div>
                 </Link>
