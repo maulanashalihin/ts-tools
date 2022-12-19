@@ -113,7 +113,7 @@ function UpdateScore(is_tweet)
 {
 
     attendance.action_score++; 
-    axios.put("/score/"+attendance.id,{is_tweet,campaign_id : campaign.id})
+    axios.put("/score/"+attendance.id,{is_tweet : is_tweet,campaign_id : campaign.id})
 }
  
 onMount(()=>{

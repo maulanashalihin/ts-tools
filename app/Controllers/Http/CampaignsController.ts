@@ -177,7 +177,7 @@ export default class CampaignsController {
         tweet_published : 1
       })
 
-      const time = dayjs().format("YYYY-MM-DD HH:mm")
+      const time = dayjs().format("YYYY-MM-DDTHH:mm")
 
       const incrTime = Redis.incr("speed"+time)
 
