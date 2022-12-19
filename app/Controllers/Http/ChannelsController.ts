@@ -90,7 +90,15 @@ export default class ChannelsController {
 
     const channel = await Database.from("channels").where("id",params.id).first()
 
-    return inertia.render("omoo-channel-create",{channel})
+    const admin_id = await Database.from("channel_admins").where("channel_id",params.id).select(['troop_id']);
+
+    const admins = await Database.from("troops").whereIn("id",admin_id.map(item=>item.troop_id)).select(['twitter_username','id']);
+
+    
+
+
+
+    return inertia.render("omoo-channel-create",{channel,admins})
 
   }
 
@@ -126,4 +134,37 @@ export default class ChannelsController {
 }
 
   public async destroy({}: HttpContextContract) {}
+
+  public async members({params,request,response}: HttpContextContract) {
+    const troop = await Database.from("troops").where("phone",request.input("phone")).select(['twitter_username','id']).first();
+ 
+    if(troop)
+    {
+
+      const check = await Database.from("channel_admins").where({
+        troop_id : troop.id,
+        channel_id : params.id
+      }).select(['id']).first()
+
+      if(!check)
+      {
+        await Database.table("channel_admins").insert({
+          troop_id : troop.id,
+          channel_id : params.id
+        })
+  
+        return troop;
+      }else{
+        return response.abort("Troop sudah menjadi admin channel",404)
+      }
+      
+    }else{
+      return response.abort("Troop tidak terdaftar",404)
+    }
+  }
+
+  public async deleteMember({params}: HttpContextContract) {
+    
+    await Database.from('channel_admins').where("troop_id",params.id).delete()
+  }
 }

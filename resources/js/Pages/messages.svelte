@@ -13,15 +13,8 @@ function testNumber(api_key)
 {
     if(test_number)
     {
-        axios.post("https://api.dripsender.id/send",{
-        api_key : api_key,
-        phone : test_number,
-        text : "Pesan Test Nomor",
-        type : "buttonsMessage",
-        footerText : "Admin TS",
-        buttons : ['diterima']
-      })
-
+      
+        axios.post("/test-api",{test_number : validatePhone(test_number),api_key})
     }
     
 }
@@ -34,8 +27,7 @@ function saveMessage(item)
 }
 
 function addButton(item)
-{
-    console.log("trigger")
+{ 
     if(item.new_button)
     {
         item.buttons = [...item.buttons,item.new_button];

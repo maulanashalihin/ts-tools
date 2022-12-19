@@ -100,6 +100,8 @@ Route.get('/login', async ({ inertia,auth,response }) => {
 
     Route.delete("/api-keys/:id","MessagesController.deleteApiKey")
 
+    Route.post("/test-api","MessagesController.testApi")
+
   }).middleware(['auth'])
 
   Route.get("/ts-login",({inertia})=>{
@@ -152,6 +154,10 @@ Route.get('/login', async ({ inertia,auth,response }) => {
     Route.get("/channel/:id/edit","ChannelsController.edit")
 
     Route.put("/channel/:id","ChannelsController.update")
+
+    Route.post("/channel/:id/members","ChannelsController.members")
+
+    Route.delete("/channel/:id/members","ChannelsController.deleteMember")
 
     Route.resource("/channel/:channel_id/content","ContentsController")
 

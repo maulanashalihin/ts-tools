@@ -50,7 +50,9 @@ class ChannelsController {
     }
     async edit({ params, inertia }) {
         const channel = await Database_1.default.from("channels").where("id", params.id).first();
-        return inertia.render("omoo-channel-create", { channel });
+        const admin_id = await Database_1.default.from("channel_admins").where("channel_id", params.id).select(['troop_id']);
+        const admins = await Database_1.default.from("troops").whereIn("id", admin_id.map(item => item.troop_id)).select(['twitter_username', 'id']);
+        return inertia.render("omoo-channel-create", { channel, admins });
     }
     async update({ auth, request, response, params }) {
         const user = auth.use("buzzer").user;
@@ -66,6 +68,31 @@ class ChannelsController {
         }
     }
     async destroy({}) { }
+    async members({ params, request, response }) {
+        const troop = await Database_1.default.from("troops").where("phone", request.input("phone")).select(['twitter_username', 'id']).first();
+        if (troop) {
+            const check = await Database_1.default.from("channel_admins").where({
+                troop_id: troop.id,
+                channel_id: params.id
+            }).select(['id']).first();
+            if (!check) {
+                await Database_1.default.table("channel_admins").insert({
+                    troop_id: troop.id,
+                    channel_id: params.id
+                });
+                return troop;
+            }
+            else {
+                return response.abort("Troop sudah menjadi admin channel", 404);
+            }
+        }
+        else {
+            return response.abort("Troop tidak terdaftar", 404);
+        }
+    }
+    async deleteMember({ params }) {
+        await Database_1.default.from('channel_admins').where("troop_id", params.id).delete();
+    }
 }
 exports.default = ChannelsController;
 //# sourceMappingURL=ChannelsController.js.map

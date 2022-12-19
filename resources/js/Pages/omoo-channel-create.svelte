@@ -3,6 +3,7 @@
   import axios from "axios";
     import dayjs from "dayjs"
     import { onMount } from 'svelte';
+  import { validatePhone } from "../Components/helper";
     
 import Layouts from './../Components/ts-layouts.svelte';
 
@@ -10,6 +11,31 @@ export let channel = {
     avatar : "https://avatars.dicebear.com/api/initials/NN.svg",
     name : "",
     created : Date.now()
+}
+
+export let admins;
+
+let new_member;
+
+function addNewMember()
+{
+  if(new_member)
+  {
+    axios.post(`/channel/${channel.id}/members`,{phone : validatePhone(new_member)}).then(response=>{
+      admins = [...admins,response.data];
+    },error=>{
+      alert(error.response.data)
+    })
+  }
+}
+
+function deleteMember(member)
+{
+  if(member)
+  {
+    admins = admins.filter(item=>item.id != member.id)
+    axios.delete(`/channel/${member.id}/members`)
+  }
 }
 
 function changeAvatar()
@@ -97,7 +123,6 @@ function handleChange(e)
                   <!-- User Profile Info -->
                   <div class="md:flex-none md:w-1/3 text-center md:text-left">
                     <h3 class="flex items-center justify-center md:justify-start space-x-2 font-semibold mb-1">
-                      <svg class="hi-solid hi-user-circle inline-block w-5 h-5 text-indigo-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" clip-rule="evenodd"/></svg>
                       <span>Channel</span>
                     </h3>
                     <p class="text-gray-500 text-sm mb-5">
@@ -143,6 +168,105 @@ function handleChange(e)
                
                    
               </div>
+
+              {#if channel.id}
+              <div class="space-y-8 mt-10">
+                <!-- User Profile -->
+                <div class="md:flex md:space-x-5">
+                  <!-- User Profile Info -->
+                  <div class="md:flex-none md:w-1/3 text-center md:text-left">
+                    <h3 class="flex items-center justify-center md:justify-start space-x-2 font-semibold mb-1">
+                      <span>Admin</span>
+                    </h3>
+                    <p class="text-gray-500 text-sm mb-5">
+                      Pengurus Channel 
+                    </p>
+                  </div>
+                  <!-- END User Profile Info -->
+              
+                  <!-- Card: User Profile -->
+                  <div class="flex flex-col      overflow-hidden md:w-2/3">
+                     <!-- Responsive Table Container -->
+                     <!-- Form Action with Input -->
+<form class="mb-3" on:submit|preventDefault="{addNewMember}">
+  <!-- Card -->
+  <div class="flex flex-col rounded shadow-sm bg-white overflow-hidden">
+    <!-- Card Body -->
+    <div class="p-5 lg:p-6 grow w-full border-l-4 border-emerald-300">
+      <h3 class="text-lg font-semibold mb-1">
+        Tambah Pengurus
+      </h3>
+      
+      <div class="space-y-2 sm:space-y-0 sm:flex sm:space-x-2 md:w-1/2">
+        <input bind:value="{new_member}" class="block px-2 border border-gray-200 rounded py-2 leading-5 text-sm w-full focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50" type="number" name="phone" placeholder="Masukan Nomor HP" />
+        <button type="submit" class="inline-flex justify-center items-center space-x-2 border font-semibold focus:outline-none px-3 py-2 leading-5 text-sm rounded border-emerald-200 bg-emerald-200 text-emerald-700 hover:text-emerald-700 hover:bg-emerald-300 hover:border-emerald-300 focus:ring focus:ring-emerald-500 focus:ring-opacity-50 active:bg-emerald-200">
+          Submit
+        </button>
+      </div>
+    </div>
+    <!-- END Card Body -->
+  </div>
+  <!-- END Card -->
+</form>
+<!-- END Form Action with Input -->
+<div class="border border-gray-200 rounded overflow-x-auto min-w-full bg-white">
+  <!-- Bordered Table -->
+  <table class="min-w-full text-sm align-middle whitespace-nowrap">
+    <!-- Table Header -->
+    <thead>
+      <tr class="border-b border-gray-200">
+        <th class="p-3 text-gray-700 bg-gray-100 font-semibold text-sm tracking-wider uppercase text-center">
+          Avatar
+        </th>
+        <th class="p-3 text-gray-700 bg-gray-100 font-semibold text-sm tracking-wider uppercase text-left">
+          Name
+        </th>
+        
+        <th class="p-3 text-gray-700 bg-gray-100 font-semibold text-sm tracking-wider uppercase text-center">
+          Actions
+        </th>
+      </tr>
+    </thead>
+    <!-- END Table Header -->
+
+    <!-- Table Body -->
+    <tbody>
+      {#each admins as item}
+         <!-- content here -->
+         <tr class="border-b border-gray-200">
+          <td class="p-3 text-center">
+            <img src="https://avatars.dicebear.com/api/initials/{encodeURIComponent(item.twitter_username)}.svg" alt="User Avatar" class="inline-block w-10 h-10 rounded-full" />
+          </td>
+          <td class="p-3">
+            <p class="font-medium">
+              {item.twitter_username}
+            </p> 
+          </td>
+         
+        
+          <td class="p-3 text-center">
+            <button on:click={()=>{deleteMember(item)}} type="button" class="inline-flex justify-center items-center space-x-2 border font-semibold focus:outline-none px-2 py-1 leading-5 text-sm rounded border-gray-300 bg-white text-gray-800 shadow-sm hover:text-gray-800 hover:bg-gray-100 hover:border-gray-300 hover:shadow focus:ring focus:ring-gray-500 focus:ring-opacity-25 active:bg-white active:border-white active:shadow-none">
+              <span>Hapus</span>
+            </button>
+          </td>
+        </tr>
+      {/each}
+       
+    </tbody>
+    <!-- END Table Body -->
+  </table>
+  <!-- END Bordered Table -->
+</div>
+<!-- END Responsive Table Container -->
+                  </div>
+                  <!-- Card: User Profile -->
+                </div>
+                <!-- END User Profile -->
+              
+               
+                   
+              </div>
+              {/if}
        
           </div> 
     </Layouts>

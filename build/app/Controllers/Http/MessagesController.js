@@ -4,6 +4,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const Database_1 = __importDefault(global[Symbol.for('ioc.use')]("Adonis/Lucid/Database"));
+const axios_1 = __importDefault(require("axios"));
 class MessagesController {
     async index({ inertia }) {
         const messages = await Database_1.default.from("messages");
@@ -30,6 +31,17 @@ class MessagesController {
         await Database_1.default.from("messages").where("id", params.id).update(data);
     }
     async destroy({}) { }
+    async testApi({ request }) {
+        axios_1.default.post("http://api.dripsender.id/send", {
+            api_key: request.input("api_key"),
+            phone: request.input("test_number"),
+            text: "Pesan Test Nomor",
+            type: "buttonsMessage",
+            footerText: "Admin TS",
+            buttons: ['diterima']
+        });
+        return "OK";
+    }
 }
 exports.default = MessagesController;
 //# sourceMappingURL=MessagesController.js.map

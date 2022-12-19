@@ -42,6 +42,7 @@ Route_1.default.group(() => {
     Route_1.default.post("/logout", "AuthController.logout");
     Route_1.default.post("/api-keys", "MessagesController.storeApiKey");
     Route_1.default.delete("/api-keys/:id", "MessagesController.deleteApiKey");
+    Route_1.default.post("/test-api", "MessagesController.testApi");
 }).middleware(['auth']);
 Route_1.default.get("/ts-login", ({ inertia }) => {
     return inertia.render("ts-login");
@@ -70,6 +71,8 @@ Route_1.default.group(() => {
     Route_1.default.get("/channel/:id", "ChannelsController.show");
     Route_1.default.get("/channel/:id/edit", "ChannelsController.edit");
     Route_1.default.put("/channel/:id", "ChannelsController.update");
+    Route_1.default.post("/channel/:id/members", "ChannelsController.members");
+    Route_1.default.delete("/channel/:id/members", "ChannelsController.deleteMember");
     Route_1.default.resource("/channel/:channel_id/content", "ContentsController");
     Route_1.default.post('/upload', "UploadsController.store");
     Route_1.default.put("/start-campaign/:id", "CampaignsController.startCampaign");
