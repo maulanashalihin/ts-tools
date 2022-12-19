@@ -62,9 +62,8 @@ function saveTweet()
             <p>Tulis tweet ada pada kolom berikut <strong>tanpa hashtag apapun</strong></p>
             
             
-        </div>
-        {#if tweets.length < 10} 
-        <form on:submit|preventDefault={saveTweet}  enctype="multipart/form-data" class="space-y-6">
+        </div> 
+        <form on:submit|preventDefault={saveTweet}    class="space-y-6">
                        
          
             <div class="space-y-1">
@@ -76,16 +75,7 @@ function saveTweet()
                 <button class="bg-orange-600 text-white px-4 py-2 rounded-lg">Kirim</button>
             </div>
         </form>
-        {:else}
-        <!-- Success Alert -->
-<div class="p-4 md:p-5 rounded text-emerald-700 bg-emerald-100">
-    <div class="flex items-center mb-2">
-      <svg class="hi-solid hi-check-circle inline-block w-5 h-5 mr-3 flex-none text-emerald-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>
-      <h3 >Jazakallah! Semoga Tweet Storm kita sukses trending dan berkah!</h3>
-    </div> 
-  </div>
-  <!-- END Success Alert -->
-        {/if}
+ 
             
     </div>
 
