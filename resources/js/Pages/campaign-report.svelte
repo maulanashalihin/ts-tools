@@ -6,6 +6,10 @@
   
       const { default: Layouts } = require("../Components/layouts.svelte");
       export let campaign
+      export let total_tweet;
+      export let tweet_submit;
+      export let tpm_max;
+      export let tpm_stat;
   
   
       let quill;
@@ -125,15 +129,144 @@
           <div class="container xl:max-w-7xl mx-auto p-4 lg:p-8">
               
    
+
+         
+
+            <div class="grid lg:grid-cols-2 gap-5">
+              <div class="space-y-8 mb-10">
+                <!-- Simple Statistics Grid -->
+  <div class="grid grid-cols-1 lg:grid-cols-2 gap-4 ">
+    <!-- Card: Simple Widget -->
+    <div class="flex flex-col rounded shadow-sm bg-white overflow-hidden">
+      <!-- Card Body: Simple Widget -->
+      <div class="p-5 lg:p-6 grow w-full">
+        <dl>
+          <dt class="text-2xl font-semibold">
+            {campaign.attendee}
+          </dt>
+          <dd class="uppercase font-medium text-sm text-gray-500 tracking-wider">
+            Peserta
+          </dd>
+        </dl>
+      </div>
+      <!-- END Card Body: Simple Widget -->
+    </div>
+    <!-- END Card: Simple Widget -->
   
+    <!-- Card: Simple Widget -->
+    <div class="flex flex-col rounded shadow-sm bg-white overflow-hidden">
+      <!-- Card Body: Simple Widget -->
+      <div class="p-5 lg:p-6 grow w-full">
+        <dl>
+          <dt class="text-2xl font-semibold">
+            {tweet_submit.total}
+          </dt>
+          <dd class="uppercase font-medium text-sm text-gray-500 tracking-wider">
+            Tweet Submit
+          </dd>
+        </dl>
+      </div>
+      <!-- END Card Body: Simple Widget -->
+    </div>
+  
+    <div class="flex flex-col rounded shadow-sm bg-white overflow-hidden">
+      <!-- Card Body: Simple Widget -->
+      <div class="p-5 lg:p-6 grow w-full">
+        <dl>
+          <dt class="text-2xl font-semibold">
+            {total_tweet.total}
+          </dt>
+          <dd class="uppercase font-medium text-sm text-gray-500 tracking-wider">
+            Tweet Published
+          </dd>
+        </dl>
+      </div>
+      <!-- END Card Body: Simple Widget -->
+    </div>
+    <!-- END Card: Simple Widget -->
+  
+    <!-- Card: Simple Widget -->
+    <div class="flex flex-col rounded shadow-sm bg-white overflow-hidden">
+      <!-- Card Body: Simple Widget -->
+      <div class="p-5 lg:p-6 grow w-full">
+        <dl>
+          <dt class="text-2xl font-semibold">
+            {tpm_max}
+          </dt>
+          <dd class="uppercase font-medium text-sm text-gray-500 tracking-wider">
+            Max TPM
+          </dd>
+        </dl>
+      </div>
+      <!-- END Card Body: Simple Widget -->
+    </div>
+    <!-- END Card: Simple Widget -->
+  </div>
+  <!-- END Simple Statistics Grid -->
+  
+              </div>
+<div>
+
+<h3 class="font-semibold mb-3">
+  TPM Statistik
+</h3>
+ <!-- Responsive Table Container -->
+ <div class="border mb-10 border-gray-200 rounded overflow-x-auto min-w-full bg-white">
+  <!-- Alternate Responsive Table -->
+  <table class="min-w-full text-sm align-middle">
+    <!-- Table Header -->
+    <thead>
+      <tr class="bg-gray-50">
+        
+        <th class="p-3 text-gray-700 bg-gray-100 font-semibold text-sm tracking-wider uppercase text-left">
+          Waktu
+        </th>
+        <th class="p-3 text-gray-700 bg-gray-100 font-semibold text-sm tracking-wider uppercase text-left">
+          TPM
+        </th> 
+      </tr>
+    </thead>
+    <!-- END Table Header -->
+
+    <!-- Table Body -->
+    <tbody>
+      {#each Object.keys(tpm_stat) as item}
+           <!-- content here -->
+           <tr>
+              <td class="p-3  ">
+                {item}
+              </td>
+              <td class="p-3">
+                <p class="font-medium">
+                 {tpm_stat[item]}
+                </p> 
+              </td>
+              
+            </tr>
+             
+      {/each}
+    </tbody>
+    <!-- END Table Body -->
+  </table>
+  <!-- END Alternate Responsive Table -->
+</div>
+<!-- END Responsive Table Container -->
+</div>
+            </div>
+
+            
+
               <div class="space-y-8">
                 <!-- User Profile -->
                 <div class="md:flex md:space-x-5">
                   <!-- User Profile Info -->
                   <div class="md:flex-none md:w-1/3 text-center md:text-left">
                     <h3 class="flex items-center justify-center md:justify-start space-x-2 font-semibold mb-1">
-                      <svg class="hi-solid hi-user-circle inline-block w-5 h-5 text-indigo-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" clip-rule="evenodd"/></svg>
-                      <span>Laporan Campaign</span>
+                      <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 14.25v-2.625a3.375 3.375 0 00-3.375-3.375h-1.5A1.125 1.125 0 0113.5 7.125v-1.5a3.375 3.375 0 00-3.375-3.375H8.25m0 12.75h7.5m-7.5 3H12M10.5 2.25H5.625c-.621 0-1.125.504-1.125 1.125v17.25c0 .621.504 1.125 1.125 1.125h12.75c.621 0 1.125-.504 1.125-1.125V11.25a9 9 0 00-9-9z" />
+                      </svg>
+                      
+                      <span>Laporan Tertulis</span>
                     </h3>
                     <p class="text-gray-500 text-sm mb-5">
                       Berikan catatan hal-hal penting yang  bisa diambil dari campaign ini
@@ -149,9 +282,9 @@
                          
                       
                         <div class="space-y-1">
-                          <label class="font-medium" for="report">Laporan Campaign</label>
+                          <label class="font-medium" for="report">Laporan Tertulis</label>
                           <div id="report">
-                              {@html campaign.report}
+                              {@html campaign.report || ''}
                           </div>
                           <!-- <textarea  bind:value={campaign.description} class="w-full block border border-gray-200 rounded px-3 py-2 focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50" id="description" rows="4" placeholder="motivasi mengapa campaign ini penting"></textarea> -->
                           <input type="file" id="getFile" style="display:none" on:change="{uploadFunction}" />

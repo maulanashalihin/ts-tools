@@ -122,7 +122,7 @@ campaigns.forEach(item=>{
                           <path stroke-linecap="round" stroke-linejoin="round" d="M12 6v6h4.5m4.5 0a9 9 0 11-18 0 9 9 0 0118 0z" />
                         </svg>
                         
-                    </div> 
+                      </div> 
                       {/if}
                     {#if item.days}
                     <div class="h-10 bg-indigo-600 text-white rounded px-2 flex items-center">

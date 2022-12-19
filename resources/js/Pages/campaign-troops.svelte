@@ -51,7 +51,10 @@
             Progress
           </th>
           <th class="p-3 text-gray-700 bg-gray-100 font-semibold text-sm tracking-wider uppercase text-left">
-            Twet Submit
+            Twet Sub
+          </th>
+          <th class="p-3 text-gray-700 bg-gray-100 font-semibold text-sm tracking-wider uppercase text-left">
+            Twet Pub
           </th>
           <th class="p-3 text-gray-700 bg-gray-100 font-semibold text-sm tracking-wider uppercase text-center">
             Score
@@ -84,6 +87,9 @@
                 </td>
                 <td class="p-3 hidden md:table-cell text-gray-500">
                     {item.tweet_submit_number}
+                  </td>
+                  <td class="p-3 hidden md:table-cell text-gray-500">
+                    {item.tweet_published}
                   </td>
 
                 <td class="p-3 text-center">

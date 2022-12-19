@@ -22,7 +22,12 @@ class CampaignsController {
     }
     async report({ inertia, params }) {
         const campaign = await Database_1.default.from("campaigns").where("id", params.id).first();
-        return inertia.render("campaign-report", { campaign });
+        const total_tweet = await Database_1.default.from("campaign_attendances").where("campaign_id", params.id).sum("tweet_published as total").first();
+        const tweet_submit = await Database_1.default.from("tweets").where("campaign_id", params.id).count("* as total").first();
+        const tpm_stat = await Redis_1.default.hgetall("tweet-speed:" + params.id);
+        const tpm_max_array = Object.values(tpm_stat);
+        const tpm_max = Math.max.apply(Math, tpm_max_array);
+        return inertia.render("campaign-report", { campaign, total_tweet, tweet_submit, tpm_stat, tpm_max });
     }
     async startCampaign({ params }) {
         await Database_1.default.from("campaigns").where("id", params.id).update({ status: "running" });
@@ -123,7 +128,6 @@ class CampaignsController {
             });
         }
         const user = await auth.use("buzzer").user;
-        console.log(user);
         if (user)
             await Database_1.default.from("troops").where("id", user.id).increment({
                 score: 1

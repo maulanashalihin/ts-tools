@@ -24,7 +24,18 @@ export default class CampaignsController {
 
   public async report({inertia,params}: HttpContextContract) { 
     const campaign = await Database.from("campaigns").where("id",params.id).first()
-    return inertia.render("campaign-report",{campaign}) 
+
+    const total_tweet = await Database.from("campaign_attendances").where("campaign_id",params.id).sum("tweet_published as total").first()
+
+    const tweet_submit = await Database.from("tweets").where("campaign_id",params.id).count("* as total").first()
+
+    const tpm_stat = await Redis.hgetall("tweet-speed:"+params.id);
+
+    const tpm_max_array = Object.values(tpm_stat)
+
+    const tpm_max = Math.max.apply(Math, tpm_max_array);
+
+    return inertia.render("campaign-report",{campaign,total_tweet,tweet_submit,tpm_stat,tpm_max}) 
   }
 
   public async startCampaign({params}: HttpContextContract) { 
@@ -192,8 +203,7 @@ export default class CampaignsController {
 
       // @ts-ignore:next-line
     const user = await auth.use("buzzer").user;
-
-    console.log(user)
+ 
 
     if(user)
     await Database.from("troops").where("id",user.id).increment({
