@@ -6,7 +6,7 @@ import {v4} from "uuid"
 
 export default class TroopsController {
   public async home({inertia}: HttpContextContract) {
-    const campaigns = await Database.from("campaigns").orderBy("id","desc").limit(8)
+    const campaigns = await Database.from("campaigns").where("status","!=","done").orderBy("id","desc").limit(8)
 
     
  

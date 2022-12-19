@@ -9,7 +9,7 @@ const axios_1 = __importDefault(require("axios"));
 const uuid_1 = require("uuid");
 class TroopsController {
     async home({ inertia }) {
-        const campaigns = await Database_1.default.from("campaigns").orderBy("id", "desc").limit(8);
+        const campaigns = await Database_1.default.from("campaigns").where("status", "!=", "done").orderBy("id", "desc").limit(8);
         return inertia.render("ts-home", { campaigns });
     }
     async create({}) { }
