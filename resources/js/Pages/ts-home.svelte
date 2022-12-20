@@ -101,18 +101,19 @@ campaigns.forEach(item=>{
                     <div class="text-md">
                       {item.hashtags}
                     </div>
-                    <div class="mt-5 flex items-center justify-between space-x-2">
-                      <div class="flex -space-x-3 text-sm">
+                    <div class="mt-5  ">
+                      <div class="  text-sm">
                       {#if item.status == 'running'}
                       diikuti oleh {item.attendee || 0} orang
-                      <div class="w-full bg-indigo-600 text-white my-1 rounded-lg">
+                       
+                      <div class="w-full bg-orange-600 text-white mt-1 rounded px-2 py-2 text-center">
                         TWEET STORM SEKARANG
                       </div>
                       {:else if (item.status == 'tweet submission')}
                       <div class="p-4 md:p-5 rounded flex justify-between text-gray-700 bg-gray-100">
                         Yuk kontribusi memberikan kata-kata hebat anda agar TS kali ini bisa viral dan mengguncang dunia.
                       </div>
-                      <div class="w-full bg-indigo-600 text-white mt-1 rounded-lg">
+                      <div class="w-full bg-indigo-600 text-white mt-1 rounded px-2 py-2 text-center">
                         TULIS SHORT TWEET
                       </div>
                       {/if}
@@ -121,7 +122,7 @@ campaigns.forEach(item=>{
                     
                      
                     </div>
-                    <div class="flex gap-1 mt-3">
+                    <div class="flex justify-center gap-1 mt-3">
                       {#if item.is_countddown}
                       <div class="h-10 bg-indigo-600 text-white rounded px-2 flex items-center">
                         <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
