@@ -105,9 +105,15 @@ campaigns.forEach(item=>{
                       <div class="flex -space-x-3 text-sm">
                       {#if item.status == 'running'}
                       diikuti oleh {item.attendee || 0} orang
+                      <div class="w-full bg-indigo-600 text-white my-1 rounded-lg">
+                        TWEET STORM SEKARANG
+                      </div>
                       {:else if (item.status == 'tweet submission')}
                       <div class="p-4 md:p-5 rounded flex justify-between text-gray-700 bg-gray-100">
                         Yuk kontribusi memberikan kata-kata hebat anda agar TS kali ini bisa viral dan mengguncang dunia.
+                      </div>
+                      <div class="w-full bg-indigo-600 text-white mt-1 rounded-lg">
+                        TULIS SHORT TWEET
                       </div>
                       {/if}
                     </div>
