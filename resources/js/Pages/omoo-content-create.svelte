@@ -29,7 +29,7 @@ function saveContent()
     }
    if(content.id)
    {
-    Inertia.put(`/channel/${channel.id}/content/${content.id}`,content)
+    axios.put(`/channel/${channel.id}/content/${content.id}`,content)
    }else{
     Inertia.post(`/channel/${channel.id}/content`,content)
    }
@@ -63,9 +63,14 @@ function handleChange(e)
               uploadProgress = 0;
   
               if(typeof response.data == 'string')
-              {
+              { 
                 if(type == 'image')
                 {
+                    if(content.type == 'video')
+                    { 
+                      content.thumbnail = response.data;
+                      return;
+                    }
                     content.images_url = response.data;
                     content.type = type
                 } 
@@ -116,8 +121,9 @@ function handleChange(e)
                       
                 </div>
 
-           </div>
+                </div>
                {/if}
+               
                {#if uploadProgress}
                 <!-- Progress Bar: Stacked With Heading -->
 <div class="space-y-1">
@@ -143,6 +149,35 @@ function handleChange(e)
 
                {#if content.type == 'image'}
                 <img src="{content.images_url}" class="w-full" alt="Content of Images" />
+               {/if}
+
+               {#if content.type == 'video'}
+
+                <!-- svelte-ignore a11y-media-has-caption -->
+                <video class="w-full" controls>
+                  <source src="{content.video_url}" type="video/mp4"> 
+                  Your browser does not support HTML video.
+                </video>
+                
+                {#if content.thumbnail}
+                <img src="{content.thumbnail}" class="w-full mt-8" alt="Video Thumbnail" />
+              {:else}
+               <!-- svelte-ignore a11y-click-events-have-key-events -->
+               <div on:click={()=>{document.querySelector('#uploader').click()}} class="border-4 mt-8 cursor-pointer border-dashed p-6 flex justify-center">
+                <div>
+                  <div class="flex justify-center">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5" />
+                      </svg>
+                  </div>
+                      <div class="text-center mt-3">
+                        Upload Thumbnail Video
+                      </div>
+                      
+                </div>
+
+                </div>
+               {/if}
                {/if}
               
                <form on:submit|preventDefault={saveContent}  >

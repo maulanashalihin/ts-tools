@@ -2,6 +2,7 @@
   import { Inertia } from "@inertiajs/inertia";
   import dayjs from "dayjs"
   import { onMount } from 'svelte';
+  import { t } from "../Language/lang";
 
     const { default: Layouts } = require("../Components/layouts.svelte");
     export let campaign = {
@@ -106,7 +107,7 @@ function deleteCampaign()
             <div class="text-center sm:text-left sm:flex sm:items-center sm:justify-between py-2 lg:py-0 space-y-2 sm:space-y-0">
               <div class="grow">
                 <h1 class="text-xl font-bold text-gray-700 mb-1">
-                  Buat Campaign Baru
+                  {t("Buat Campaign Baru")} 
                 </h1>
                 
               </div>
@@ -127,11 +128,10 @@ function deleteCampaign()
                 <!-- User Profile Info -->
                 <div class="md:flex-none md:w-1/3 text-center md:text-left">
                   <h3 class="flex items-center justify-center md:justify-start space-x-2 font-semibold mb-1">
-                    <svg class="hi-solid hi-user-circle inline-block w-5 h-5 text-indigo-500" fill="currentColor" viewBox="0 0 20 20" xmlns="http://www.w3.org/2000/svg"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-6-3a2 2 0 11-4 0 2 2 0 014 0zm-2 4a5 5 0 00-4.546 2.916A5.986 5.986 0 0010 16a5.986 5.986 0 004.546-2.084A5 5 0 0010 11z" clip-rule="evenodd"/></svg>
-                    <span>Tema Campaign</span>
+                    <span>{t("Tema Campaign")}  </span>
                   </h3>
                   <p class="text-gray-500 text-sm mb-5">
-                    Info utama mengenai campaign yang mau diangkat
+                    {t("Info utama mengenai campaign yang mau diangkat")} 
                   </p>
                 </div>
                 <!-- END User Profile Info -->
@@ -140,29 +140,28 @@ function deleteCampaign()
                 <div class="flex flex-col rounded shadow-sm bg-white overflow-hidden md:w-2/3">
                   <!-- Card Body: User Profile -->
                   <div class="p-5 lg:p-6 grow w-full">
-                    <form on:submit|preventDefault={saveCampaign}  enctype="multipart/form-data" class="space-y-6">
+                    <form on:submit|preventDefault={saveCampaign}    class="space-y-6">
                        
                       <div class="space-y-1">
-                        <label for="title" class="font-medium">Judul Campaign</label>
+                        <label for="title" class="font-medium">{t("Judul Campaign")}</label>
                         <input bind:value={campaign.title} class="block border border-gray-200 rounded px-3 py-2 leading-6 w-full focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50" type="text" id="title" placeholder="Kontra Isu Anti Khilafah" required />
                       </div>
                       <div class="space-y-1">
-                        <label class="font-medium" for="description">Latar Belakang Campaign</label>
+                        <label class="font-medium" for="description">{t("Latar Belakang Campaign")}</label>
                         <div id="description">
                             {@html campaign.description}
                         </div>
-                        <!-- <textarea  bind:value={campaign.description} class="w-full block border border-gray-200 rounded px-3 py-2 focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50" id="description" rows="4" placeholder="motivasi mengapa campaign ini penting"></textarea> -->
-                        <div><small class="text-gray-400">jelaskan mengapa campaign ini dilakukan</small></div>
+                        <div><small class="text-gray-400">{t("jelaskan mengapa campaign ini dilakukan")}</small></div>
                       </div>
                       <div class="space-y-1">
                         <label for="hashtag" class="font-medium">Hashtag</label>
                         <input bind:value={campaign.hashtags} class="block border border-gray-200 rounded px-3 py-2 leading-6 w-full focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50" type="text" id="hashtag" placeholder="Khilafah Ajaran Islam, Jayalah Khilafah"  required/>
-                        <div><small class="text-gray-400">pisahkan dengan koma</small></div>
+                        <div><small class="text-gray-400">{t("pisahkan dengan koma")}</small></div>
                       </div>
                       <div class="space-y-1">
-                        <label for="hashtag_per_tweet" class="font-medium">Jumlah Hashtag per tweet</label>
+                        <label for="hashtag_per_tweet" class="font-medium">{t("Jumlah Hashtag per tweet")}</label>
                         <input bind:value={campaign.hashtag_per_tweet} class="block border border-gray-200 rounded px-3 py-2 leading-6 w-full focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50" type="number" id="hashtag_per_tweet" placeholder="1"  required/>
-                        <div><small class="text-gray-400">jumlah hashtag yang ditampilkan dalam 1 konten tweet</small></div>
+                        <div><small class="text-gray-400">{t("jumlah hashtag yang ditampilkan dalam 1 konten tweet")}</small></div>
                       </div>
                       
                       <div class="space-y-1">

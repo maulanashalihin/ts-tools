@@ -17,6 +17,11 @@ let new_tweet = ""
 function saveTweet()
 {
 
+    if(tweets && tweets.length > 10)
+    {
+        alert("Maaf, jumlah tweet")
+    }
+
     if(new_tweet.length >= 70)
     {
         Inertia.post("/buzzer/tweet",

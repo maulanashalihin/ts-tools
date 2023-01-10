@@ -6,6 +6,7 @@
     import Modal from '../Components/Modal.svelte';
 import TsLayouts from './../Components/ts-layouts.svelte';
   import { Inertia } from '@inertiajs/inertia';
+  import { t } from '../Language/lang';
     export let user; 
 
     let profileModal = false;
@@ -131,25 +132,21 @@ campaigns.forEach(item=>{
                         
                       </div> 
                       {/if}
-                    {#if item.days}
-                    <div class="h-10 bg-indigo-600 text-white rounded px-2 flex items-center">
-                      {item.days} hari
-                  </div> 
-                    {/if}
+                    
                    
                       {#if item.hours}
                       <div class="h-10 bg-indigo-600 text-white rounded px-2 flex items-center">
-                        {item.hours} jam
+                        {item.hours} {t("jam")}
                     </div> 
                       {/if} 
                       {#if item.minutes}
                       <div class="h-10 bg-indigo-600 text-white rounded px-2 flex items-center">
-                        {item.minutes} menit
+                        {item.minutes} {t("mnt")}
                       </div>
                       {/if}
                     {#if item.seconds}
                     <div class="h-10 bg-indigo-600 text-white rounded px-2 flex items-center">
-                      {item.seconds} detik
+                      {item.seconds} {t("dtk")}
                   </div>   
                     {/if}                  
                     </div>
@@ -160,7 +157,7 @@ campaigns.forEach(item=>{
             </div>
             {:else}
             <div class="text-gray-500 text-center">
-              Belum ada Campaign.
+              {t("Belum ada Campaign")}.
             </div>
             {/if}
             
@@ -184,10 +181,10 @@ campaigns.forEach(item=>{
                 <div class=" ">
                   <input bind:value="{user.twitter_username}" class="block border px-3 border-gray-200 rounded py-2 leading-5 text-sm w-full focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50" type="text" placeholder="islamictroops" />
                   <div class="text-gray-500">
-                    <small>tambahkan username twitter (tanpa @) agar sesama troops bisa saling follow</small>
+                    <small>{t("tambahkan username twitter (tanpa @) agar sesama troops bisa saling follow")}</small>
                   </div>
                   <button type="submit" class="mt-3 block inline-flex justify-center items-center space-x-2 border font-semibold focus:outline-none px-3 py-2 leading-5 text-sm rounded border-orange-200 bg-orange-200 text-orange-700 hover:text-orange-700 hover:bg-orange-300 hover:border-orange-300 focus:ring focus:ring-orange-500 focus:ring-opacity-50 active:bg-orange-200">
-                    Simpan
+                    {t("Simpan")}
                   </button>
                 </div>
               </div>

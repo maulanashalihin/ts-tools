@@ -1,6 +1,7 @@
 <script>
 	import dayjs from 'dayjs';
 	import { inertia,Link } from '@inertiajs/inertia-svelte';
+  import { t } from '../Language/lang';
   const { default: Layouts } = require("../Components/layouts.svelte");
   export let user;
   export let campaigns = [];
@@ -75,11 +76,11 @@
                 <div class="mt-5 flex items-center justify-between space-x-2">
                   {#if item.status == 'tweet submission'}
                   <div class="flex -space-x-3 text-sm">
-                     {item.tweets.total} tweet terkumpul
+                     {item.tweets.total}  {t("tweet terkumpul")}
                    </div>
                   {:else}
                   <div class="flex -space-x-3 text-sm">
-                    <Link href="/campaign/{item.id}/troops">diikuti oleh {item.attendee || 0} orang</Link>
+                    <Link href="/campaign/{item.id}/troops"> {t("diikuti oleh")} {item.attendee || 0}  {t("orang")}</Link>
                    </div>
                   {/if}
                  <div class="flex gap-2">

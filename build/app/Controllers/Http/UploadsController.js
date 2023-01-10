@@ -14,7 +14,7 @@ class UploadsController {
     async store({ request }) {
         const s3 = new AWS.S3();
         let extnames = ['jpg', 'jpeg', 'png', 'gif'];
-        let size = '10mb';
+        let size = '15mb';
         if (request.header('Filetype') == 'video') {
             extnames = ['mp4'];
             size = '100mb';

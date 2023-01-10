@@ -46,12 +46,26 @@ const statusColor = {
                         {#if item.type == 'image'}
                         <img src="{item.images_url}" alt="">
                         {/if}
+
+                        {#if item.type == 'video'}
+                        <!-- svelte-ignore a11y-media-has-caption -->
+                        <video controls poster="{item.thumbnail || 'https://cdn.dribbble.com/users/17914/screenshots/4902225/media/0d6d47739dae97adc81ca7076ee56cc9.png?compress=1&resize=400x300'}">
+                            <source src="{item.video_url}" type="video/mp4">
+                            <source src="movie.ogg" type="video/ogg">
+                            Your browser does not support the video tag.
+                          </video>
+                        {/if}
+                        
+
+
                         <div class="absolute top-4 left-4 {statusColor[item.status]} text-white px-3 rounded-full">
                             {item.status}
                         </div>
                     </div>
                     <div class="p-3">
-                        {item.caption}
+                        <div class="text-sm text-gray-500 whitespace-pre-line">
+                            {item.caption}
+                        </div>
                         <div class="flex justify-center gap-3 mt-3">
                             <div class="inline-flex">
                                 <button on:click="{()=>{UpdateStatus(item,'pending')}}" type="button" class="{item.status == 'pending' ? 'bg-indigo-100 text-indigo-700' : 'hover:bg-gray-100'}   -mr-px border px-2 py-1 border ">

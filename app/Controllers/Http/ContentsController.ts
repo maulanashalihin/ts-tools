@@ -135,21 +135,21 @@ export default class ContentsController {
 
   public async latest({}: HttpContextContract) {
 
-    const contents = await Database.from("contents").orderBy("id","desc").limit(20)
+    const contents = await Database.from("contents").where("status","approved").orderBy("id","desc").limit(20)
     
     return contents;
   }
 
   public async trending({}: HttpContextContract) {
 
-    const contents = await Database.from("contents").where("created",">",dayjs().subtract(7,'day').valueOf()).orderBy("point","desc").limit(20)
+    const contents = await Database.from("contents").where("status","approved").where("created",">",dayjs().subtract(7,'day').valueOf()).orderBy("point","desc").limit(20)
     
     return contents;
   }
 
   public async official({}: HttpContextContract) {
 
-    const contents = await Database.from("contents").where("category","Official").orderBy("id","desc").limit(20)
+    const contents = await Database.from("contents").where("status","approved").where("category","Official").orderBy("id","desc").limit(20)
 
     return contents;
   }

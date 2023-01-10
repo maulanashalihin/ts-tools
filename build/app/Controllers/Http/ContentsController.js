@@ -78,15 +78,15 @@ class ContentsController {
     }
     async destroy({}) { }
     async latest({}) {
-        const contents = await Database_1.default.from("contents").orderBy("id", "desc").limit(20);
+        const contents = await Database_1.default.from("contents").where("status", "approved").orderBy("id", "desc").limit(20);
         return contents;
     }
     async trending({}) {
-        const contents = await Database_1.default.from("contents").where("created", ">", (0, dayjs_1.default)().subtract(7, 'day').valueOf()).orderBy("point", "desc").limit(20);
+        const contents = await Database_1.default.from("contents").where("status", "approved").where("created", ">", (0, dayjs_1.default)().subtract(7, 'day').valueOf()).orderBy("point", "desc").limit(20);
         return contents;
     }
     async official({}) {
-        const contents = await Database_1.default.from("contents").where("category", "Official").orderBy("id", "desc").limit(20);
+        const contents = await Database_1.default.from("contents").where("status", "approved").where("category", "Official").orderBy("id", "desc").limit(20);
         return contents;
     }
 }

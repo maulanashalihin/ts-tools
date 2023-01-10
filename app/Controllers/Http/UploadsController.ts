@@ -18,7 +18,7 @@ export default class UploadsController {
     
          
     let extnames = ['jpg','jpeg', 'png', 'gif'];
-    let size = '10mb'
+    let size = '15mb'
  
     if(request.header('Filetype') == 'video')
     {

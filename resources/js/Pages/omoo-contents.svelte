@@ -44,13 +44,27 @@ import { Inertia } from '@inertiajs/inertia';
                  <div class="bg-white rounded  ">
                    
                     <div class="relative">
+                        {#if item.type == 'image'}
                         <img src="{item.images_url}" alt="">
-                        <div class="absolute top-4 left-4 {statusColor[item.status]} text-white px-3 rounded-full">
+                        {/if}
+
+                        {#if item.type == 'video'}
+                            {#if item.thumbnail}
+                            <img src="{item.thumbnail}" alt="">
+                            {:else}
+                            <img src="https://cdn.dribbble.com/users/17914/screenshots/4902225/media/0d6d47739dae97adc81ca7076ee56cc9.png?compress=1&resize=400x300" alt="">
+                            {/if}
+                        {/if}
+                        
+                        <div class="absolute top-4 left-4 {statusColor[item.status]} text-white  px-3 rounded-full">
                             {item.status}
                         </div>
                     </div>
-                    <div class="p-3">
-                        {item.caption}
+                    <div class="p-3 ">
+                        <div class="text-sm text-gray-500 whitespace-pre-line">
+                            {item.caption}
+                        </div>
+                        
                         <div class="flex justify-center gap-3 mt-3">
                             <a use:inertia href="{channel.id}/content/{item.id}/edit">Edit</a> 
                         </div>
