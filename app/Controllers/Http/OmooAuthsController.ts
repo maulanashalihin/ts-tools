@@ -36,14 +36,11 @@ export default class OmooAuthsController {
     if(api_key && process.env.NODE_ENV != 'development')
     {
 
-     const message = await Database.from("messages").where("id","otp").first();
+    //  const message = await Database.from("messages").where("id","otp").first();
       axios.post("https://api.dripsender.id/send",{
         api_key : api_key.id,
         phone : phone,
-        text : message.text,
-        type : "buttonsMessage",
-        footerText : "Admin TS",
-        buttons : JSON.parse(message.buttons)
+        text : otp
       })
     }
 

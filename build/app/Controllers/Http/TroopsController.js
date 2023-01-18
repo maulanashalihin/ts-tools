@@ -111,14 +111,10 @@ class TroopsController {
         const api_key = await Database_1.default.from("api_keys").orderBy(Database_1.default.raw('rand()')).first();
         if (process.env.NODE_ENV != 'development') {
             if (api_key) {
-                const message = await Database_1.default.from("messages").where("id", "otp").first();
                 axios_1.default.post("http://api.dripsender.id/send", {
                     api_key: api_key.id,
                     phone: phone,
-                    text: message.text,
-                    type: "buttonsMessage",
-                    footerText: "Admin TS",
-                    buttons: JSON.parse(message.buttons)
+                    text: otp
                 });
             }
         }

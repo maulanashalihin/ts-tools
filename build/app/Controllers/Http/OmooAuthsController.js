@@ -21,14 +21,10 @@ class OmooAuthsController {
         await Redis_1.default.setex("req-otp:" + phone, 60 * 5, otp);
         const api_key = await Database_1.default.from("api_keys").orderBy(Database_1.default.raw('RAND()')).first();
         if (api_key && process.env.NODE_ENV != 'development') {
-            const message = await Database_1.default.from("messages").where("id", "otp").first();
             axios_1.default.post("https://api.dripsender.id/send", {
                 api_key: api_key.id,
                 phone: phone,
-                text: message.text,
-                type: "buttonsMessage",
-                footerText: "Admin TS",
-                buttons: JSON.parse(message.buttons)
+                text: otp
             });
         }
         return { randomID, phone: buzzer.phone };
