@@ -238,9 +238,11 @@ async function handleChange(e)
                     <input type=checkbox bind:checked={content.is_omoo}>
                     <span class="ml-1">Sesuai Strat Plan Omoo</span>
                   </label>
+                  {#if strat}
                   <div class="mt-2">
                     <StratAlert {strat}></StratAlert>
                   </div>
+                  {/if}
                 </div>
 
                 {#if channel.official == false}
