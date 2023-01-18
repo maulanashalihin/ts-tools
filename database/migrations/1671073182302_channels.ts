@@ -11,6 +11,11 @@ export default class extends BaseSchema {
       table.integer("authority_point").defaultTo(0)
       table.integer("likes").defaultTo(0)
       table.boolean("official").defaultTo(false);
+      table.string("tiktok_url")
+      table.string("website_url")
+      table.string("facebook_url")
+      table.string("youtube_url")
+      table.string("ig_url")
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
        */

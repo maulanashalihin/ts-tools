@@ -42,6 +42,8 @@ Route.get('/login', async ({ inertia,auth,response }) => {
 
     Route.resource("/campaign","CampaignsController")
 
+    Route.resource("/strat-plan","StratPlansController")
+
     Route.resource("/users","UsersController")
 
     Route.resource("/riayah","RiayahsController")
@@ -50,7 +52,7 @@ Route.get('/login', async ({ inertia,auth,response }) => {
 
     Route.get("/campaign/:id/all-tweets","TweetsController.allTweet")
 
-  Route.get("/campaign/:id/tweet-buzz","TweetBuzzesController.index")
+    Route.get("/campaign/:id/tweet-buzz","TweetBuzzesController.index")
 
     Route.get("/campaign/:id/media","MediaController.index")
 
@@ -85,6 +87,8 @@ Route.get('/login', async ({ inertia,auth,response }) => {
     
 
     Route.get("/omoo-channels","ChannelsController.admins")
+
+    Route.get("/omoo-channels/:id","ChannelsController.adminView")
 
     Route.get("/omoo-contents","ContentsController.index")
 
@@ -184,7 +188,9 @@ Route.get('/login', async ({ inertia,auth,response }) => {
 
   Route.group(()=>{
 
-    Route.get("/contents/home","ContentsController.latest")
+    Route.get("/contents/omoo","ContentsController.omoo")
+
+    Route.get("/contents/terkini","ContentsController.latest")
 
     Route.get("/contents/trending","ContentsController.trending")
 

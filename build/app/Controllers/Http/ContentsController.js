@@ -18,8 +18,9 @@ class ContentsController {
         if (user) {
             const check = await Database_1.default.from("channel_admins").where("troop_id", user.id).where("channel_id", params.channel_id).first();
             if (check) {
+                const strat = await Database_1.default.from("strat_plans").orderBy("id", "desc").first();
                 const channel = await Database_1.default.from("channels").where("id", params.channel_id).first();
-                return inertia.render("omoo-content-create", { channel });
+                return inertia.render("omoo-content-create", { channel, strat });
             }
         }
     }
@@ -77,6 +78,10 @@ class ContentsController {
         }
     }
     async destroy({}) { }
+    async omoo({}) {
+        const contents = await Database_1.default.from("contents").where("status", "approved").where("is_omoo", true).orderBy("id", "desc").limit(20);
+        return contents;
+    }
     async latest({}) {
         const contents = await Database_1.default.from("contents").where("status", "approved").orderBy("id", "desc").limit(20);
         return contents;

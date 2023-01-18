@@ -44,7 +44,8 @@ class ChannelsController {
             if (check) {
                 const channel = await Database_1.default.from("channels").where("id", params.id).first();
                 const contents = await Database_1.default.from("contents").where("channel_id", params.id);
-                return inertia.render("omoo-contents", { contents, channel });
+                const strat = await Database_1.default.from("strat_plans").orderBy("id", "desc").first();
+                return inertia.render("omoo-contents", { contents, channel, strat });
             }
         }
     }
@@ -53,6 +54,12 @@ class ChannelsController {
         const admin_id = await Database_1.default.from("channel_admins").where("channel_id", params.id).select(['troop_id']);
         const admins = await Database_1.default.from("troops").whereIn("id", admin_id.map(item => item.troop_id)).select(['twitter_username', 'id']);
         return inertia.render("omoo-channel-create", { channel, admins });
+    }
+    async adminView({ params, inertia }) {
+        const channel = await Database_1.default.from("channels").where("id", params.id).first();
+        const admin_id = await Database_1.default.from("channel_admins").where("channel_id", params.id).select(['troop_id']);
+        const admins = await Database_1.default.from("troops").whereIn("id", admin_id.map(item => item.troop_id)).select(['twitter_username', 'phone', 'id']);
+        return inertia.render("omoo-channel-admins-view", { channel, admins });
     }
     async update({ auth, request, response, params }) {
         const user = auth.use("buzzer").user;

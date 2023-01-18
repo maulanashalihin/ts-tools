@@ -10,7 +10,7 @@ export default class ContentsController {
     if(user)
     {
       const contents = await Database.from("contents").orderBy("id","desc").limit(50)
-    
+     
       return inertia.render("omoo-contents-admins",{contents})
 
       
@@ -29,9 +29,12 @@ export default class ContentsController {
  
       if(check)
       {
+        const strat = await Database.from("strat_plans").orderBy("id","desc").first();
+ 
+
         const channel = await Database.from("channels").where("id",params.channel_id).first() 
         
-        return inertia.render("omoo-content-create",{channel})
+        return inertia.render("omoo-content-create",{channel,strat})
       }
 
 
@@ -132,6 +135,13 @@ export default class ContentsController {
   
 
   public async destroy({}: HttpContextContract) {}
+
+  public async omoo({}: HttpContextContract) {
+
+    const contents = await Database.from("contents").where("status","approved").where("is_omoo",true).orderBy("id","desc").limit(20)
+    
+    return contents;
+  }
 
   public async latest({}: HttpContextContract) {
 

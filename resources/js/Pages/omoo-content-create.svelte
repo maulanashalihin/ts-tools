@@ -6,9 +6,11 @@
     import { onMount } from 'svelte';
     
 import Layouts from './../Components/ts-layouts.svelte';
+  import StratAlert from '../Components/StratAlert.svelte';
  
 
 export let channel;
+export let strat;
 
 export let content = {
     channel_id : channel.id, 
@@ -22,6 +24,10 @@ export let content = {
  
 function saveContent()
 {
+  if(content.type == 'slide')
+  {
+    content.images_url = JSON.stringify(content.images_url)
+  }
     if(channel.official)
     {
       content.category = "Official"
@@ -37,13 +43,27 @@ function saveContent()
 
 let uploadProgress = 0;
 
-function handleChange(e)
+async function handleChange(e)
 {
-   const file = e.target.files[0];
+  console.log(e.target.files.length)
+      const files = e.target.files;
 
-    var formData = new FormData();
+      console.log(files)
 
-        let type = file.type.split("/")[0];
+      let type = files[0].type.split("/")[0];
+
+      let slides_urls = [];
+
+      if(files.length > 1)
+      {
+        type = "slide"
+      } 
+
+      for await (const file of files) {
+     
+ 
+
+        var formData = new FormData(); 
         
         formData.append("file", file);
   
@@ -64,7 +84,9 @@ function handleChange(e)
   
               if(typeof response.data == 'string')
               { 
+
                 if(type == 'image')
+                if(file.type.split("/")[0] == 'image')
                 {
                     if(content.type == 'video')
                     { 
@@ -74,6 +96,16 @@ function handleChange(e)
                     content.images_url = response.data;
                     content.type = type
                 } 
+
+                if(type == 'slide')
+                {
+                  slides_urls.push(response.data)
+                  content.images_url = slides_urls
+                  content.type = type;
+                }
+
+
+
                 if(type == 'video')
                 {
                     content.video_url = response.data;
@@ -84,6 +116,8 @@ function handleChange(e)
               } 
               
           })
+        }  
+
 }
 
     </script>
@@ -116,7 +150,7 @@ function handleChange(e)
                       </svg>
                   </div>
                       <div class="text-center mt-3">
-                        Upload Gambar/Video
+                        Upload Gambar/Carousel/Video
                       </div>
                       
                 </div>
@@ -145,11 +179,25 @@ function handleChange(e)
 </div>
 <!-- END Progress Bar: Stacked With Heading -->
                {/if}
-               <input type="file" accept="image/png, image/jpeg, video/*" id="uploader" on:change="{handleChange}" class="hidden">
+               <input type="file" accept="image/png, image/jpeg, video/*" id="uploader" on:change="{handleChange}" multiple class="hidden">
 
                {#if content.type == 'image'}
                 <img src="{content.images_url}" class="w-full" alt="Content of Images" />
                {/if}
+
+               {#if content.type == 'slide'}
+              <div class="flex px-1 gap-3 w-full overflow-auto">
+                {#each content.images_url as url}
+                  <div >
+                    <img class="h-20" src="{url}" alt="">
+                    <div>
+                      <button on:click={()=>{content.images_url = content.images_url.filter((item=> item != url))}}>Hapus</button>
+                    </div>
+                  </div>
+                {/each}
+               
+              </div>
+              {/if}
 
                {#if content.type == 'video'}
 
@@ -185,6 +233,16 @@ function handleChange(e)
                   <label class="font-medium" for="caption">Caption</label>
                   <textarea bind:value="{content.caption}" class="w-full block border border-gray-200 rounded px-3 py-2 focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50" id="caption" rows="4" placeholder="Description of the post"></textarea>
                 </div>
+                <div class="mt-6">
+                  <label  >
+                    <input type=checkbox bind:checked={content.is_omoo}>
+                    <span class="ml-1">Sesuai Strat Plan Omoo</span>
+                  </label>
+                  <div class="mt-2">
+                    <StratAlert {strat}></StratAlert>
+                  </div>
+                </div>
+
                 {#if channel.official == false}
                 <div class="mt-4">
                   <label class="font-medium" for="tk-inputs-default-select">Kategori</label>

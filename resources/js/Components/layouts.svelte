@@ -29,6 +29,9 @@ import { inertia } from '@inertiajs/inertia-svelte';
     path : "/users",
     name : "User"
   },{
+    path : "/strat-plan",
+    name : "Strat Plan"
+  },{
     path : "/omoo-contents",
     name : "Konten Omoo"
   },{

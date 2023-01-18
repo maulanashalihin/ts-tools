@@ -14,6 +14,7 @@ class default_1 extends Schema_1.default {
             table.increments('id');
             table.text("caption");
             table.integer("channel_id").index();
+            table.boolean("is_omoo").defaultTo(false).index();
             table.string("channel_name");
             table.string("channel_avatar");
             table.string("category").index();

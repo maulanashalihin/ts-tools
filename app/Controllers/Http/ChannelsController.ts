@@ -34,7 +34,7 @@ export default class ChannelsController {
 }
 
   public async create({inertia}: HttpContextContract) {
-    
+  
     return inertia.render("omoo-channel-create")
   }
 
@@ -76,8 +76,11 @@ export default class ChannelsController {
           const channel = await Database.from("channels").where("id",params.id).first()
     
           const contents = await Database.from("contents").where("channel_id",params.id)
-      
-          return inertia.render("omoo-contents",{contents,channel})
+           
+        const strat = await Database.from("strat_plans").orderBy("id","desc").first();
+ 
+
+          return inertia.render("omoo-contents",{contents,channel,strat})
         }
 
 
@@ -99,6 +102,22 @@ export default class ChannelsController {
 
 
     return inertia.render("omoo-channel-create",{channel,admins})
+
+  }
+
+  public async adminView({params,inertia}: HttpContextContract) {
+
+    const channel = await Database.from("channels").where("id",params.id).first()
+
+    const admin_id = await Database.from("channel_admins").where("channel_id",params.id).select(['troop_id']);
+
+    const admins = await Database.from("troops").whereIn("id",admin_id.map(item=>item.troop_id)).select(['twitter_username','phone','id']);
+
+    
+
+
+
+    return inertia.render("omoo-channel-admins-view",{channel,admins})
 
   }
 

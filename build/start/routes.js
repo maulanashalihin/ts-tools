@@ -15,6 +15,7 @@ Route_1.default.post("/login", "AuthController.login");
 Route_1.default.group(() => {
     Route_1.default.get("/home", "CampaignsController.index");
     Route_1.default.resource("/campaign", "CampaignsController");
+    Route_1.default.resource("/strat-plan", "StratPlansController");
     Route_1.default.resource("/users", "UsersController");
     Route_1.default.resource("/riayah", "RiayahsController");
     Route_1.default.get("/campaign/:id/onreview-tweets", "TweetsController.index");
@@ -35,6 +36,7 @@ Route_1.default.group(() => {
     Route_1.default.get("/download-troops", "TroopsController.download");
     Route_1.default.get("/messages", "MessagesController.index");
     Route_1.default.get("/omoo-channels", "ChannelsController.admins");
+    Route_1.default.get("/omoo-channels/:id", "ChannelsController.adminView");
     Route_1.default.get("/omoo-contents", "ContentsController.index");
     Route_1.default.put("/omoo-contents/:id", "ContentsController.update");
     Route_1.default.put("/make-official-channel/:id", "ChannelsController.makeOfficial");
@@ -84,7 +86,8 @@ Route_1.default.post("/api/login", "OmooAuthsController.login");
 Route_1.default.post("/api/check-otp", "OmooAuthsController.verifyOTP");
 Route_1.default.get("/api/check", "OmooAuthsController.check");
 Route_1.default.group(() => {
-    Route_1.default.get("/contents/home", "ContentsController.latest");
+    Route_1.default.get("/contents/omoo", "ContentsController.omoo");
+    Route_1.default.get("/contents/terkini", "ContentsController.latest");
     Route_1.default.get("/contents/trending", "ContentsController.trending");
     Route_1.default.get("/contents/official", "ContentsController.official");
     Route_1.default.put("/contents/:id", "ContentsController.update");

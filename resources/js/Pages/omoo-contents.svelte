@@ -6,10 +6,20 @@ import axios from "axios"
 import Modal from '../Components/Modal.svelte';
 import TsLayouts from './../Components/ts-layouts.svelte';
 import { Inertia } from '@inertiajs/inertia';
+  import StratAlert from '../Components/StratAlert.svelte';
+  import Carousel from '../Components/Carousel.svelte';
  
  export let channel;
-
+ export let strat = {};
  export let contents;
+
+ contents.forEach(item=>{
+    if(item.type == 'slide')
+    {
+        item.images_url = JSON.parse(item.images_url)
+    }
+ })
+ contents = contents;
 
  const statusColor = {
     pending : 'bg-gray-500',
@@ -23,10 +33,11 @@ import { Inertia } from '@inertiajs/inertia';
 <TsLayouts>
 
     <div class="container xl:max-w-7xl mx-auto p-4 lg:p-8">
+       <StratAlert {strat} ></StratAlert>
         <div class="text-xl font-medium">
             {channel.name}
         </div>
-        <div class="grid lg:grid-cols-3 grid-cols-1 gap-4 mt-5">
+        <div class="grid lg:grid-cols-3 grid-cols-1 gap-4 mt-5 h-32">
             <a use:inertia class="border-2   rounded text-center flex justify-center items-center" href="{channel.id}/content/create">
                 <div class=" text-gray-500">
                    <div class="flex justify-center ">
@@ -43,24 +54,33 @@ import { Inertia } from '@inertiajs/inertia';
                  <!-- content here -->
                  <div class="bg-white rounded  ">
                    
-                    <div class="relative">
+                    <div class=" ">
                         {#if item.type == 'image'}
                         <img src="{item.images_url}" alt="">
                         {/if}
+                        {#if item.type == 'slide'}
+                        <Carousel images="{item.images_url}">
+
+                        </Carousel>
+                        {/if}
 
                         {#if item.type == 'video'}
-                            {#if item.thumbnail}
-                            <img src="{item.thumbnail}" alt="">
-                            {:else}
-                            <img src="https://cdn.dribbble.com/users/17914/screenshots/4902225/media/0d6d47739dae97adc81ca7076ee56cc9.png?compress=1&resize=400x300" alt="">
-                            {/if}
+                        <!-- svelte-ignore a11y-media-has-caption -->
+                        <video controls poster="{item.thumbnail || 'https://cdn.dribbble.com/users/17914/screenshots/4902225/media/0d6d47739dae97adc81ca7076ee56cc9.png?compress=1&resize=400x300'}">
+                            <source src="{item.video_url}" type="video/mp4">
+                            <source src="movie.ogg" type="video/ogg">
+                            Your browser does not support the video tag.
+                          </video>
                         {/if}
                         
-                        <div class="absolute top-4 left-4 {statusColor[item.status]} text-white  px-3 rounded-full">
-                            {item.status}
-                        </div>
+                     
                     </div>
                     <div class="p-3 ">
+                       <div class="mb-2">
+                        <span class=" {statusColor[item.status]} text-white  px-3 py-1  rounded-full">
+                            {item.status}
+                        </span>
+                       </div>
                         <div class="text-sm text-gray-500 whitespace-pre-line">
                             {item.caption}
                         </div>

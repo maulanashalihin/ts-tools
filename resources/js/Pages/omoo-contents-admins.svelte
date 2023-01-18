@@ -6,14 +6,22 @@ import axios from "axios"
 import Modal from '../Components/Modal.svelte';
 import TsLayouts from './../Components/layouts.svelte';
 import { Inertia } from '@inertiajs/inertia';
+  import Carousel from '../Components/Carousel.svelte';
   
 
  export let contents;
+ contents.forEach(item=>{
+    if(item.type == 'slide')
+    {
+        item.images_url = JSON.parse(item.images_url)
+    }
+ })
+ contents = contents;
 
 function UpdateStatus(post,status)
 {
     post.status = status;
-    axios.put("/omoo-contents/"+post.id,post)
+    axios.put("/omoo-contents/"+post.id,{status : status})
     contents = contents;
 }
 
@@ -46,6 +54,11 @@ const statusColor = {
                         {#if item.type == 'image'}
                         <img src="{item.images_url}" alt="">
                         {/if}
+                        {#if item.type == 'slide'}
+                        <Carousel images="{item.images_url}">
+
+                        </Carousel>
+                        {/if}
 
                         {#if item.type == 'video'}
                         <!-- svelte-ignore a11y-media-has-caption -->
@@ -58,8 +71,18 @@ const statusColor = {
                         
 
 
-                        <div class="absolute top-4 left-4 {statusColor[item.status]} text-white px-3 rounded-full">
-                            {item.status}
+                        <div class="absolute top-4 flex gap-1 left-4 ">
+                            {#if item.is_omoo}
+                            <span class="{statusColor[item.status]} text-white px-3 rounded-full flex gap-1">
+                                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="w-5 h-5 mt-0.5 text-white">
+                                    <path fill-rule="evenodd" d="M2.25 12c0-5.385 4.365-9.75 9.75-9.75s9.75 4.365 9.75 9.75-4.365 9.75-9.75 9.75S2.25 17.385 2.25 12zm13.36-1.814a.75.75 0 10-1.22-.872l-3.236 4.53L9.53 12.22a.75.75 0 00-1.06 1.06l2.25 2.25a.75.75 0 001.14-.094l3.75-5.25z" clip-rule="evenodd" />
+                                  </svg>   
+                                  <span  >omoo</span>                               
+                            </span>
+                            {/if}
+                            <span class="{statusColor[item.status]} text-white px-3 rounded-full">
+                                {item.status}
+                            </span>
                         </div>
                     </div>
                     <div class="p-3">

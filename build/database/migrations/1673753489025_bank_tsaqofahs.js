@@ -7,22 +7,19 @@ const Schema_1 = __importDefault(global[Symbol.for('ioc.use')]("Adonis/Lucid/Sch
 class default_1 extends Schema_1.default {
     constructor() {
         super(...arguments);
-        this.tableName = 'channels';
+        this.tableName = 'bank_tsaqofahs';
     }
     async up() {
         this.schema.createTable(this.tableName, (table) => {
             table.increments('id');
-            table.string("name");
-            table.text("avatar");
-            table.integer("authority_point").defaultTo(0);
-            table.integer("likes").defaultTo(0);
-            table.boolean("official").defaultTo(false);
-            table.string("tiktok_url");
-            table.string("website_url");
-            table.string("facebook_url");
-            table.string("youtube_url");
-            table.string("ig_url");
-            table.bigInteger("created").index();
+            table.string("title");
+            table.text("content");
+            table.text("files");
+            table.string("thumbnail");
+            table.integer("contributor");
+            table.string("status").defaultTo("published").index();
+            table.timestamp('created_at', { useTz: true });
+            table.timestamp('updated_at', { useTz: true });
         });
     }
     async down() {
@@ -30,4 +27,4 @@ class default_1 extends Schema_1.default {
     }
 }
 exports.default = default_1;
-//# sourceMappingURL=1671073182302_channels.js.map
+//# sourceMappingURL=1673753489025_bank_tsaqofahs.js.map
