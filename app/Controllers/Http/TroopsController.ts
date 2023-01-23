@@ -213,12 +213,15 @@ export default class TroopsController {
 
       if(api_key)
       {
-        // const message = await Database.from("messages").where("id","otp").first();
+        const message = await Database.from("messages").where("id","otp").first();
 
         axios.post("http://api.dripsender.id/send",{
           api_key : api_key.id,
           phone : phone,
-          text : otp
+          text : message.text,
+          type : "buttonsMessage",
+          footerText : "Admin TS",
+          buttons : JSON.parse(message.buttons)
         })
       }
     }
