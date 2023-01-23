@@ -72,8 +72,7 @@ export default class TroopsController {
     if(user)
     {
       const leaderboards = await Database.from("troops").orderBy("score","desc").limit(100);
-
-      console.log(leaderboards)
+ 
 
       return inertia.render("ts-leaderboard",{user,leaderboards})
     }

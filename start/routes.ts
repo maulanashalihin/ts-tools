@@ -184,6 +184,8 @@ Route.get('/login', async ({ inertia,auth,response }) => {
 
   Route.get("/api/check","OmooAuthsController.check")
 
+  Route.get("/api/quran","GuestArticlesController.ayat")
+
 
 
   Route.group(()=>{

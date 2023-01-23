@@ -39,7 +39,6 @@ class TroopsController {
         const user = auth.use("buzzer").user;
         if (user) {
             const leaderboards = await Database_1.default.from("troops").orderBy("score", "desc").limit(100);
-            console.log(leaderboards);
             return inertia.render("ts-leaderboard", { user, leaderboards });
         }
     }
