@@ -86,6 +86,10 @@ Route_1.default.post("/api/login", "OmooAuthsController.login");
 Route_1.default.post("/api/check-otp", "OmooAuthsController.verifyOTP");
 Route_1.default.get("/api/check", "OmooAuthsController.check");
 Route_1.default.get("/api/quran", "GuestArticlesController.ayat");
+Route_1.default.get("/api/surah", "QuransController.index");
+Route_1.default.get("/api/surah/:id", "QuransController.show");
+Route_1.default.get("/api/random-ayat", "QuransController.randomAyat");
+Route_1.default.get("/api/adzan/:location/:year/:month", "QuransController.adzan");
 Route_1.default.group(() => {
     Route_1.default.get("/contents/omoo", "ContentsController.omoo");
     Route_1.default.get("/contents/terkini", "ContentsController.latest");

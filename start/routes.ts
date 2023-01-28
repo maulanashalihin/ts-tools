@@ -186,6 +186,14 @@ Route.get('/login', async ({ inertia,auth,response }) => {
 
   Route.get("/api/quran","GuestArticlesController.ayat")
 
+  Route.get("/api/surah","QuransController.index")
+
+  Route.get("/api/surah/:id","QuransController.show")
+
+  Route.get("/api/random-ayat","QuransController.randomAyat")
+
+  Route.get("/api/adzan/:location/:year/:month","QuransController.adzan")
+  
 
 
   Route.group(()=>{
