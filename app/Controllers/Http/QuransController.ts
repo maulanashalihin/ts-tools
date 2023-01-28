@@ -16,14 +16,21 @@ export default class QuransController {
         return chapters;
     }
 
-    public async show({params}: HttpContextContract) {
+    public async show({params,request}: HttpContextContract) {
         if(params.id)
         {
             let surah = chapters[params.id-1];
             let ayats =  quran[params.id];
+            let bahasa = [];
+
+            if(request.input("translation") == 'id')
+            {
+                bahasa = id_lang[params.id]; 
+            }
             return {
                 surah,
-                ayats
+                ayats,
+                bahasa
             };
         }
         

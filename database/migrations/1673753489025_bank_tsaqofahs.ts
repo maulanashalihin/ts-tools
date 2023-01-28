@@ -10,7 +10,7 @@ export default class extends BaseSchema {
       table.text("content")
       table.text("files")
       table.string("thumbnail")
-      table.integer("contributor")
+      table.integer("contributor").index()
       table.string("status").defaultTo("published").index()
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL

@@ -12,13 +12,18 @@ class QuransController {
     async index({}) {
         return chapter_json_1.default;
     }
-    async show({ params }) {
+    async show({ params, request }) {
         if (params.id) {
             let surah = chapter_json_1.default[params.id - 1];
             let ayats = quran_json_1.default[params.id];
+            let bahasa = [];
+            if (request.input("translation") == 'id') {
+                bahasa = id_json_1.default[params.id];
+            }
             return {
                 surah,
-                ayats
+                ayats,
+                bahasa
             };
         }
     }

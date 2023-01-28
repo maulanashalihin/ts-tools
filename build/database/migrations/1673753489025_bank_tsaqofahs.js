@@ -16,7 +16,7 @@ class default_1 extends Schema_1.default {
             table.text("content");
             table.text("files");
             table.string("thumbnail");
-            table.integer("contributor");
+            table.integer("contributor").index();
             table.string("status").defaultTo("published").index();
             table.timestamp('created_at', { useTz: true });
             table.timestamp('updated_at', { useTz: true });
