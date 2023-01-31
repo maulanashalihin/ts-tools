@@ -1,8 +1,7 @@
 <script>
 	import dayjs from 'dayjs';
-	import { inertia,Link } from '@inertiajs/inertia-svelte';
-  const { default: Layouts } = require("../Components/layouts.svelte");
- 
+	import { inertia,Link } from '@inertiajs/svelte'; 
+  import Layouts from "../Components/layouts.svelte"
   export let campaigns = [];
  
 

@@ -1,6 +1,5 @@
 <script>
-import { inertia } from '@inertiajs/inertia-svelte' 
-import { Inertia } from '@inertiajs/inertia'
+import { inertia,router } from '@inertiajs/svelte'  
 
 
 let form = {
@@ -10,7 +9,7 @@ let form = {
 
 function login()
 {
-    Inertia.post("/login",form)
+  router.post("/login",form)
 }
 </script>
 <!-- Page Container -->

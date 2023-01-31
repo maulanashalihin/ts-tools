@@ -1,8 +1,8 @@
 <script>
 	import dayjs from 'dayjs';
-	import { inertia,Link } from '@inertiajs/inertia-svelte';
+	import { inertia,Link } from '@inertiajs/svelte';
   import { t } from '../Language/lang';
-  const { default: Layouts } = require("../Components/layouts.svelte");
+  import Layouts from "../Components/layouts.svelte"
   export let user;
   export let campaigns = [];
   let timezone = "WIB"

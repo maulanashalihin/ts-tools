@@ -1,16 +1,14 @@
 <script>
   import { fly } from 'svelte/transition';
 import {clickOutside} from './helper.js';
-  import { page } from '@inertiajs/inertia-svelte'
-import { Inertia } from '@inertiajs/inertia';
-
-import { inertia } from '@inertiajs/inertia-svelte';   
+  import { page,inertia,router } from '@inertiajs/svelte' 
+   
   let profilMenu = false;
   let menuTogle = false;
 
   function Logout()
   {
-    Inertia.post("/logout")
+    router.post("/logout")
   }
 
   let menu = [{
@@ -37,6 +35,9 @@ import { inertia } from '@inertiajs/inertia-svelte';
   },{
     path : "/omoo-channels",
     name : "Channel Omoo"
+  },{
+    path : "/bank-tsaqofah/admin",
+    name : "Bank Tsaqofah"
   }]
 
   let pathname = location.pathname;

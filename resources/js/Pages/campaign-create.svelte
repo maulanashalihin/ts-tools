@@ -1,5 +1,5 @@
 <script>
-  import { Inertia } from "@inertiajs/inertia";
+  import { router } from "@inertiajs/svelte";
   import dayjs from "dayjs"
   import { onMount } from 'svelte';
   import { t } from "../Language/lang";
@@ -38,10 +38,10 @@
       campaign.end_time = dayjs(campaign.end_time_string).valueOf()
      if(campaign.id)
      {
-      Inertia.put("/campaign/"+campaign.id,campaign)
+      router.put("/campaign/"+campaign.id,campaign)
      }else
      {
-      Inertia.post("/campaign",campaign)
+      router.post("/campaign",campaign)
      }
     }
 

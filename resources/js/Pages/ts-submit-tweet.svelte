@@ -1,10 +1,9 @@
 <script>
     import dayjs from 'dayjs';
-import { inertia,Link } from '@inertiajs/inertia-svelte';   
+import { inertia,Link,router } from '@inertiajs/svelte';   
 import axios from "axios"
 import Modal from '../Components/Modal.svelte';
-import TsLayouts from './../Components/ts-layouts.svelte';
-  import { Inertia } from '@inertiajs/inertia';
+import TsLayouts from './../Components/ts-layouts.svelte'; 
 
 export let campaign; 
 
@@ -24,7 +23,7 @@ function saveTweet()
 
     if(new_tweet.length >= 70)
     {
-        Inertia.post("/buzzer/tweet",
+        router.post("/buzzer/tweet",
         {
             content : new_tweet,
             campaign_id : campaign.id,

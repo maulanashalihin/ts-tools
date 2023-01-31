@@ -1,18 +1,16 @@
 <script>
-    import { inertia } from '@inertiajs/inertia-svelte' 
-    import { Inertia } from '@inertiajs/inertia'
+    import { inertia,router } from '@inertiajs/svelte'  
     
     
-    export let randomID;
-    export let phone;
+    export let randomID; 
 
-    console.log(phone)
+ 
 
     let otp;
     
     function login()
     {
-        Inertia.post("/ts-otp",{
+        router.post("/ts-otp",{
             otp,
             randomID
         })

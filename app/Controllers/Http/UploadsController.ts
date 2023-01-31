@@ -1,8 +1,7 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext' 
 
 const sharp = require('sharp');
-import {v4} from "uuid";
-import Env from '@ioc:Adonis/Core/Env'
+import {v4} from "uuid"; 
 const AWS = require('aws-sdk');
 const fs = require('fs')  
 AWS.config.setPromisesDependency(require('bluebird'));
@@ -89,14 +88,7 @@ export default class UploadsController {
         
         return "https://sin1.contabostorage.com/a196457ae22540fb8b66fd8bd8a37ae4:omoo/"+result.Key;
 
-      }
-      else{
-        
-        await coverImage.moveToDisk("./") 
-
-        return Env.get('FILE_URL')+"/"+coverImage.fileName; 
-      
-      }
+      } 
       // Get the name of the saved file; to store it in your database, for example.
       
      
@@ -107,47 +99,5 @@ export default class UploadsController {
 
     return "ok"
     }
-
-    public async storeVideo({request}: HttpContextContract) {
-
-
-        const s3 = new AWS.S3();
-
-        let location;
-
-       
-        // @ts-ignore:next-line
-        request.multipart.onFile('file',{
-            size: '100mb',
-            extnames: ['mp4'],
-          },async (part)=>{
-                // console.log(part)
-
-                const filename = v4()+"."+part.filename.split(".")[1];
-
-                let params = {
-                    Bucket: "sin1", // region set here
-                    Key: filename, // type is not required
-                    Body : part,
-                    ACL: 'public-read',   // required. Notice the back ticks
-                  } as any;
-                  const result =  await s3.upload(params).promise();
-                  location = result.Location.replace("http","https");
-                  return {url : location}
-
-                 
-             
-
-                
-        })
-      
-          await request.multipart.process()
  
-
-      
- 
-
-          return location;
-    
-    }
 }

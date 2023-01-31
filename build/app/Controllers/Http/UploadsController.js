@@ -1,11 +1,7 @@
 "use strict";
-var __importDefault = (this && this.__importDefault) || function (mod) {
-    return (mod && mod.__esModule) ? mod : { "default": mod };
-};
 Object.defineProperty(exports, "__esModule", { value: true });
 const sharp = require('sharp');
 const uuid_1 = require("uuid");
-const Env_1 = __importDefault(global[Symbol.for('ioc.use')]("Adonis/Core/Env"));
 const AWS = require('aws-sdk');
 const fs = require('fs');
 AWS.config.setPromisesDependency(require('bluebird'));
@@ -55,33 +51,8 @@ class UploadsController {
                 const result = await s3.upload(params).promise();
                 return "https://sin1.contabostorage.com/a196457ae22540fb8b66fd8bd8a37ae4:omoo/" + result.Key;
             }
-            else {
-                await coverImage.moveToDisk("./");
-                return Env_1.default.get('FILE_URL') + "/" + coverImage.fileName;
-            }
         }
         return "ok";
-    }
-    async storeVideo({ request }) {
-        const s3 = new AWS.S3();
-        let location;
-        request.multipart.onFile('file', {
-            size: '100mb',
-            extnames: ['mp4'],
-        }, async (part) => {
-            const filename = (0, uuid_1.v4)() + "." + part.filename.split(".")[1];
-            let params = {
-                Bucket: "sin1",
-                Key: filename,
-                Body: part,
-                ACL: 'public-read',
-            };
-            const result = await s3.upload(params).promise();
-            location = result.Location.replace("http", "https");
-            return { url: location };
-        });
-        await request.multipart.process();
-        return location;
     }
 }
 exports.default = UploadsController;

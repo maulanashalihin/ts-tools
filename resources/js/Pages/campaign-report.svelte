@@ -1,5 +1,5 @@
 <script>
-    import { Inertia } from "@inertiajs/inertia";
+    import { router } from "@inertiajs/svelte";
   import axios from "axios";
     import dayjs from "dayjs"
     import { onMount } from 'svelte';
@@ -21,7 +21,7 @@
 
          if(campaign.id)
         {
-            Inertia.put("/campaign/"+campaign.id,campaign)
+          router.put("/campaign/"+campaign.id,campaign)
         }
       }
    

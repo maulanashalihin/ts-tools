@@ -45,6 +45,9 @@ Route_1.default.group(() => {
     Route_1.default.post("/api-keys", "MessagesController.storeApiKey");
     Route_1.default.delete("/api-keys/:id", "MessagesController.deleteApiKey");
     Route_1.default.post("/test-api", "MessagesController.testApi");
+    Route_1.default.get("/bank-tsaqofah/admin", "BankTsaqofahsController.indexAdmin");
+    Route_1.default.get("/bank-tsaqofah/:id", "BankTsaqofahsController.show");
+    Route_1.default.put("/bank-tsaqofah/:id/status", "BankTsaqofahsController.status");
 }).middleware(['auth']);
 Route_1.default.get("/ts-login", ({ inertia }) => {
     return inertia.render("ts-login");
@@ -77,8 +80,10 @@ Route_1.default.group(() => {
     Route_1.default.delete("/channel/:id/members", "ChannelsController.deleteMember");
     Route_1.default.resource("/channel/:channel_id/content", "ContentsController");
     Route_1.default.post('/upload', "UploadsController.store");
+    Route_1.default.post('/tsq-upload', "TsqUploadsController.store");
     Route_1.default.put("/start-campaign/:id", "CampaignsController.startCampaign");
     Route_1.default.put("/end-campaign/:id", "CampaignsController.endCampaign");
+    Route_1.default.resource("/bank-tsaqofah", "BankTsaqofahsController").except(['show']);
 }).middleware(['buzzer']);
 Route_1.default.post("/request-otp", "TroopsController.requestOTP");
 Route_1.default.get("/api/article", "GuestArticlesController.index");
@@ -101,5 +106,7 @@ Route_1.default.group(() => {
     Route_1.default.put("/contents/dislike/:id", "ContentsController.dislike");
     Route_1.default.post("/daily-tweet", "ContentsController.dailyTweet");
     Route_1.default.post("/logout", "OmooAuthsController.logout");
+    Route_1.default.get("/bank-tsaqofah/terkini", "BankTsaqofahsController.indexOmoo");
+    Route_1.default.get("/bank-tsaqofah/:id", "BankTsaqofahsController.showOmoo");
 }).middleware(['api']).prefix("/api");
 //# sourceMappingURL=routes.js.map

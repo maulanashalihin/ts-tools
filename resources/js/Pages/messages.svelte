@@ -1,6 +1,6 @@
 <script>
     import dayjs from 'dayjs';
-import { inertia,Link } from '@inertiajs/inertia-svelte';   
+import { inertia,Link } from '@inertiajs/svelte';   
 import axios from "axios"
 import Modal from '../Components/Modal.svelte';
 import TsLayouts from './../Components/layouts.svelte'; 

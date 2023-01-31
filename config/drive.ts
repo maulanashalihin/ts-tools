@@ -18,6 +18,7 @@ import Application from '@ioc:Adonis/Core/Application'
 | defined inside the `contracts` directory.
 |
 */
+ 
 export default driveConfig({
   /*
   |--------------------------------------------------------------------------

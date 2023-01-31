@@ -1,16 +1,15 @@
-<script>
-    import { Inertia } from "@inertiajs/inertia";
+<script> 
   import axios from "axios";
-    import dayjs from "dayjs"
-    import { onMount } from 'svelte';
-  
-      const { default: Layouts } = require("../Components/layouts.svelte");
-      export let campaign
-
-      export let troops;
-  
+  import dayjs from "dayjs"
+  import { onMount } from 'svelte';
    
-    </script>
+  import Layouts from "../Components/layouts.svelte"
+  export let campaign
+
+  export let troops;
+
+
+</script>
     <Layouts>
         <!-- Page Heading -->
         <div class="bg-white">

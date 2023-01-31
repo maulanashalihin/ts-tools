@@ -106,6 +106,13 @@ Route.get('/login', async ({ inertia,auth,response }) => {
 
     Route.post("/test-api","MessagesController.testApi")
 
+    Route.get("/bank-tsaqofah/admin","BankTsaqofahsController.indexAdmin")
+
+    Route.get("/bank-tsaqofah/:id","BankTsaqofahsController.show")
+
+
+   Route.put("/bank-tsaqofah/:id/status","BankTsaqofahsController.status")
+
   }).middleware(['auth'])
 
   Route.get("/ts-login",({inertia})=>{
@@ -167,9 +174,15 @@ Route.get('/login', async ({ inertia,auth,response }) => {
 
    Route.post('/upload', "UploadsController.store")
 
+   Route.post('/tsq-upload', "TsqUploadsController.store")
+ 
+
    Route.put("/start-campaign/:id","CampaignsController.startCampaign")
 
    Route.put("/end-campaign/:id","CampaignsController.endCampaign")
+
+   Route.resource("/bank-tsaqofah","BankTsaqofahsController").except(['show'])
+
     
 
   }).middleware(['buzzer'])
@@ -215,4 +228,10 @@ Route.get('/login', async ({ inertia,auth,response }) => {
 
     Route.post("/logout","OmooAuthsController.logout")
 
+    Route.get("/bank-tsaqofah/terkini","BankTsaqofahsController.indexOmoo")
+
+    Route.get("/bank-tsaqofah/:id","BankTsaqofahsController.showOmoo")
+
+
   }).middleware(['api']).prefix("/api")
+
