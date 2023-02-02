@@ -64,7 +64,22 @@ class BankTsaqofahsController {
             }
         }
     }
-    async update({}) { }
+    async update({ auth, request, params, response }) {
+        const user = auth.use("buzzer").user;
+        if (user) {
+            const tsaqofah = request.all();
+            if (tsaqofah.status == 'published') {
+                const client = new meilisearch_1.MeiliSearch({
+                    host: 'https://ms-095276b6e275-1655.sgp.meilisearch.io',
+                    apiKey: '776a10df2bd5c1f6f4197f0561b72afe06d5a081',
+                });
+                const index = client.index('tsaqofah');
+                await index.addDocuments(tsaqofah);
+            }
+            await Database_1.default.from("bank_tsaqofahs").where("id", params.id).update(request.except(['id', 'updated_at', 'created_at']));
+            return response.redirect("/bank-tsaqofah", false, 303);
+        }
+    }
     async status({ auth, params, request }) {
         const user = auth.use("web").user;
         if (user) {
