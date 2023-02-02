@@ -13,7 +13,7 @@
   let uploadProgress = {};
   let files = [];
 
-  if(content.files)
+  if(content && content.files)
   {
     files = JSON.parse(content.files);
   }
