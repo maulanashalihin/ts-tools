@@ -20,7 +20,7 @@
         <div class="grid lg:grid-cols-3 gap-4 mt-5">
           {#each tsaqofah as item}
             <!-- content here -->
-            <Link href="/bank-tsaqofah/{item.id}"  class="flex flex-col rounded-lg shadow-lg overflow-hidden">
+            <Link href="/bank-tsaqofah/{item.id}/review"  class="flex flex-col rounded-lg shadow-lg overflow-hidden">
               <div class="flex-shrink-0">
                 <img class="h-48 w-full object-cover" src="{item.thumbnail || 'https://sin1.contabostorage.com/a196457ae22540fb8b66fd8bd8a37ae4:tsaqofah/THUMBNAIL.jpg'}" alt="">
               </div>

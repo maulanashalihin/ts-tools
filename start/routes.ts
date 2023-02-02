@@ -108,7 +108,7 @@ Route.get('/login', async ({ inertia,auth,response }) => {
 
     Route.get("/bank-tsaqofah/admin","BankTsaqofahsController.indexAdmin")
 
-    Route.get("/bank-tsaqofah/:id","BankTsaqofahsController.show")
+    Route.get("/bank-tsaqofah/:id/review","BankTsaqofahsController.show")
 
 
    Route.put("/bank-tsaqofah/:id/status","BankTsaqofahsController.status")

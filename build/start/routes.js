@@ -46,7 +46,7 @@ Route_1.default.group(() => {
     Route_1.default.delete("/api-keys/:id", "MessagesController.deleteApiKey");
     Route_1.default.post("/test-api", "MessagesController.testApi");
     Route_1.default.get("/bank-tsaqofah/admin", "BankTsaqofahsController.indexAdmin");
-    Route_1.default.get("/bank-tsaqofah/:id", "BankTsaqofahsController.show");
+    Route_1.default.get("/bank-tsaqofah/:id/review", "BankTsaqofahsController.show");
     Route_1.default.put("/bank-tsaqofah/:id/status", "BankTsaqofahsController.status");
 }).middleware(['auth']);
 Route_1.default.get("/ts-login", ({ inertia }) => {
