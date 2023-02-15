@@ -57,6 +57,18 @@ export default class OmooAuthsController {
 
   }
 
+  public async profile({auth,request}: HttpContextContract) {
+
+     
+    const user = auth.use("api").user;
+
+    if(user)
+    await Database.from("troops").where("id",user.id).update(request.except(['id']))
+
+    return "OK"
+
+  }
+
   getRndInteger(min, max) {
     return Math.floor(Math.random() * (max - min) ) + min;
   }
@@ -83,6 +95,38 @@ export default class OmooAuthsController {
 
         return token
       }
+
+    }
+
+    return response.abort("User id tidak ditemukan",404)
+
+  }
+
+  public async verifyToken({request,response,auth}: HttpContextContract) {
+
+    const ott = request.input("token")
+ 
+    const user_id = await Redis.get(`token:`+ott)
+ 
+
+    if(user_id)
+    {
+       
+      const user = await Database.from("troops").where("id",user_id).first()
+ 
+      if(user)
+      {
+        await Database.from("troops").where("id",user_id).update({last_active : Date.now()})
+
+        await Redis.del(`token:`+ott)
+
+        const token = await auth.use('api').generate(user) 
+
+        return token
+
+      }
+      
+    
 
     }
 

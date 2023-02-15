@@ -6,11 +6,15 @@
   import Modal from "../Components/Modal.svelte";
   import TsLayouts from "./../Components/ts-layouts.svelte";
   import { t } from "../Language/lang";
+
+  import Select from "../Components/Select.svelte";
+  import cities from "../Components/kabupaten.json";
+
   export let user;
 
   let profileModal = false;
 
-  if (!user.twitter_username) {
+  if (!(user.twitter_username && user.city && user.gender)) {
     profileModal = true;
   }
   function saveProfile() {
@@ -61,6 +65,13 @@
         campaigns = campaigns;
       }, 1000);
     }
+  });
+
+  let items = cities.map((item) => {
+    return {
+      label: item,
+      value: item,
+    };
   });
 </script>
 
@@ -197,21 +208,49 @@
       <div class="flex flex-col rounded shadow-sm bg-white overflow-hidden">
         <!-- Card Body -->
         <div class="p-5 lg:p-6 grow w-full border-l-4 border-orange-300">
-          <h3 class="text-lg font-semibold mb-1">Twitter Username</h3>
-          <div class=" ">
-            <input
-              bind:value={user.twitter_username}
-              class="block border px-3 border-gray-200 rounded py-2 leading-5 text-sm w-full focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
-              type="text"
-              placeholder="islamictroops"
-            />
-            <div class="text-gray-500">
-              <small
-                >{t(
-                  "tambahkan username twitter (tanpa @) agar sesama troops bisa saling follow"
-                )}</small
-              >
+          
+          <div class="space-y-3 ">
+            <div class="space-y-1">
+              <label class="font-medium" for="city">Kota/Kabupaten</label>
+              <Select
+                placeholder="Pilih Kota/Kabupaten"
+                bind:value={user.city}
+                required
+                lists={items}
+              />
             </div>
+            <div class="space-y-1">
+              <label for="twitter_username" class="font-medium"
+                >Username Twittter</label
+              >
+              <!-- <input bind:value={form.twitter_username} class="block border border-gray-200 rounded px-5 py-3 leading-6 w-full focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50" type="text" id="twitter_username" placeholder="islamictroops" /> -->
+              <div class="relative">
+                <div
+                  class="absolute inset-y-0 left-0 w-10 my-px ml-px flex items-center justify-center pointer-events-none rounded-l text-gray-500"
+                >
+                  @
+                </div>
+                <input
+                required
+                  bind:value={user.twitter_username}
+                  class="block border border-gray-200 rounded pl-7 py-2 leading-5 text-sm w-full focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
+                  type="text"
+                  id="tk-form-input-groups-prepend-icon-inline-small"
+                  placeholder="islamictroops"
+                />
+              </div>
+            </div>
+            <div class="space-y-1">
+              <label for="gender" class="font-medium"
+                >Jenis Kelamin</label
+              >
+              <select required bind:value={user.gender} class="w-full block border border-gray-200 rounded px-3 py-2 focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50" id="tk-inputs-default-select">
+                <option value="{null}" disabled>Pilih Jenis Kelamin</option>
+                <option>Laki-Laki</option>
+                <option>Perempuan</option> 
+              </select>
+            </div>
+             
             <button
               type="submit"
               class="mt-3 block inline-flex justify-center items-center space-x-2 border font-semibold focus:outline-none px-3 py-2 leading-5 text-sm rounded border-orange-200 bg-orange-200 text-orange-700 hover:text-orange-700 hover:bg-orange-300 hover:border-orange-300 focus:ring focus:ring-orange-500 focus:ring-opacity-50 active:bg-orange-200"

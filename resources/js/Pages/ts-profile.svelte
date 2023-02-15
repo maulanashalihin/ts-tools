@@ -43,6 +43,7 @@
               @
             </div>
             <input
+            required
               bind:value={user.twitter_username}
               class="block border border-gray-200 rounded pl-7 py-2 leading-5 text-sm w-full focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
               type="text"
@@ -52,13 +53,14 @@
           </div>
         </div>
         <div class="space-y-1">
-          <label class="font-medium" for="phone">Phone</label>
+          <label class="font-medium" for="name">Name</label>
           <input
-            bind:value={user.phone}
+            bind:value={user.name}
+            required
             class="w-full block border border-gray-200 rounded px-3 py-2 leading-6 focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
             type="text"
-            id="phone"
-            placeholder="Enter your Twitter"
+            id="name"
+            placeholder="Enter your Name"
           />
         </div>
 

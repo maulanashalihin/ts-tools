@@ -33,6 +33,12 @@ class OmooAuthsController {
         }
         return { randomID, phone: buzzer.phone };
     }
+    async profile({ auth, request }) {
+        const user = auth.use("api").user;
+        if (user)
+            await Database_1.default.from("troops").where("id", user.id).update(request.except(['id']));
+        return "OK";
+    }
     getRndInteger(min, max) {
         return Math.floor(Math.random() * (max - min)) + min;
     }
@@ -44,6 +50,20 @@ class OmooAuthsController {
             const user = await Database_1.default.from("troops").where("id", user_id).first();
             if (user) {
                 await Redis_1.default.del('otp:' + otp + ":" + randomID);
+                const token = await auth.use('api').generate(user);
+                return token;
+            }
+        }
+        return response.abort("User id tidak ditemukan", 404);
+    }
+    async verifyToken({ request, response, auth }) {
+        const ott = request.input("token");
+        const user_id = await Redis_1.default.get(`token:` + ott);
+        if (user_id) {
+            const user = await Database_1.default.from("troops").where("id", user_id).first();
+            if (user) {
+                await Database_1.default.from("troops").where("id", user_id).update({ last_active: Date.now() });
+                await Redis_1.default.del(`token:` + ott);
                 const token = await auth.use('api').generate(user);
                 return token;
             }

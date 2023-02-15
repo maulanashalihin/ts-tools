@@ -1,6 +1,7 @@
 import { BaseCommand } from '@adonisjs/core/build/standalone'
+import Redis from '@ioc:Adonis/Addons/Redis'
 import Database from '@ioc:Adonis/Lucid/Database'
-import axios from 'axios'
+ 
 
 export default class SendRiayahMessage extends BaseCommand {
   /**
@@ -30,7 +31,7 @@ export default class SendRiayahMessage extends BaseCommand {
   }
 
   public async run() {
-    this.logger.info('Hello world!')
+ 
     
     const campaign = await Database.from("riayahs").where("status","sending").first();
 
@@ -38,47 +39,36 @@ export default class SendRiayahMessage extends BaseCommand {
 
     if(campaign)
     {
-      const api_keys = await Database.from("api_keys")
       
       let troops;
 
       if(campaign.troop_id)
       {
-        troops = await Database.from("troops").where("id",">",campaign.troop_id).limit(api_keys.length*6);
+        troops = await Database.from("troops").where("id",">",campaign.troop_id).whereNotNull('last_active').limit(600);
 
       }else{
-        troops = await Database.from("troops").limit(api_keys.length*6);
+        troops = await Database.from("troops").whereNotNull('last_active').limit(600);
       }
 
       if(troops.length == 0)
       { 
         await Database.from("riayahs").where("id",campaign.id).update({status : "done"}); 
         return;
-      }
-      let api_id = 0;
+      } 
 
       for await (const troop of troops) {
         
-        await axios.post("http://api.dripsender.id/send",{
-          api_key : api_keys[api_id].id,
-          phone : troop.phone,
+        const data = {
+          tg_id : troop.tg_id,
           text : campaign.text,
-          type : "buttonsMessage",
-          footerText : "Admin TS",
-          buttons : campaign.buttons.split(',')
-        })
-
-        api_id++;
-
-        if(api_id == api_keys.length)
-        {
-          api_id = 0;
+          file : campaign.file
         }
+        await Redis.sadd("queue:riayah",JSON.stringify(data))
         
       }
 
 
-
+      this.logger.info("Send Message to "+troops.length+" troops")
       await Database.from("riayahs").where("id",campaign.id).update({troop_id : troops[troops.length-1].id}); 
     }
 

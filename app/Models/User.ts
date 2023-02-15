@@ -29,6 +29,9 @@ export default class User extends BaseModel {
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updatedAt: DateTime
+  pin_hash: any
+  pin_set: any
+  tg_id: any
 
   @beforeSave()
   public static async hashPassword (user: User) {

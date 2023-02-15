@@ -4,8 +4,8 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const standalone_1 = require("@adonisjs/core/build/standalone");
+const Redis_1 = __importDefault(global[Symbol.for('ioc.use')]("Adonis/Addons/Redis"));
 const Database_1 = __importDefault(global[Symbol.for('ioc.use')]("Adonis/Lucid/Database"));
-const axios_1 = __importDefault(require("axios"));
 const dayjs_1 = __importDefault(require("dayjs"));
 class ReminderRound extends standalone_1.BaseCommand {
     async run() {
@@ -21,14 +21,11 @@ class ReminderRound extends standalone_1.BaseCommand {
                 if (api_key && process.env.NODE_ENV != 'development') {
                     const message = await Database_1.default.from("messages").where("id", "join").first();
                     let text = message.text.split('[current_round]').join((attendee.current_round + 1));
-                    await axios_1.default.post("http://api.dripsender.id/send", {
-                        api_key: api_key.id,
-                        phone: attendee.phone,
-                        text: text,
-                        type: "buttonsMessage",
-                        footerText: "Admin TS",
-                        buttons: JSON.parse(message.buttons)
-                    });
+                    const data = {
+                        tg_id: attendee.tg_id,
+                        text: text
+                    };
+                    await Redis_1.default.sadd("queue:riayah", JSON.stringify(data));
                 }
                 await Database_1.default.from("campaign_attendances").where("id", attendee.id).update({ reminder_round_time: (0, dayjs_1.default)().add(attendee.next_round_interval, 'minute').valueOf() });
             }

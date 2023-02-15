@@ -16,6 +16,8 @@ class default_1 extends Schema_1.default {
             table.integer("troop_id");
             table.integer("last_troop_id");
             table.text("buttons");
+            table.text("file");
+            table.text("filename");
             table.string("status").index();
             table.timestamp('created_at', { useTz: true });
             table.timestamp('updated_at', { useTz: true });

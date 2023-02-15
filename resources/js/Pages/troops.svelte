@@ -5,15 +5,13 @@
   import TsLayouts from "./../Components/layouts.svelte";
   export let troops;
 
-  function editTroop(e, item) {
-    if (e)
-      if (e.target.innerText) {
-        item.twitter_username = e.target.innerText;
-        axios.put("/troops/" + item.id, {
-          twitter_username: item.twitter_username,
-        });
-      }
+  function unblock(item)
+  {
+    item.blocked = false;
+    troops = troops;
+    axios.put("/troops/"+item.id,{blocked : false,pin_set : false,pin_hash : null})
   }
+ 
 </script>
 
 <div>
@@ -45,21 +43,30 @@
       <div class="text-gray-400 text-sm mt-1">
         {troops.meta.total} total troops
       </div>
-      <hr class="my-6" />
+      <div>
+        <input class="border px-3 py-2 my-6" type="text" placeholder="Cari Troop by ID">
+      </div> 
       <div class="grid gap-3">
         {#each troops.data as item}
           <!-- content here -->
           <div class="flex justify-between">
-            <div
-              on:blur={(e) => {
-                editTroop(e, item);
-              }}
-              contenteditable="true"
+            <div class="flex gap-1">
+              <div 
             >
-              {item.twitter_username}
+              {item.name}  {item.twitter_username != 'null' ? `(${item.twitter_username})` : ''} 
+            </div>
+            {#if item.blocked}
+             <button on:click="{()=>{unblock(item)}}">
+              <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6 text-red-500">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M9.75 9.75l4.5 4.5m0-4.5l-4.5 4.5M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+              </svg>
+             </button>
+              
+              {/if}
             </div>
             <div class="text-gray-400">
               {item.score}
+              
             </div>
           </div>
         {/each}

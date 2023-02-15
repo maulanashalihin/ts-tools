@@ -32,6 +32,7 @@ Route_1.default.group(() => {
     Route_1.default.delete("/media/:id", "MediaController.destroy");
     Route_1.default.delete("/tweet-buzz/:id", "TweetBuzzesController.destroy");
     Route_1.default.get("/troops", "TroopsController.index");
+    Route_1.default.post("/troops/unblock", "TroopsController.unblock");
     Route_1.default.put("/troops/:id", "TroopsController.update");
     Route_1.default.get("/download-troops", "TroopsController.download");
     Route_1.default.get("/messages", "MessagesController.index");
@@ -47,19 +48,23 @@ Route_1.default.group(() => {
     Route_1.default.post("/test-api", "MessagesController.testApi");
     Route_1.default.get("/bank-tsaqofah/admin", "BankTsaqofahsController.indexAdmin");
     Route_1.default.get("/bank-tsaqofah/:id/review", "BankTsaqofahsController.show");
+    Route_1.default.post('/riayah/upload', "RiayahsController.upload");
     Route_1.default.put("/bank-tsaqofah/:id/status", "BankTsaqofahsController.status");
 }).middleware(['auth']);
 Route_1.default.get("/ts-login", ({ inertia }) => {
     return inertia.render("ts-login");
 });
 Route_1.default.get("/troop-register", ({ inertia }) => {
-    return inertia.render("ts-register-2");
+    return inertia.render("ts-login");
 });
 Route_1.default.post("/ts-login", "TroopsController.login");
 Route_1.default.post("/ts-register", "TroopsController.register");
 Route_1.default.post("/ts-otp", "TroopsController.verifyOTP");
+Route_1.default.post("/ts-verify-token", "TroopsController.verifyToken");
 Route_1.default.group(() => {
     Route_1.default.get("/", "TroopsController.home");
+    Route_1.default.get("/pin", "TroopsController.pin");
+    Route_1.default.post("/pin", "TroopsController.setPin");
     Route_1.default.get("/profile", "TroopsController.edit");
     Route_1.default.post("/profile", "TroopsController.profile");
     Route_1.default.get("/history", "TroopsController.history");
@@ -89,6 +94,7 @@ Route_1.default.post("/request-otp", "TroopsController.requestOTP");
 Route_1.default.get("/api/article", "GuestArticlesController.index");
 Route_1.default.post("/api/login", "OmooAuthsController.login");
 Route_1.default.post("/api/check-otp", "OmooAuthsController.verifyOTP");
+Route_1.default.post("/api/verify-token", "OmooAuthsController.verifyToken");
 Route_1.default.get("/api/check", "OmooAuthsController.check");
 Route_1.default.get("/api/quran", "GuestArticlesController.ayat");
 Route_1.default.get("/api/surah", "QuransController.index");
@@ -105,6 +111,7 @@ Route_1.default.group(() => {
     Route_1.default.put("/contents/like/:id", "ContentsController.like");
     Route_1.default.put("/contents/dislike/:id", "ContentsController.dislike");
     Route_1.default.post("/daily-tweet", "ContentsController.dailyTweet");
+    Route_1.default.post("/profile", "OmooAuthsController.profile");
     Route_1.default.post("/logout", "OmooAuthsController.logout");
     Route_1.default.get("/bank-tsaqofah/terkini", "BankTsaqofahsController.indexOmoo");
     Route_1.default.get("/bank-tsaqofah/:id", "BankTsaqofahsController.showOmoo");

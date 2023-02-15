@@ -79,7 +79,7 @@
                 aria-expanded="true"
               >
               {#if $page.props.user}
-              <span>{$page.props.user.twitter_username || $page.props.user.phone}</span>
+              <span>{$page.props.user.name || $page.props.user.twitter_username}</span>
               {/if}
               
               

@@ -6,10 +6,7 @@ export default class RiayahsController {
 
     const campaigns = await Database.from("riayahs").orderBy("id","desc").limit(10);
 
-    for await (const campaign of campaigns) {
-      
-      campaign.buttons = campaign.buttons.split(",")
-    }
+    
     return inertia.render("riayah",{campaigns})
   }
 
@@ -31,8 +28,7 @@ export default class RiayahsController {
   public async edit({inertia,params}: HttpContextContract) {
 
     let campaign = await Database.from("riayahs").where("id",params.id).first()
-
-    campaign.buttons = campaign.buttons.split(",")
+ 
 
     return inertia.render("riayah-create",{campaign})
   }
@@ -40,8 +36,7 @@ export default class RiayahsController {
   public async update({request,response,params}: HttpContextContract) {
     
     let data = request.except(['id']);
-
-    data.buttons = data.buttons.join(",")
+ 
 
     await Database.from("riayahs").where("id",params.id).update(data)
 
@@ -50,4 +45,37 @@ export default class RiayahsController {
   }
 
   public async destroy({}: HttpContextContract) {}
+
+  public async upload({request}: HttpContextContract) {
+
+    const coverImage = request.file('file', {
+      size: '20mb',
+      extnames: ['jpg', 'png', 'gif','mp4','jpeg','pdf','doc','docx','ppt','pptx','xls','xlsx'],
+    })
+
+
+  if (!coverImage) {
+    return
+  }
+  
+  if (!coverImage.isValid) {
+    return coverImage.errors
+  }
+  
+
+  if (coverImage) {
+
+    await coverImage.moveToDisk("./")
+    // Get the name of the saved file; to store it in your database, for example.
+ 
+
+    return coverImage.fileName;
+
+   
+  }
+
+    
+  }
+
+  
 }

@@ -64,7 +64,11 @@
 
   if (!attendance.round_number) {
     setRoundModal = true;
-
+    attendance.current_round = 1;
+    if(!attendance.action_score)
+    {
+      attendance.action_score = 0;
+    }
     attendance.join_time = Date.now();
   }
 
@@ -89,6 +93,7 @@
     attendance.round_number = attendance.round_number;
 
     axios.put("/attendance/" + attendance.id, attendance);
+    attendance = attendance;
 
     setRoundModal = false;
   }

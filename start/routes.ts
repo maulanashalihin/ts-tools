@@ -78,6 +78,8 @@ Route.get('/login', async ({ inertia,auth,response }) => {
 
     Route.get("/troops","TroopsController.index")
 
+    Route.post("/troops/unblock","TroopsController.unblock")
+
     Route.put("/troops/:id","TroopsController.update")
 
     Route.get("/download-troops","TroopsController.download")
@@ -111,6 +113,8 @@ Route.get('/login', async ({ inertia,auth,response }) => {
     Route.get("/bank-tsaqofah/:id/review","BankTsaqofahsController.show")
 
 
+    Route.post('/riayah/upload', "RiayahsController.upload")
+
    Route.put("/bank-tsaqofah/:id/status","BankTsaqofahsController.status")
 
   }).middleware(['auth'])
@@ -120,7 +124,7 @@ Route.get('/login', async ({ inertia,auth,response }) => {
   })
 
   Route.get("/troop-register",({inertia})=>{
-    return inertia.render("ts-register-2")
+    return inertia.render("ts-login")
   })
   
   Route.post("/ts-login","TroopsController.login")
@@ -128,11 +132,17 @@ Route.get('/login', async ({ inertia,auth,response }) => {
   Route.post("/ts-register","TroopsController.register")
 
   Route.post("/ts-otp","TroopsController.verifyOTP")
+
+  Route.post("/ts-verify-token","TroopsController.verifyToken")
   
 
   Route.group(()=>{
 
     Route.get("/","TroopsController.home")
+
+    Route.get("/pin","TroopsController.pin")
+
+    Route.post("/pin","TroopsController.setPin")
 
     Route.get("/profile","TroopsController.edit")
 
@@ -195,6 +205,8 @@ Route.get('/login', async ({ inertia,auth,response }) => {
 
   Route.post("/api/check-otp","OmooAuthsController.verifyOTP")
 
+  Route.post("/api/verify-token","OmooAuthsController.verifyToken")
+
   Route.get("/api/check","OmooAuthsController.check")
 
   Route.get("/api/quran","GuestArticlesController.ayat")
@@ -225,6 +237,8 @@ Route.get('/login', async ({ inertia,auth,response }) => {
     Route.put("/contents/like/:id","ContentsController.like")
     Route.put("/contents/dislike/:id","ContentsController.dislike")
     Route.post("/daily-tweet","ContentsController.dailyTweet")
+
+    Route.post("/profile","OmooAuthsController.profile")
 
     Route.post("/logout","OmooAuthsController.logout")
 

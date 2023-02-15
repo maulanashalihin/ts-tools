@@ -1,7 +1,6 @@
 import Redis from '@ioc:Adonis/Addons/Redis'
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Database from '@ioc:Adonis/Lucid/Database'
-import axios from 'axios'
 import dayjs from 'dayjs'
 
 export default class CampaignsController {
@@ -90,7 +89,7 @@ export default class CampaignsController {
         campaign_time : campaign.time,
         troop_id : user.id,
         troop_username : user.twitter_username,
-        troop_phone : user.phone,
+        troop_tg_id : user.tg_id,
         next_round_interval : 60
       }
 
@@ -102,27 +101,21 @@ export default class CampaignsController {
 
       await Database.from("troops").where("id",user.id).update({last_active : Date.now()}); 
 
-      const api_key = await Database.from("api_keys").orderBy(Database.raw('RAND()')).first();
+   
 
+      const message = await Database.from("messages").where("id","join").first();
 
-      if(api_key && process.env.NODE_ENV != 'development')
-      {
+      let text = message.text.split('[title]').join(campaign.title);
+      
+      text =  text.split('[time]').join(dayjs(campaign.time).subtract(1,'h').format("DD-MM-YYYY HH:mm")+" WIB");
 
-        const message = await Database.from("messages").where("id","join").first();
-
-        let text = message.text.split('[title]').join(campaign.title);
-        
-        text =  text.split('[time]').join(dayjs(campaign.time).subtract(1,'h').format("DD-MM-YYYY HH:mm")+" WIB");
-
-        axios.post("http://api.dripsender.id/send",{
-          api_key : api_key.id,
-          phone : user.phone,
-          text : text,
-          type : "buttonsMessage",
-          footerText : "Admin TS",
-          buttons : JSON.parse(message.buttons)
-        })
+      
+      const data = {
+        tg_id : user.tg_id,
+        text : text
       }
+
+      await Redis.sadd("queue:riayah",JSON.stringify(data))
 
       
 
@@ -166,6 +159,8 @@ export default class CampaignsController {
   public async update({request,response,params}: HttpContextContract) {
     let data = request.except(['id']) 
     await Database.from("campaigns").where("id",params.id).update(data)
+    
+
     return response.redirect("/home",false,303)
   }
 

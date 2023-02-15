@@ -3,6 +3,7 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
     return (mod && mod.__esModule) ? mod : { "default": mod };
 };
 Object.defineProperty(exports, "__esModule", { value: true });
+const Hash_1 = __importDefault(global[Symbol.for('ioc.use')]("Adonis/Core/Hash"));
 const Redis_1 = __importDefault(global[Symbol.for('ioc.use')]("Adonis/Addons/Redis"));
 const Database_1 = __importDefault(global[Symbol.for('ioc.use')]("Adonis/Lucid/Database"));
 const axios_1 = __importDefault(require("axios"));
@@ -17,8 +18,12 @@ class TroopsController {
         const user = auth.use("buzzer").user;
         if (user) {
             const twitter_username = request.input("twitter_username");
+            const city = request.input("city");
+            const gender = request.input("gender");
             await Database_1.default.from("troops").where("id", user.id).update({
-                twitter_username
+                twitter_username,
+                city,
+                gender
             });
         }
         return "OK";
@@ -43,7 +48,7 @@ class TroopsController {
         }
     }
     async index({ inertia, request }) {
-        const troops = await Database_1.default.from("troops").select(['id', 'score', 'twitter_username']).orderBy("score", "desc").paginate(request.input("page", 1), 100);
+        const troops = await Database_1.default.from("troops").select(['id', 'score', 'twitter_username', 'name', 'blocked']).orderBy("score", "desc").paginate(request.input("page", 1), 100);
         return inertia.render("troops", { troops });
     }
     async download({ response }) {
@@ -149,6 +154,18 @@ class TroopsController {
         }
         return inertia.render("ts-otp", { randomID, phone: buzzer.phone });
     }
+    async verifyToken({ request, response, auth, session }) {
+        const ott = request.input("token");
+        const user_id = await Redis_1.default.get(`token:` + ott);
+        if (user_id) {
+            await Database_1.default.from("troops").where("id", user_id).update({ last_active: Date.now() });
+            await auth.use('buzzer').loginViaId(user_id);
+            await Redis_1.default.del(`token:` + ott);
+            return response.redirect("/pin");
+        }
+        session.flash("errors", "Maaf, Token yang anda masukan salah.");
+        return response.redirect("/ts-login");
+    }
     async verifyOTP({ request, response, auth }) {
         const otp = request.input("otp");
         const randomID = request.input("randomID");
@@ -159,6 +176,43 @@ class TroopsController {
             return response.redirect("/", false, 303);
         }
         return response.redirect("/ts-login");
+    }
+    async pin({ inertia }) {
+        return inertia.render("ts-pin");
+    }
+    async setPin({ request, auth, response, session }) {
+        const pin = request.input("pin");
+        const user = await auth.use("buzzer").user;
+        const counter = await Redis_1.default.incr("login-trial:" + user?.id);
+        await Redis_1.default.expire("login-trial:" + user?.id, 600);
+        if (pin && user) {
+            if (user.pin_set) {
+                const troop = await Database_1.default.from("troops").where("id", user.id).select(["pin_hash"]).first();
+                if (await Hash_1.default.verify(troop.pin_hash, pin)) {
+                    await Database_1.default.from("troops").where("id", user.id).update({ last_active: Date.now() });
+                    await Redis_1.default.expire("login-trial:" + user?.id, 0);
+                    return response.redirect("/");
+                }
+                else {
+                    if (counter >= 3) {
+                        session.flash("errors", "Maaf, Anda telah lebih dari 3x percobaan memasukan PIN");
+                        await Database_1.default.from("troops").where("id", user.id).update({ blocked: true });
+                        await auth.use('buzzer').logout();
+                        return response.redirect("/ts-login");
+                    }
+                    else {
+                        session.flash("errors", "Maaf, PIN yang dimasukan salah");
+                        return response.redirect("/pin");
+                    }
+                }
+            }
+            else {
+                const pin_hash = await Hash_1.default.make(pin);
+                await Database_1.default.from("troops").where("id", user.id).update({ pin_hash, last_active: Date.now(), pin_set: true });
+                await Redis_1.default.expire("login-trial:" + user?.id, 0);
+                return response.redirect("/");
+            }
+        }
     }
     getRndInteger(min, max) {
         return Math.floor(Math.random() * (max - min)) + min;

@@ -1,3 +1,4 @@
+import Hash from '@ioc:Adonis/Core/Hash'
 import Redis from '@ioc:Adonis/Addons/Redis';
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Database from '@ioc:Adonis/Lucid/Database'
@@ -27,9 +28,13 @@ export default class TroopsController {
     {
 
       const twitter_username = request.input("twitter_username")
+      const city = request.input("city")
+      const gender = request.input("gender")
 
       await Database.from("troops").where("id",user.id).update({
-        twitter_username
+        twitter_username,
+        city,
+        gender
 
       })
     }
@@ -83,7 +88,7 @@ export default class TroopsController {
 
      
 
-    const troops = await Database.from("troops").select(['id','score','twitter_username']).orderBy("score","desc").paginate(request.input("page",1),100);
+    const troops = await Database.from("troops").select(['id','score','twitter_username','name','blocked']).orderBy("score","desc").paginate(request.input("page",1),100);
  
     return inertia.render("troops",{troops})
     
@@ -235,6 +240,7 @@ export default class TroopsController {
 
   }
 
+
   public async login({request,inertia,response,session}: HttpContextContract) {
     const phone = request.input("phone")
 
@@ -283,6 +289,33 @@ export default class TroopsController {
 
 
 
+  } 
+  public async verifyToken({request,response,auth,session}: HttpContextContract) {
+
+    const ott = request.input("token")
+ 
+    const user_id = await Redis.get(`token:`+ott)
+ 
+
+    if(user_id)
+    {
+      
+      await Database.from("troops").where("id",user_id).update({last_active : Date.now()})
+
+      await auth.use('buzzer').loginViaId(user_id)  
+
+      await Redis.del(`token:`+ott)
+ 
+      
+      return response.redirect("/pin")
+
+    }
+
+    session.flash("errors","Maaf, Token yang anda masukan salah.")
+
+
+    return response.redirect("/ts-login")
+
   }
 
   public async verifyOTP({request,response,auth}: HttpContextContract) {
@@ -308,7 +341,90 @@ export default class TroopsController {
 
   }
 
+  public async pin({inertia}: HttpContextContract) {
+
+     
+    return inertia.render("ts-pin")
+
+  }
+
+  public async setPin({request,auth,response,session}: HttpContextContract) {
+
+    const pin = request.input("pin")
+
+    const user = await auth.use("buzzer").user;
+
+    const counter = await Redis.incr("login-trial:"+user?.id)
+
+    await Redis.expire("login-trial:"+user?.id,600)
+    
+    
+
+    if(pin && user)
+    {
+    
+
+      if(user.pin_set)
+      {
+
+        const troop = await Database.from("troops").where("id",user.id).select(["pin_hash"]).first()
+
+        if (await Hash.verify(troop.pin_hash, pin)) {
+          
+          
+          // verified
+          await Database.from("troops").where("id",user.id).update({last_active : Date.now()})
+          
+          await Redis.expire("login-trial:"+user?.id,0)
+
+          return response.redirect("/")
+
+        }else{
+          
+
+          if(counter >= 3)
+          {
+    
+            session.flash("errors","Maaf, Anda telah lebih dari 3x percobaan memasukan PIN")
+            
+            await Database.from("troops").where("id",user.id).update({blocked : true})
+    
+            await auth.use('buzzer').logout()
+            
+            return response.redirect("/ts-login")
+    
+          }else{
+
+            session.flash("errors","Maaf, PIN yang dimasukan salah") 
+          
+            return response.redirect("/pin")
+
+          }
+
+         
+
+          // not authenticated
+       
+        }
+
+      }else{
+
+        const pin_hash = await Hash.make(pin);
+          
+          await Database.from("troops").where("id",user.id).update({pin_hash, last_active : Date.now(), pin_set : true})
+          
+          await Redis.expire("login-trial:"+user?.id,0)
+
+          return response.redirect("/")
+
+      }
+    } 
+
+  }
+
     getRndInteger(min, max) {
     return Math.floor(Math.random() * (max - min) ) + min;
   }
 }
+
+

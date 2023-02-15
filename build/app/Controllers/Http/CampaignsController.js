@@ -5,7 +5,6 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 Object.defineProperty(exports, "__esModule", { value: true });
 const Redis_1 = __importDefault(global[Symbol.for('ioc.use')]("Adonis/Addons/Redis"));
 const Database_1 = __importDefault(global[Symbol.for('ioc.use')]("Adonis/Lucid/Database"));
-const axios_1 = __importDefault(require("axios"));
 const dayjs_1 = __importDefault(require("dayjs"));
 class CampaignsController {
     async index({ inertia }) {
@@ -62,7 +61,7 @@ class CampaignsController {
                     campaign_time: campaign.time,
                     troop_id: user.id,
                     troop_username: user.twitter_username,
-                    troop_phone: user.phone,
+                    troop_tg_id: user.tg_id,
                     next_round_interval: 60
                 };
             attendance.id = await Database_1.default.table("campaign_attendances").insert(attendance);
@@ -70,20 +69,14 @@ class CampaignsController {
                 attendee: 1
             });
             await Database_1.default.from("troops").where("id", user.id).update({ last_active: Date.now() });
-            const api_key = await Database_1.default.from("api_keys").orderBy(Database_1.default.raw('RAND()')).first();
-            if (api_key && process.env.NODE_ENV != 'development') {
-                const message = await Database_1.default.from("messages").where("id", "join").first();
-                let text = message.text.split('[title]').join(campaign.title);
-                text = text.split('[time]').join((0, dayjs_1.default)(campaign.time).subtract(1, 'h').format("DD-MM-YYYY HH:mm") + " WIB");
-                axios_1.default.post("http://api.dripsender.id/send", {
-                    api_key: api_key.id,
-                    phone: user.phone,
-                    text: text,
-                    type: "buttonsMessage",
-                    footerText: "Admin TS",
-                    buttons: JSON.parse(message.buttons)
-                });
-            }
+            const message = await Database_1.default.from("messages").where("id", "join").first();
+            let text = message.text.split('[title]').join(campaign.title);
+            text = text.split('[time]').join((0, dayjs_1.default)(campaign.time).subtract(1, 'h').format("DD-MM-YYYY HH:mm") + " WIB");
+            const data = {
+                tg_id: user.tg_id,
+                text: text
+            };
+            await Redis_1.default.sadd("queue:riayah", JSON.stringify(data));
         }
         if (campaign.status == 'tweet submission') {
             const tweets = await Database_1.default.from("tweets").where("published_by", user.id);

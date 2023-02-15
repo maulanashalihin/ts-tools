@@ -46,13 +46,11 @@
                     {item.text}
                 </p> 
                <div class="mt-1">
-                {#each item.buttons as button}
-                <!-- content here --> 
-                   <!-- Badge with close button -->
-                   <button class="font-semibold mr-1 inline-flex px-2 py-1 leading-4 campaigns-center space-x-1 text-sm rounded text-teal-700 bg-teal-200">
-                     <span>{button}</span>  
-                   </button> 
-                {/each}
+                {#if item.file}
+                <div class="border px-2 py-1">
+                  {item.filename} 
+                </div> 
+              {/if}
                </div>
                 <div class="mt-5 flex items-center justify-between space-x-2">
                     <div>

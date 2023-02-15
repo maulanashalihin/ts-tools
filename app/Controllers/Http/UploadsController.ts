@@ -76,7 +76,7 @@ export default class UploadsController {
        
         return "https://sin1.contabostorage.com/a196457ae22540fb8b66fd8bd8a37ae4:omoo/"+key;
       
-      }else if(request.header('Filetype') == 'video'){
+      }else{
  
         // params.Body = coverImage.tmpPath;
         params.Body = fs.createReadStream(coverImage.tmpPath)

@@ -1,5 +1,17 @@
 {
   "commands": {
+    "bot:pool": {
+      "settings": {
+        "loadApp": true,
+        "stayAlive": true
+      },
+      "commandPath": "./commands/BotPool",
+      "commandName": "bot:pool",
+      "description": "",
+      "args": [],
+      "aliases": [],
+      "flags": []
+    },
     "reminder:round": {
       "settings": {
         "loadApp": true,

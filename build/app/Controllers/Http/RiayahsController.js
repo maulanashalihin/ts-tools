@@ -7,9 +7,6 @@ const Database_1 = __importDefault(global[Symbol.for('ioc.use')]("Adonis/Lucid/D
 class RiayahsController {
     async index({ inertia }) {
         const campaigns = await Database_1.default.from("riayahs").orderBy("id", "desc").limit(10);
-        for await (const campaign of campaigns) {
-            campaign.buttons = campaign.buttons.split(",");
-        }
         return inertia.render("riayah", { campaigns });
     }
     async create({ inertia }) {
@@ -22,16 +19,30 @@ class RiayahsController {
     async show({}) { }
     async edit({ inertia, params }) {
         let campaign = await Database_1.default.from("riayahs").where("id", params.id).first();
-        campaign.buttons = campaign.buttons.split(",");
         return inertia.render("riayah-create", { campaign });
     }
     async update({ request, response, params }) {
         let data = request.except(['id']);
-        data.buttons = data.buttons.join(",");
         await Database_1.default.from("riayahs").where("id", params.id).update(data);
         return response.redirect("/riayah", false, 303);
     }
     async destroy({}) { }
+    async upload({ request }) {
+        const coverImage = request.file('file', {
+            size: '20mb',
+            extnames: ['jpg', 'png', 'gif', 'mp4', 'jpeg', 'pdf', 'doc', 'docx', 'ppt', 'pptx', 'xls', 'xlsx'],
+        });
+        if (!coverImage) {
+            return;
+        }
+        if (!coverImage.isValid) {
+            return coverImage.errors;
+        }
+        if (coverImage) {
+            await coverImage.moveToDisk("./");
+            return coverImage.fileName;
+        }
+    }
 }
 exports.default = RiayahsController;
 //# sourceMappingURL=RiayahsController.js.map

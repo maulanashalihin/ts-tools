@@ -1,6 +1,6 @@
 import { BaseCommand } from '@adonisjs/core/build/standalone'
-import Database from '@ioc:Adonis/Lucid/Database'
-import axios from 'axios'
+import Redis from '@ioc:Adonis/Addons/Redis'
+import Database from '@ioc:Adonis/Lucid/Database' 
 import dayjs from 'dayjs'
 export default class ReminderRound extends BaseCommand {
   /**
@@ -58,14 +58,13 @@ export default class ReminderRound extends BaseCommand {
 
           let text =  message.text.split('[current_round]').join((attendee.current_round+1));
     
-          await axios.post("http://api.dripsender.id/send",{
-            api_key : api_key.id,
-            phone : attendee.phone,
-            text : text,
-            type : "buttonsMessage",
-            footerText : "Admin TS",
-            buttons : JSON.parse(message.buttons)
-          })
+          const data = {
+            tg_id : attendee.tg_id,
+            text : text
+          }
+
+          await Redis.sadd("queue:riayah",JSON.stringify(data))
+ 
         }
         await Database.from("campaign_attendances").where("id",attendee.id).update({reminder_round_time : dayjs().add(attendee.next_round_interval,'minute').valueOf()})
 

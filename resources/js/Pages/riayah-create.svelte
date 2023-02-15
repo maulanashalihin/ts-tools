@@ -5,27 +5,45 @@
   import Modal from "../Components/Modal.svelte";
   import TsLayouts from "./../Components/layouts.svelte";
 
-  export let campaign = {
-    buttons: [],
+  export let campaign = { 
   };
 
   let new_button;
   function saveMessage() {
-    if (campaign.buttons.length) {
-      if (campaign.id) {
+    if (campaign.id) {
         router.put("/riayah/" + campaign.id, campaign);
       } else {
         router.post("/riayah", campaign);
       }
-    } else {
-      alert("Mohon tambahkan button");
-    }
   }
 
-  function addButton() {
-    if (new_button) {
-      campaign.buttons = [...campaign.buttons, new_button];
+ 
+
+  async function handleChange(e) {
+    const file = e.target.files[0];
+ 
+    campaign.filename = file.name 
+
+    var formData = new FormData();
+
+    formData.append("file", file);
+
+    let url = "/riayah/upload";
+ 
+
+axios
+  .post(url, formData, {
+    headers: {
+      "Content-Type": "multipart/form-data",
+      Filetype: "file",
     }
+  })
+  .then((response) => { 
+
+    if (typeof response.data == "string") {
+      campaign.file = response.data
+    }
+  });
   }
 </script>
 
@@ -46,82 +64,20 @@
               placeholder="Enter further details"
             />
           </div>
-          <div>
-            <div class="font-medium">Tombol</div>
-            {#if campaign.buttons.length}
-              <div class=" grid gap-1 my-2">
-                {#each campaign.buttons as button}
-                  <!-- content here -->
-                  <div>
-                    <!-- Badge with close button -->
-                    <div
-                      class="font-semibold inline-flex px-2 py-1 leading-4 campaigns-center space-x-1 text-sm rounded text-teal-700 bg-teal-200"
-                    >
-                      <span>{button}</span>
-                      <button
-                        type="button"
-                        on:click={() => {
-                          campaign.buttons = campaign.buttons.filter(
-                            (btn) => btn != button
-                          );
-                        }}
-                        class="focus:outline-none text-teal-600 hover:text-teal-400 focus:ring focus:ring-teal-500 focus:ring-opacity-50 active:text-teal-600"
-                      >
-                        <svg
-                          class="hi-solid hi-x inline-block w-4 h-4"
-                          fill="currentColor"
-                          viewBox="0 0 20 20"
-                          xmlns="http://www.w3.org/2000/svg"
-                          ><path
-                            fill-rule="evenodd"
-                            d="M4.293 4.293a1 1 0 011.414 0L10 8.586l4.293-4.293a1 1 0 111.414 1.414L11.414 10l4.293 4.293a1 1 0 01-1.414 1.414L10 11.414l-4.293 4.293a1 1 0 01-1.414-1.414L8.586 10 4.293 5.707a1 1 0 010-1.414z"
-                            clip-rule="evenodd"
-                          /></svg
-                        >
-                      </button>
-                    </div>
-                    <!-- END Badge with close button -->
-                  </div>
-                {/each}
-              </div>
-            {/if}
-
-            <div>
-              <div class="space-y-1 mt-1">
-                <div class="flex campaigns-center">
-                  <input
-                    bind:value={new_button}
-                    class="block border border-gray-200 rounded-l z-1 py-2 px-3 leading-5 text-sm w-full active:z-1 focus:z-1 -mr-px focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
-                    type="text"
-                    id="tk-form-input-groups-append-button-secondary-small"
-                    placeholder="Tombol Baru"
-                  />
-                  <button
-                    type="button"
-                    on:click={() => {
-                      addButton();
-                    }}
-                    class="inline-flex justify-center campaigns-center space-x-2 border font-semibold focus:outline-none flex-none px-3 py-2 leading-5 text-sm rounded-r active:z-1 focus:z-1 border-indigo-200 bg-indigo-200 text-indigo-700 hover:text-indigo-700 hover:bg-indigo-300 hover:border-indigo-300 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 active:bg-indigo-200 active:border-indigo-200"
-                  >
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      fill="none"
-                      viewBox="0 0 24 24"
-                      stroke-width="1.5"
-                      stroke="currentColor"
-                      class="w-6 h-6"
-                    >
-                      <path
-                        stroke-linecap="round"
-                        stroke-linejoin="round"
-                        d="M12 4.5v15m7.5-7.5h-15"
-                      />
-                    </svg>
-                  </button>
-                </div>
-              </div>
+          <div class="space-y-1 mt-3">
+            <label class="font-medium" for="status">File</label>
+          {#if campaign.file}
+            <div class="border px-3 py-2 bg-white flex justify-between">
+              {campaign.filename}
+              <button on:click={()=>{campaign.file = null;campaign.filename = null;campaign=campaign;}}><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M14.74 9l-.346 9m-4.788 0L9.26 9m9.968-3.21c.342.052.682.107 1.022.166m-1.022-.165L18.16 19.673a2.25 2.25 0 01-2.244 2.077H8.084a2.25 2.25 0 01-2.244-2.077L4.772 5.79m14.456 0a48.108 48.108 0 00-3.478-.397m-12 .562c.34-.059.68-.114 1.022-.165m0 0a48.11 48.11 0 013.478-.397m7.5 0v-.916c0-1.18-.91-2.164-2.09-2.201a51.964 51.964 0 00-3.32 0c-1.18.037-2.09 1.022-2.09 2.201v.916m7.5 0a48.667 48.667 0 00-7.5 0" />
+              </svg>
+              </button>
             </div>
-          </div>
+          {:else}
+          <input type="file" accept="image/*" on:change={handleChange}>
+          {/if}
+        </div>
           <div class="space-y-1 mt-3">
             <label class="font-medium" for="status">Status</label>
             <select

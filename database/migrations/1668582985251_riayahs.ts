@@ -10,6 +10,8 @@ export default class extends BaseSchema {
       table.integer("troop_id");
       table.integer("last_troop_id");
       table.text("buttons")
+      table.text("file")
+      table.text("filename")
       table.string("status").index();
       /**
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL

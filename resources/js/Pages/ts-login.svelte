@@ -1,17 +1,15 @@
 <script>
   import { inertia, router } from "@inertiajs/svelte";
   import { validatePhone } from "../Components/helper";
-
-  let phone;
+ 
   let form = {
-    phone: "",
+    token: "",
   };
 
   export let errors;
 
-  function login() {
-    form.phone = validatePhone(phone);
-    router.post("/ts-login", form);
+  function login() { 
+    router.post("/ts-verify-token", form);
   }
 </script>
 
@@ -86,13 +84,13 @@
                   <!-- END Warning Alert -->
                 {/if}
                 <div class="space-y-1">
-                  <label for="phone" class="font-medium">No Whatsapp</label>
+                  <label for="token" class="font-medium">Token</label>
                   <input
-                    bind:value={phone}
+                    bind:value={form.token}
                     class="block border border-gray-200 rounded px-5 py-3 leading-6 w-full focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
-                    type="number"
-                    id="phone"
-                    placeholder="081351941220"
+                    type="text"
+                    id="token"
+                    placeholder="404c395f-bd02-4935-85ca-932443eb6d28"
                   />
                 </div>
 

@@ -12,6 +12,7 @@ export default class extends BaseSchema {
       table.integer("troop_id").index()
       table.string("troop_username")
       table.string("troop_phone")
+      table.string("troop_tg_id")
       table.bigInteger("join_time")
       table.integer("round_number")
       table.integer("next_round_interval").defaultTo(60)
