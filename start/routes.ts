@@ -113,6 +113,9 @@ Route.get('/login', async ({ inertia,auth,response }) => {
     Route.get("/bank-tsaqofah/:id/review","BankTsaqofahsController.show")
 
 
+    Route.get("/unblocks","UnblocksController.index")
+    Route.put("/unblocks/:id","UnblocksController.update")
+
     Route.post('/riayah/upload', "RiayahsController.upload")
 
    Route.put("/bank-tsaqofah/:id/status","BankTsaqofahsController.status")
@@ -123,9 +126,10 @@ Route.get('/login', async ({ inertia,auth,response }) => {
     return inertia.render("ts-login")
   })
 
-  Route.get("/troop-register",({inertia})=>{
-    return inertia.render("ts-login")
-  })
+  Route.get("/request-unblock","UnblocksController.create")
+  Route.get("/request-unblock-success","UnblocksController.show")
+  Route.post("/request-unblock","UnblocksController.store")
+  
   
   Route.post("/ts-login","TroopsController.login")
 

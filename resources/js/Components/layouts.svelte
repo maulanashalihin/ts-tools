@@ -18,6 +18,9 @@ import {clickOutside} from './helper.js';
     path : "/troops",
     name : "Troops"
   },{
+    path : "/unblocks",
+    name : "Unblocks"
+  },{
     path : "/riayah",
     name : "Riayah"
   },{

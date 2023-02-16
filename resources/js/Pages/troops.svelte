@@ -44,7 +44,8 @@
         {troops.meta.total} total troops
       </div>
       <div>
-        <input class="border px-3 py-2 my-6" type="text" placeholder="Cari Troop by ID">
+        <hr class="my-3">
+        <!-- <input class="border px-3 py-2 my-6" type="text" placeholder="Cari Troop by ID"> -->
       </div> 
       <div class="grid gap-3">
         {#each troops.data as item}

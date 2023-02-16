@@ -69,8 +69,8 @@ export default class BotPool extends BaseCommand {
             } else{
                 if(troop.blocked)
                 {
-                    bot.sendMessage(chatId, "Maaf, Akun anda telah diblokir.");
-
+                  bot.sendMessage(chatId, "Maaf, Akun anda telah diblokir. \n\nAnda bisa melakukan pengajuan cabut blokir disini https://ts.belanabi.com/request-unblock");
+        
                     return;
                 }
             }
@@ -99,7 +99,7 @@ export default class BotPool extends BaseCommand {
             {
                 if(troop.blocked)
                 {
-                    bot.sendMessage(chatId, "Maaf, Akun anda telah diblokir.");
+                    bot.sendMessage(chatId, "Maaf, Akun anda telah diblokir. \n\nAnda bisa melakukan pengajuan cabut blokir disini https://ts.belanabi.com/request-unblock");
         
                     return;
                 }

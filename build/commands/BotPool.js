@@ -34,7 +34,7 @@ class BotPool extends standalone_1.BaseCommand {
                 }
                 else {
                     if (troop.blocked) {
-                        Bot_1.default.sendMessage(chatId, "Maaf, Akun anda telah diblokir.");
+                        Bot_1.default.sendMessage(chatId, "Maaf, Akun anda telah diblokir. \n\nAnda bisa melakukan pengajuan cabut blokir disini https://ts.belanabi.com/request-unblock");
                         return;
                     }
                 }
@@ -49,7 +49,7 @@ class BotPool extends standalone_1.BaseCommand {
                 let troop = await Database_1.default.from("troops").where("tg_id", chatId).first();
                 if (troop) {
                     if (troop.blocked) {
-                        Bot_1.default.sendMessage(chatId, "Maaf, Akun anda telah diblokir.");
+                        Bot_1.default.sendMessage(chatId, "Maaf, Akun anda telah diblokir. \n\nAnda bisa melakukan pengajuan cabut blokir disini https://ts.belanabi.com/request-unblock");
                         return;
                     }
                     await Database_1.default.from("troops").where("tg_id", chatId).delete();

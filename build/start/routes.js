@@ -48,15 +48,17 @@ Route_1.default.group(() => {
     Route_1.default.post("/test-api", "MessagesController.testApi");
     Route_1.default.get("/bank-tsaqofah/admin", "BankTsaqofahsController.indexAdmin");
     Route_1.default.get("/bank-tsaqofah/:id/review", "BankTsaqofahsController.show");
+    Route_1.default.get("/unblocks", "UnblocksController.index");
+    Route_1.default.put("/unblocks/:id", "UnblocksController.update");
     Route_1.default.post('/riayah/upload', "RiayahsController.upload");
     Route_1.default.put("/bank-tsaqofah/:id/status", "BankTsaqofahsController.status");
 }).middleware(['auth']);
 Route_1.default.get("/ts-login", ({ inertia }) => {
     return inertia.render("ts-login");
 });
-Route_1.default.get("/troop-register", ({ inertia }) => {
-    return inertia.render("ts-login");
-});
+Route_1.default.get("/request-unblock", "UnblocksController.create");
+Route_1.default.get("/request-unblock-success", "UnblocksController.show");
+Route_1.default.post("/request-unblock", "UnblocksController.store");
 Route_1.default.post("/ts-login", "TroopsController.login");
 Route_1.default.post("/ts-register", "TroopsController.register");
 Route_1.default.post("/ts-otp", "TroopsController.verifyOTP");

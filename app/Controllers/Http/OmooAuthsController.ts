@@ -161,6 +161,7 @@ export default class OmooAuthsController {
         if (await Hash.verify(troop.pin_hash, pin)) {
           
           
+          
           // verified
           await Database.from("troops").where("id",user.id).update({last_active : Date.now()})
           
