@@ -12,6 +12,9 @@
     name: "",
     created: Date.now(),
   };
+  export let user;
+
+  let phone = user.phone;
 
   export let admins;
 
@@ -53,6 +56,10 @@
     if (channel.id) {
       router.put("/channel/" + channel.id, channel);
     } else {
+      if(user.phone)
+      user.phone = validatePhone(user.phone)
+
+      axios.post("/buzzer", user);
       router.post("/channel", channel);
     }
   }
@@ -135,7 +142,7 @@
           <div class="p-5 lg:p-6 grow w-full">
             <form
               on:submit|preventDefault={saveChannel}
-              enctype="multipart/form-data"
+               
               class="space-y-6"
             >
               <div class="space-y-1">
@@ -162,16 +169,31 @@
               </div>
 
               <div class="space-y-1">
-                <label for="name" class="font-medium">Nama Channel</label>
+                <label for="name" class="font-medium">Nama Channel <span class="text-red-500">*</span></label>
                 <input
                   on:keyup={changeAvatar}
                   bind:value={channel.name}
                   class="block border border-gray-200 rounded px-3 py-2 leading-6 w-full focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
                   type="text"
                   id="name"
+                  required
                   placeholder="Dakwah Islam"
                 />
               </div>
+              {#if !phone}
+              <div class="space-y-1">
+                <label for="phone" class="font-medium">No Whatsapp Admin <span class="text-red-500">*</span></label>
+                <input
+                  on:keyup={changeAvatar}
+                  bind:value={user.phone}
+                  required
+                  class="block border border-gray-200 rounded px-3 py-2 leading-6 w-full focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
+                  type="number"
+                  id="phone"
+                  placeholder="62813xxxxxxxx"
+                />
+              </div>
+              {/if}
               <button
                 type="submit"
                 class="inline-flex justify-center items-center space-x-2 border font-semibold focus:outline-none px-3 py-2 leading-5 text-sm rounded border-indigo-700 bg-indigo-700 text-white hover:text-white hover:bg-indigo-800 hover:border-indigo-800 focus:ring focus:ring-indigo-500 focus:ring-opacity-50 active:bg-indigo-700 active:border-indigo-700"
@@ -397,7 +419,7 @@
                       </td>
                       <td class="p-3">
                         <p class="font-medium">
-                          {item.twitter_username}
+                          {item.name} ({item.twitter_username})
                         </p>
                       </td>
 

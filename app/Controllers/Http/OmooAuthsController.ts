@@ -3,6 +3,7 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Database from '@ioc:Adonis/Lucid/Database';
 import axios from 'axios';
 import {v4} from "uuid"
+import Hash from '@ioc:Adonis/Core/Hash'
 
 export default class OmooAuthsController {
 
@@ -131,6 +132,79 @@ export default class OmooAuthsController {
     }
 
     return response.abort("User id tidak ditemukan",404)
+
+  }
+
+
+  public async setPin({request,auth,response}: HttpContextContract) {
+
+    const pin = request.input("pin")
+
+    const user = await auth.use("api").user;
+
+    const counter = await Redis.incr("login-trial:"+user?.id)
+
+    await Redis.expire("login-trial:"+user?.id,600)
+    
+    console.log(user)
+    
+
+    if(pin && user)
+    {
+    
+
+      if(user.pin_set)
+      {
+
+        const troop = await Database.from("troops").where("id",user.id).select(["pin_hash"]).first()
+
+        if (await Hash.verify(troop.pin_hash, pin)) {
+          
+          
+          // verified
+          await Database.from("troops").where("id",user.id).update({last_active : Date.now()})
+          
+          await Redis.expire("login-trial:"+user?.id,0)
+
+          return "OK"
+
+        }else{
+          
+
+          if(counter >= 3)
+          {
+     
+            await Database.from("troops").where("id",user.id).update({blocked : true})
+    
+            await auth.use('api').logout()
+            
+            return response.abort("Maaf, Anda telah lebih dari 3x percobaan memasukan PIN")
+    
+          }else{
+ 
+          
+            return response.abort("Maaf, PIN yang dimasukan salah")
+
+          }
+
+         
+
+          // not authenticated
+       
+        }
+
+      }else{
+
+        const pin_hash = await Hash.make(pin);
+          
+          await Database.from("troops").where("id",user.id).update({pin_hash, last_active : Date.now(), pin_set : true})
+          
+          await Redis.expire("login-trial:"+user?.id,0)
+
+          return "OK"
+
+      }
+    } 
 
   }
 

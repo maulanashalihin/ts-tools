@@ -112,6 +112,7 @@ Route_1.default.group(() => {
     Route_1.default.put("/contents/dislike/:id", "ContentsController.dislike");
     Route_1.default.post("/daily-tweet", "ContentsController.dailyTweet");
     Route_1.default.post("/profile", "OmooAuthsController.profile");
+    Route_1.default.post("/pin", "OmooAuthsController.setPin");
     Route_1.default.post("/logout", "OmooAuthsController.logout");
     Route_1.default.get("/bank-tsaqofah/terkini", "BankTsaqofahsController.indexOmoo");
     Route_1.default.get("/bank-tsaqofah/:id", "BankTsaqofahsController.showOmoo");

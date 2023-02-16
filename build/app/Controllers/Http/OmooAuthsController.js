@@ -7,6 +7,7 @@ const Redis_1 = __importDefault(global[Symbol.for('ioc.use')]("Adonis/Addons/Red
 const Database_1 = __importDefault(global[Symbol.for('ioc.use')]("Adonis/Lucid/Database"));
 const axios_1 = __importDefault(require("axios"));
 const uuid_1 = require("uuid");
+const Hash_1 = __importDefault(global[Symbol.for('ioc.use')]("Adonis/Core/Hash"));
 class OmooAuthsController {
     async login({ request, response }) {
         const phone = request.input("phone");
@@ -69,6 +70,39 @@ class OmooAuthsController {
             }
         }
         return response.abort("User id tidak ditemukan", 404);
+    }
+    async setPin({ request, auth, response }) {
+        const pin = request.input("pin");
+        const user = await auth.use("api").user;
+        const counter = await Redis_1.default.incr("login-trial:" + user?.id);
+        await Redis_1.default.expire("login-trial:" + user?.id, 600);
+        console.log(user);
+        if (pin && user) {
+            if (user.pin_set) {
+                const troop = await Database_1.default.from("troops").where("id", user.id).select(["pin_hash"]).first();
+                if (await Hash_1.default.verify(troop.pin_hash, pin)) {
+                    await Database_1.default.from("troops").where("id", user.id).update({ last_active: Date.now() });
+                    await Redis_1.default.expire("login-trial:" + user?.id, 0);
+                    return "OK";
+                }
+                else {
+                    if (counter >= 3) {
+                        await Database_1.default.from("troops").where("id", user.id).update({ blocked: true });
+                        await auth.use('api').logout();
+                        return response.abort("Maaf, Anda telah lebih dari 3x percobaan memasukan PIN");
+                    }
+                    else {
+                        return response.abort("Maaf, PIN yang dimasukan salah");
+                    }
+                }
+            }
+            else {
+                const pin_hash = await Hash_1.default.make(pin);
+                await Database_1.default.from("troops").where("id", user.id).update({ pin_hash, last_active: Date.now(), pin_set: true });
+                await Redis_1.default.expire("login-trial:" + user?.id, 0);
+                return "OK";
+            }
+        }
     }
     async check({ auth }) {
         const check = await auth.use("api").check();

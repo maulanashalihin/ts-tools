@@ -239,6 +239,9 @@ Route.get('/login', async ({ inertia,auth,response }) => {
     Route.post("/daily-tweet","ContentsController.dailyTweet")
 
     Route.post("/profile","OmooAuthsController.profile")
+ 
+
+    Route.post("/pin","OmooAuthsController.setPin")
 
     Route.post("/logout","OmooAuthsController.logout")
 

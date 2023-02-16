@@ -207,7 +207,7 @@
                     <th
                       class="p-3 text-gray-700 bg-gray-100 font-semibold text-sm tracking-wider uppercase text-center"
                     >
-                      Actions
+                      Phone
                     </th>
                   </tr>
                 </thead>
@@ -229,7 +229,7 @@
                       </td>
                       <td class="p-3">
                         <p class="font-medium">
-                          {item.twitter_username}
+                          {item.name} ({item.twitter_username})
                         </p>
                       </td>
 

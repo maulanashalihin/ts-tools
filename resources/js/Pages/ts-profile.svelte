@@ -6,6 +6,9 @@
   import TsLayouts from "./../Components/ts-layouts.svelte";
   import Select from "../Components/Select.svelte";
   import cities from "../Components/kabupaten.json";
+  import { validatePhone } from "../Components/helper";
+  import Toastify from 'toastify-js'
+
 
   let items = cities.map((item) => {
     return {
@@ -17,7 +20,15 @@
   export let user;
 
   function saveProfile() {
+    if(user.phone)
+    user.phone = validatePhone(user.phone)
     router.post("/profile", user);
+
+    Toastify({
+  text: "Profil telah disimpan ",
+  className: "bg-green-600 text-white text-center px-3 py-3",
+}).showToast();
+
   }
 </script>
 
@@ -61,6 +72,17 @@
             type="text"
             id="name"
             placeholder="Enter your Name"
+          />
+        </div>
+        <div class="space-y-1">
+          <label class="font-medium" for="phone">No. Whatsapp</label>
+          <input
+            bind:value={user.phone}
+           
+            class="w-full block border border-gray-200 rounded px-3 py-2 leading-6 focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
+            type="text"
+            id="phone"
+            placeholder="08135xxxxxx"
           />
         </div>
 

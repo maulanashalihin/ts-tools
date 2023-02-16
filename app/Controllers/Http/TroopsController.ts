@@ -30,11 +30,13 @@ export default class TroopsController {
       const twitter_username = request.input("twitter_username")
       const city = request.input("city")
       const gender = request.input("gender")
+      const phone = request.input("phone") || user.phone;
 
       await Database.from("troops").where("id",user.id).update({
         twitter_username,
         city,
-        gender
+        gender,
+        phone
 
       })
     }
