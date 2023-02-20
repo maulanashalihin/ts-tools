@@ -79,9 +79,11 @@ export default class BotPool extends BaseCommand {
 
             await Redis.setex(`token:`+ott,600,troop.id);
 
-            bot.sendMessage(chatId, "Silakan gunakan token berikut `"+ott+"`   untuk login ke dalam Aplikasi \n\nPS : klik pada token untuk copy text",{parse_mode : "MarkDown"});
+            bot.sendMessage(chatId, "Silakan gunakan token di bawah ini  untuk login ke dalam Aplikasi. klik pada token untuk copy text");
 
-            bot.sendMessage(chatId, "`"+ott+"`",{parse_mode : "MarkDown"});
+            setTimeout(()=>{
+              bot.sendMessage(chatId, "`"+ott+"`",{parse_mode : "MarkDown"});
+            },100)
 
 
           
