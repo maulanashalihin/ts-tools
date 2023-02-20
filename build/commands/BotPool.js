@@ -41,6 +41,7 @@ class BotPool extends standalone_1.BaseCommand {
                 const ott = (0, uuid_1.v4)();
                 await Redis_1.default.setex(`token:` + ott, 600, troop.id);
                 Bot_1.default.sendMessage(chatId, "Silakan gunakan token berikut `" + ott + "`   untuk login ke dalam Aplikasi \n\nPS : klik pada token untuk copy text", { parse_mode: "MarkDown" });
+                Bot_1.default.sendMessage(chatId, "`" + ott + "`", { parse_mode: "MarkDown" });
             }
             else if (msg.text == "CHECK ID" || msg.text == "/check_id") {
                 Bot_1.default.sendMessage(chatId, "ID anda adalah `" + chatId + "`", { parse_mode: "MarkDown" });

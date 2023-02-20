@@ -81,6 +81,8 @@ export default class BotPool extends BaseCommand {
 
             bot.sendMessage(chatId, "Silakan gunakan token berikut `"+ott+"`   untuk login ke dalam Aplikasi \n\nPS : klik pada token untuk copy text",{parse_mode : "MarkDown"});
 
+            bot.sendMessage(chatId, "`"+ott+"`",{parse_mode : "MarkDown"});
+
 
           
         }else if(msg.text == "CHECK ID" || msg.text == "/check_id")
