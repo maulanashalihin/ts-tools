@@ -230,7 +230,7 @@
           <div class="flex flex-col      overflow-hidden md:w-2/3">
             <!-- Responsive Table Container -->
             <!-- Form Action with Input -->
-            <form class="mb-3" on:submit|preventDefault={addNewMember}>
+            <form class="mb-3" on:submit|preventDefault={saveChannel}>
               <!-- Card -->
               <div
                 class="flex flex-col rounded shadow-sm bg-white overflow-hidden"
