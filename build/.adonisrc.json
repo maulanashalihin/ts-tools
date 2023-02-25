@@ -33,7 +33,8 @@
     "@adonisjs/auth",
     "@adonisjs/lucid",
     "@eidellev/inertia-adonisjs",
-    "@adonisjs/redis"
+    "@adonisjs/redis",
+    "@adonisjs/drive-s3"
   ],
   "metaFiles": [
     {
@@ -62,5 +63,5 @@
   "testProviders": [
     "@japa/preset-adonis/TestsProvider"
   ],
-  "lastCompiledAt": "2023-02-25T00:36:46.943Z"
+  "lastCompiledAt": "2023-02-25T04:33:55.501Z"
 }

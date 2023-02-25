@@ -1,14 +1,14 @@
 "use strict";
+var __importDefault = (this && this.__importDefault) || function (mod) {
+    return (mod && mod.__esModule) ? mod : { "default": mod };
+};
 Object.defineProperty(exports, "__esModule", { value: true });
 const sharp = require('sharp');
 const uuid_1 = require("uuid");
-const AWS = require('aws-sdk');
 const fs = require('fs');
-AWS.config.setPromisesDependency(require('bluebird'));
-AWS.config.update({ accessKeyId: "c30376406c354779a13a0ac40e617c0e", secretAccessKey: "4aded4d8f14f15b27d597d5e1c8c653c", endpoint: new AWS.Endpoint("https://contabostorage.com/omoo") });
+const Drive_1 = __importDefault(global[Symbol.for('ioc.use')]("Adonis/Core/Drive"));
 class UploadsController {
     async store({ request }) {
-        const s3 = new AWS.S3();
         let extnames = ['jpg', 'jpeg', 'png', 'gif'];
         let size = '15mb';
         if (request.header('Filetype') == 'video') {
@@ -34,22 +34,17 @@ class UploadsController {
             return coverImage.errors;
         }
         if (coverImage) {
-            const filename = (0, uuid_1.v4)() + "." + coverImage.extname;
-            let params = {
-                Bucket: "sin1",
-                Key: filename,
-                ACL: 'public-read',
-            };
+            const filename = request.input("uuid", (0, uuid_1.v4)()) + "." + coverImage.extname;
+            const folder = request.input("folder", "omoo");
             if (coverImage.type == 'image') {
                 const buffer = await sharp(coverImage.tmpPath).resize(500).toBuffer();
-                params.Body = buffer;
-                const { key } = await s3.upload(params).promise();
-                return "https://sin1.contabostorage.com/a196457ae22540fb8b66fd8bd8a37ae4:omoo/" + key;
+                await Drive_1.default.put(folder + "/" + filename, buffer);
+                return `https://indotoko.ap-south-1.linodeobjects.com/${folder}/${filename}`;
             }
             else {
-                params.Body = fs.createReadStream(coverImage.tmpPath);
-                const result = await s3.upload(params).promise();
-                return "https://sin1.contabostorage.com/a196457ae22540fb8b66fd8bd8a37ae4:omoo/" + result.Key;
+                const stream = fs.createReadStream(coverImage.tmpPath);
+                await Drive_1.default.put(folder + "/" + filename, stream);
+                return `https://indotoko.ap-south-1.linodeobjects.com/${folder}/${filename}`;
             }
         }
         return "ok";

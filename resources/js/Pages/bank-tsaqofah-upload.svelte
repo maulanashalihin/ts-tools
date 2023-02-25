@@ -86,8 +86,9 @@
 
       formData.append("file", file);
       formData.append("uuid", data.uuid)
+      formData.append("folder", "bank-tsaqofah")
 
-      let url = "/tsq-upload";
+      let url = "/upload";
 
       axios
         .post(url, formData, {

@@ -2,7 +2,7 @@
   "extends": "adonis-preset-ts/tsconfig.json",
   "include": [
     "**/*"
-  ], 
+  ],
   "exclude": [
     "node_modules",
     "build"
@@ -36,7 +36,8 @@
       "@adonisjs/auth",
       "@adonisjs/lucid",
       "@eidellev/inertia-adonisjs",
-      "@adonisjs/redis"
+      "@adonisjs/redis",
+      "@adonisjs/drive-s3"
     ]
   }
 }

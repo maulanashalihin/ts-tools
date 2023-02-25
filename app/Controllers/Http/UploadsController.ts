@@ -1,18 +1,15 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext' 
 
 const sharp = require('sharp');
-import {v4} from "uuid"; 
-const AWS = require('aws-sdk');
+import {v4} from "uuid";  
 const fs = require('fs')  
-AWS.config.setPromisesDependency(require('bluebird'));
-AWS.config.update({ accessKeyId: "c30376406c354779a13a0ac40e617c0e", secretAccessKey: "4aded4d8f14f15b27d597d5e1c8c653c",   endpoint: new AWS.Endpoint("https://contabostorage.com/omoo") });
+ import Drive from '@ioc:Adonis/Core/Drive'
 
 export default class UploadsController {
 
 
     public async store({request}: HttpContextContract) {
-
-    const s3 = new AWS.S3();
+ 
 
     
          
@@ -55,38 +52,29 @@ export default class UploadsController {
 
     if (coverImage) {
 
-        const filename = v4()+"."+coverImage.extname;
-
-        let params = {
-            Bucket: "sin1", // region set here
-            Key: filename, // type is not required
-            ACL: 'public-read',   // required. Notice the back ticks
-          } as any;
-
-     
+        const filename = request.input("uuid",v4())+"."+coverImage.extname;
+ 
+        const folder = request.input("folder","omoo");
      
        if(coverImage.type == 'image')
       { 
 
         const buffer =   await sharp(coverImage.tmpPath).resize(500).toBuffer();
+ 
+     
 
-        params.Body = buffer;
+        await Drive.put( folder+"/"+filename, buffer) 
 
-        const { key }   =  await s3.upload(params).promise();
-       
-        return "https://sin1.contabostorage.com/a196457ae22540fb8b66fd8bd8a37ae4:omoo/"+key;
+        return `https://indotoko.ap-south-1.linodeobjects.com/${folder}/${filename}` 
       
       }else{
  
         // params.Body = coverImage.tmpPath;
-        params.Body = fs.createReadStream(coverImage.tmpPath)
+        const stream = fs.createReadStream(coverImage.tmpPath) 
+  
+        await Drive.put( folder+"/"+filename, stream) 
 
- 
-
-
-        const result  =  await s3.upload(params).promise();
-        
-        return "https://sin1.contabostorage.com/a196457ae22540fb8b66fd8bd8a37ae4:omoo/"+result.Key;
+        return `https://indotoko.ap-south-1.linodeobjects.com/${folder}/${filename}` 
 
       } 
       // Get the name of the saved file; to store it in your database, for example.

@@ -11,7 +11,7 @@ exports.default = Env_1.default.rules({
     APP_NAME: Env_1.default.schema.string(),
     CACHE_VIEWS: Env_1.default.schema.boolean(),
     SESSION_DRIVER: Env_1.default.schema.string(),
-    DRIVE_DISK: Env_1.default.schema.enum(['local']),
+    DRIVE_DISK: Env_1.default.schema.enum(['local', 's3']),
     NODE_ENV: Env_1.default.schema.enum(['development', 'production', 'test']),
 });
 //# sourceMappingURL=env.js.map
