@@ -26,12 +26,59 @@
     approved: "bg-green-500",
     rejected: "bg-red-500",
   };
+
+  let current = 'semua';
+
 </script>
 
 <div>
   <TsLayouts>
     <div class="container xl:max-w-7xl mx-auto p-4 lg:p-8">
       <div class="text-xl font-medium">Konten Omoo</div>
+
+      <div id="button-group" class="inline-flex rounded-lg border border-gray-100 bg-gray-100 p-1">
+
+
+
+        <a href="/omoo-contents" use:inertia>
+          <button
+          class="{current === 'semua' ? 'btngroup-select' : 'btngroup-unselect'}"
+	        on:click="{() => current = 'semua'}"
+        >
+          Semua
+        </button>
+        </a>
+        
+        <a href="/omoo-contents/pending" use:inertia>
+          <button
+          class="{current === 'pending' ? 'btngroup-select' : 'btngroup-unselect'}"
+	        on:click="{() => current = 'pending'}"
+        >
+          Pending
+        </button>
+        </a>
+
+        <a href="/omoo-contents/approved" use:inertia>
+          <button
+          class="{current === 'approved' ? 'btngroup-select' : 'btngroup-unselect'}"
+	        on:click="{() => current = 'approved'}"
+        >
+          Approved
+        </button>
+        </a>
+      
+        <a href="/omoo-contents/rejected" use:inertia>
+          <button
+          class="{current === 'rejected' ? 'btngroup-select' : 'btngroup-unselect'}"
+	        on:click="{() => current = 'rejected'}"
+        >
+          Rejected
+        </button>
+        </a>
+
+      </div>
+      
+
       <div class="grid lg:grid-cols-3 grid-cols-1 gap-4 mt-5">
         {#each contents as item}
           <!-- content here -->

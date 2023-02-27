@@ -53,7 +53,19 @@ export default class ContentsController {
 
   }
 
-  public async show({}: HttpContextContract) {}
+  public async show({inertia, auth, params}: HttpContextContract) {
+
+    const user = auth.use("web").user;
+
+    if(user)
+    {
+      const contents = await Database.from("contents").orderBy("id","desc").limit(50).where("status", params.id)
+     
+      return inertia.render("omoo-contents-admins",{contents})
+
+      
+    }
+  }
 
   public async edit({inertia,params,auth}: HttpContextContract) {
 

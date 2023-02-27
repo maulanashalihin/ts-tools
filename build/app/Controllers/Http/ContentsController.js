@@ -28,7 +28,13 @@ class ContentsController {
         await Database_1.default.table("contents").insert(request.all());
         return response.redirect("/channel/" + params.channel_id);
     }
-    async show({}) { }
+    async show({ inertia, auth, params }) {
+        const user = auth.use("web").user;
+        if (user) {
+            const contents = await Database_1.default.from("contents").orderBy("id", "desc").limit(50).where("status", params.id);
+            return inertia.render("omoo-contents-admins", { contents });
+        }
+    }
     async edit({ inertia, params, auth }) {
         const user = auth.use("buzzer").user;
         if (user) {
