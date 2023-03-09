@@ -31,7 +31,11 @@ class ContentsController {
     async show({ inertia, auth, params }) {
         const user = auth.use("web").user;
         if (user) {
-            const contents = await Database_1.default.from("contents").orderBy("id", "desc").limit(50).where("status", params.id);
+            if (params.id == 'pending') {
+                const contents = await Database_1.default.from("contents").orderBy("id", "asc").where("status", params.id);
+                return inertia.render("omoo-contents-admins", { contents });
+            }
+            const contents = await Database_1.default.from("contents").orderBy("id", "desc").where("status", params.id);
             return inertia.render("omoo-contents-admins", { contents });
         }
     }
