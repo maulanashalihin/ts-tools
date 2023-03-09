@@ -42,7 +42,7 @@
 
         <a href="/omoo-contents" use:inertia>
           <button
-          class="{current === 'semua' ? 'btngroup-select' : 'btngroup-unselect'}"
+          class="{current === 'semua' ? 'btngroup-select text-blue-500' : 'btngroup-unselect'}"
 	        on:click="{() => current = 'semua'}"
         >
           Semua
@@ -51,7 +51,7 @@
         
         <a href="/omoo-contents/pending" use:inertia>
           <button
-          class="{current === 'pending' ? 'btngroup-select' : 'btngroup-unselect'}"
+          class="{current === 'pending' ? 'btngroup-select text-orange-500' : 'btngroup-unselect'}"
 	        on:click="{() => current = 'pending'}"
         >
           Pending
@@ -60,7 +60,7 @@
 
         <a href="/omoo-contents/approved" use:inertia>
           <button
-          class="{current === 'approved' ? 'btngroup-select' : 'btngroup-unselect'}"
+          class="{current === 'approved' ? 'btngroup-select text-green-500' : 'btngroup-unselect'}"
 	        on:click="{() => current = 'approved'}"
         >
           Approved
@@ -69,7 +69,7 @@
       
         <a href="/omoo-contents/rejected" use:inertia>
           <button
-          class="{current === 'rejected' ? 'btngroup-select' : 'btngroup-unselect'}"
+          class="{current === 'rejected' ? 'btngroup-select text-red-500' : 'btngroup-unselect'}"
 	        on:click="{() => current = 'rejected'}"
         >
           Rejected

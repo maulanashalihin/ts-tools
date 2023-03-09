@@ -4,7 +4,7 @@
 
 @layer components {
   .btngroup-select {
-    @apply bg-white shadow-sm text-blue-500 inline-block rounded-md px-4 py-2 text-sm focus:relative
+    @apply bg-white shadow-sm inline-block rounded-md px-4 py-2 text-sm focus:relative
   }
 
   .btngroup-unselect {

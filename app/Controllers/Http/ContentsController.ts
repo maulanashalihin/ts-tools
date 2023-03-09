@@ -59,8 +59,12 @@ export default class ContentsController {
 
     if(user)
     {
-      const contents = await Database.from("contents").orderBy("id","desc").limit(50).where("status", params.id)
-     
+      if(params.id == 'pending') {
+        const contents = await Database.from("contents").orderBy("id","asc").where("status", params.id)
+        return inertia.render("omoo-contents-admins",{contents})
+      }
+
+      const contents = await Database.from("contents").orderBy("id","desc").where("status", params.id)
       return inertia.render("omoo-contents-admins",{contents})
 
       
