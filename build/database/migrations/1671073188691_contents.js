@@ -27,6 +27,7 @@ class default_1 extends Schema_1.default {
             table.integer("point").defaultTo(0).index();
             table.string("status").defaultTo("pending").index();
             table.bigInteger("created").index();
+            table.string("publish_date").index();
         });
     }
     async down() {

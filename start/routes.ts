@@ -96,7 +96,9 @@ Route.get('/login', async ({ inertia,auth,response }) => {
 
     Route.get("/omoo-contents/:id","ContentsController.show")
 
-    Route.put("/omoo-contents/:id","ContentsController.update")
+    Route.put("/omoo-contents/:id","ContentsController.update") 
+
+    Route.put("/omoo-contents/:id/status","ContentsController.status") 
 
     Route.put("/make-official-channel/:id","ChannelsController.makeOfficial")
 

@@ -53,6 +53,12 @@ class ContentsController {
     async update({ request, params }) {
         await Database_1.default.from("contents").where('id', params.id).update(request.except(['id']));
     }
+    async status({ request, params }) {
+        await Database_1.default.from("contents").where('id', params.id).update({
+            status: request.input("status"),
+            publish_date: Date.now().toString()
+        });
+    }
     async like({ params }) {
         await Database_1.default.from("contents").where('id', params.id).increment({ likes: 1, point: 1 });
         return "OK";
@@ -93,7 +99,7 @@ class ContentsController {
         return contents;
     }
     async latest({}) {
-        const contents = await Database_1.default.from("contents").where("status", "approved").orderBy("id", "desc").limit(20);
+        const contents = await Database_1.default.from("contents").where("status", "approved").orderBy("publish_date", "desc").limit(20);
         return contents;
     }
     async trending({}) {

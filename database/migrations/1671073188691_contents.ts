@@ -24,6 +24,7 @@ export default class extends BaseSchema {
        * Uses timestamptz for PostgreSQL and DATETIME2 for MSSQL
        */
       table.bigInteger("created").index()
+      table.string("publish_date").defaultTo("1678417020813").index()
     })
   }
 

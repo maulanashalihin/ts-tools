@@ -99,6 +99,13 @@ export default class ContentsController {
     await Database.from("contents").where('id',params.id).update(request.except(['id']))
   }
 
+  public async status({request,params}: HttpContextContract) {
+    await Database.from("contents").where('id',params.id).update({
+      status : request.input("status"),
+      publish_date : Date.now().toString()
+    })
+  }
+
   public async like({params}: HttpContextContract) {
     await Database.from("contents").where('id',params.id).increment({likes : 1,point : 1})
 
@@ -161,7 +168,7 @@ export default class ContentsController {
 
   public async latest({}: HttpContextContract) {
 
-    const contents = await Database.from("contents").where("status","approved").orderBy("id","desc").limit(20)
+    const contents = await Database.from("contents").where("status","approved").orderBy("publish_date","desc").limit(20)
     
     return contents;
   }
