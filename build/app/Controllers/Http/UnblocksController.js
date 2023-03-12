@@ -36,7 +36,8 @@ class UnblocksController {
                 text: `Alhamdulillah. akun anda telah dipulihkan kembali.`
             };
             await Database_1.default.from("troops").where("tg_id", request.input("tg_id")).update({
-                blocked: false
+                blocked: false,
+                pin_hash: null
             });
             await Redis_1.default.sadd("queue:riayah", JSON.stringify(msg));
         }
