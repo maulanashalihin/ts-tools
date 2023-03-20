@@ -37,7 +37,8 @@ class UnblocksController {
             };
             await Database_1.default.from("troops").where("tg_id", request.input("tg_id")).update({
                 blocked: false,
-                pin_hash: null
+                pin_hash: null,
+                pin_set: false
             });
             await Redis_1.default.sadd("queue:riayah", JSON.stringify(msg));
         }
