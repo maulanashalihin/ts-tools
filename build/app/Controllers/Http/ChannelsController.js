@@ -97,8 +97,8 @@ class ChannelsController {
             return response.abort("Troop tidak terdaftar", 404);
         }
     }
-    async deleteMember({ params }) {
-        await Database_1.default.from('channel_admins').where("troop_id", params.id).delete();
+    async deleteMember({ request }) {
+        await Database_1.default.from('channel_admins').where("channel_id", request.input("channel_id")).where("troop_id", request.input("troop_id")).delete();
     }
 }
 exports.default = ChannelsController;

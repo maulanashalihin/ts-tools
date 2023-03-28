@@ -40,7 +40,10 @@
   function deleteMember(member) {
     if (member) {
       admins = admins.filter((item) => item.id != member.id);
-      axios.delete(`/channel/${member.id}/members`);
+      axios.post(`/channel/members`,{
+        channel_id : channel.id,
+        troop_id : member.id
+      });
     }
   }
 

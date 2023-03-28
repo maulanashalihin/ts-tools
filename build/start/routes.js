@@ -87,7 +87,7 @@ Route_1.default.group(() => {
     Route_1.default.get("/channel/:id/edit", "ChannelsController.edit");
     Route_1.default.put("/channel/:id", "ChannelsController.update");
     Route_1.default.post("/channel/:id/members", "ChannelsController.members");
-    Route_1.default.delete("/channel/:id/members", "ChannelsController.deleteMember");
+    Route_1.default.post("/channel/members", "ChannelsController.deleteMember");
     Route_1.default.resource("/channel/:channel_id/content", "ContentsController");
     Route_1.default.post('/upload', "UploadsController.store");
     Route_1.default.post('/tsq-upload', "TsqUploadsController.store");

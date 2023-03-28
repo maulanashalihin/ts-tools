@@ -180,8 +180,8 @@ export default class ChannelsController {
     }
   }
 
-  public async deleteMember({params}: HttpContextContract) {
+  public async deleteMember({request}: HttpContextContract) {
     
-    await Database.from('channel_admins').where("troop_id",params.id).delete()
+    await Database.from('channel_admins').where("channel_id",request.input("channel_id")).where("troop_id",request.input("troop_id")).delete()
   }
 }

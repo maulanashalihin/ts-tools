@@ -188,7 +188,7 @@ Route.get('/login', async ({ inertia,auth,response }) => {
 
     Route.post("/channel/:id/members","ChannelsController.members")
 
-    Route.delete("/channel/:id/members","ChannelsController.deleteMember")
+    Route.post("/channel/members","ChannelsController.deleteMember")
 
     Route.resource("/channel/:channel_id/content","ContentsController")
 
