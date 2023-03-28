@@ -116,6 +116,8 @@ Route.get('/login', async ({ inertia,auth,response }) => {
 
     Route.get("/bank-tsaqofah/:id/review","BankTsaqofahsController.show")
 
+    Route.post("/admin/channel/:id/members","ChannelsController.members")
+
 
     Route.get("/unblocks","UnblocksController.index")
     Route.put("/unblocks/:id","UnblocksController.update")

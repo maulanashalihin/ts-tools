@@ -50,6 +50,7 @@ Route_1.default.group(() => {
     Route_1.default.post("/test-api", "MessagesController.testApi");
     Route_1.default.get("/bank-tsaqofah/admin", "BankTsaqofahsController.indexAdmin");
     Route_1.default.get("/bank-tsaqofah/:id/review", "BankTsaqofahsController.show");
+    Route_1.default.post("/admin/channel/:id/members", "ChannelsController.members");
     Route_1.default.get("/unblocks", "UnblocksController.index");
     Route_1.default.put("/unblocks/:id", "UnblocksController.update");
     Route_1.default.post('/riayah/upload', "RiayahsController.upload");

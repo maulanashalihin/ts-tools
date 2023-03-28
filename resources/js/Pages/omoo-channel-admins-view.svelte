@@ -12,6 +12,25 @@
     created: Date.now(),
   };
 
+  let new_member;
+
+  function addNewMember() {
+    if (new_member) {
+      axios
+        .post(`/admin/channel/${channel.id}/members`, {
+          tg_id: new_member,
+        })
+        .then(
+          (response) => {
+            admins = [...admins, response.data];
+          },
+          (error) => {
+            alert(error.response.data);
+          }
+        );
+    }
+  }
+
   export let admins;
 </script>
 
@@ -166,6 +185,7 @@
         <!-- END User Profile -->
       </div>
       <div class="space-y-8 mt-10">
+        
         <!-- User Profile -->
         <div class="md:flex md:space-x-5">
           <!-- User Profile Info -->
@@ -179,8 +199,43 @@
           </div>
           <!-- END User Profile Info -->
 
+          
+
           <!-- Card: User Profile -->
           <div class="flex flex-col      overflow-hidden md:w-2/3">
+            <form class="mb-3" on:submit|preventDefault={addNewMember}>
+              <!-- Card -->
+              <div
+                class="flex flex-col rounded shadow-sm bg-white overflow-hidden"
+              >
+                <!-- Card Body -->
+                <div
+                  class="p-5 lg:p-6 grow w-full border-l-4 border-orange-300"
+                >
+                  <h3 class="text-lg font-semibold mb-1">Tambah Pengurus</h3>
+  
+                  <div
+                    class="space-y-2 sm:space-y-0 sm:flex sm:space-x-2 md:w-1/2"
+                  >
+                    <input
+                      bind:value={new_member}
+                      class="block px-2 border border-gray-200 rounded py-2 leading-5 text-sm w-full focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
+                      type="text"
+                      name="tg_id"
+                      placeholder="Masukan Telegram ID"
+                    />
+                    <button
+                      type="submit"
+                      class="inline-flex justify-center items-center space-x-2 border font-semibold focus:outline-none px-3 py-2 leading-5 text-sm rounded border-orange-200 bg-orange-200 text-orange-700 hover:text-orange-700 hover:bg-orange-300 hover:border-orange-300 focus:ring focus:ring-orange-500 focus:ring-opacity-50 active:bg-orange-200"
+                    >
+                      Submit
+                    </button>
+                  </div>
+                </div>
+                <!-- END Card Body -->
+              </div>
+              <!-- END Card -->
+            </form>
             <!-- Responsive Table Container -->
             <!-- Form Action with Input -->
 

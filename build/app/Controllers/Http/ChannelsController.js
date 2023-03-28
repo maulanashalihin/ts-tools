@@ -76,7 +76,7 @@ class ChannelsController {
     }
     async destroy({}) { }
     async members({ params, request, response }) {
-        const troop = await Database_1.default.from("troops").where("phone", request.input("phone")).select(['twitter_username', 'id']).first();
+        const troop = await Database_1.default.from("troops").where("tg_id", request.input("tg_id")).select(['twitter_username', 'id']).first();
         if (troop) {
             const check = await Database_1.default.from("channel_admins").where({
                 troop_id: troop.id,

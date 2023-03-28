@@ -153,7 +153,7 @@ export default class ChannelsController {
   public async destroy({}: HttpContextContract) {}
 
   public async members({params,request,response}: HttpContextContract) {
-    const troop = await Database.from("troops").where("phone",request.input("phone")).select(['twitter_username','id']).first();
+    const troop = await Database.from("troops").where("tg_id",request.input("tg_id")).select(['twitter_username','id']).first();
  
     if(troop)
     {

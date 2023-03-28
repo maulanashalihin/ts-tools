@@ -24,7 +24,7 @@
     if (new_member) {
       axios
         .post(`/channel/${channel.id}/members`, {
-          phone: validatePhone(new_member),
+          tg_id: new_member,
         })
         .then(
           (response) => {
@@ -355,13 +355,13 @@
                   <div
                     class="space-y-2 sm:space-y-0 sm:flex sm:space-x-2 md:w-1/2"
                   >
-                    <input
-                      bind:value={new_member}
-                      class="block px-2 border border-gray-200 rounded py-2 leading-5 text-sm w-full focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
-                      type="number"
-                      name="phone"
-                      placeholder="Masukan Nomor HP"
-                    />
+                  <input
+                  bind:value={new_member}
+                  class="block px-2 border border-gray-200 rounded py-2 leading-5 text-sm w-full focus:border-indigo-500 focus:ring focus:ring-indigo-500 focus:ring-opacity-50"
+                  type="text"
+                  name="tg_id"
+                  placeholder="Masukan Telegram ID"
+                />
                     <button
                       type="submit"
                       class="inline-flex justify-center items-center space-x-2 border font-semibold focus:outline-none px-3 py-2 leading-5 text-sm rounded border-orange-200 bg-orange-200 text-orange-700 hover:text-orange-700 hover:bg-orange-300 hover:border-orange-300 focus:ring focus:ring-orange-500 focus:ring-opacity-50 active:bg-orange-200"
