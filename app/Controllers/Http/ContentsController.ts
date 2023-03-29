@@ -161,28 +161,28 @@ export default class ContentsController {
 
   public async omoo({}: HttpContextContract) {
 
-    const contents = await Database.from("contents").where("status","approved").where("is_omoo",true).orderBy("id","desc").limit(20)
+    const contents = await Database.from("contents").where("status","approved").where("is_omoo",true).orderBy("id","desc").limit(100)
     
     return contents;
   }
 
   public async latest({}: HttpContextContract) {
 
-    const contents = await Database.from("contents").where("status","approved").orderBy("publish_date","desc").limit(20)
+    const contents = await Database.from("contents").where("status","approved").orderBy("publish_date","desc").limit(100)
     
     return contents;
   }
 
   public async trending({}: HttpContextContract) {
 
-    const contents = await Database.from("contents").where("status","approved").where("created",">",dayjs().subtract(7,'day').valueOf()).orderBy("point","desc").limit(20)
+    const contents = await Database.from("contents").where("status","approved").where("created",">",dayjs().subtract(7,'day').valueOf()).orderBy("point","desc").limit(100)
     
     return contents;
   }
 
   public async official({}: HttpContextContract) {
 
-    const contents = await Database.from("contents").where("status","approved").where("category","Official").orderBy("id","desc").limit(20)
+    const contents = await Database.from("contents").where("status","approved").where("category","Official").orderBy("id","desc").limit(100)
 
     return contents;
   }

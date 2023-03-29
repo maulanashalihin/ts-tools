@@ -95,19 +95,19 @@ class ContentsController {
     }
     async destroy({}) { }
     async omoo({}) {
-        const contents = await Database_1.default.from("contents").where("status", "approved").where("is_omoo", true).orderBy("id", "desc").limit(20);
+        const contents = await Database_1.default.from("contents").where("status", "approved").where("is_omoo", true).orderBy("id", "desc").limit(100);
         return contents;
     }
     async latest({}) {
-        const contents = await Database_1.default.from("contents").where("status", "approved").orderBy("publish_date", "desc").limit(20);
+        const contents = await Database_1.default.from("contents").where("status", "approved").orderBy("publish_date", "desc").limit(100);
         return contents;
     }
     async trending({}) {
-        const contents = await Database_1.default.from("contents").where("status", "approved").where("created", ">", (0, dayjs_1.default)().subtract(7, 'day').valueOf()).orderBy("point", "desc").limit(20);
+        const contents = await Database_1.default.from("contents").where("status", "approved").where("created", ">", (0, dayjs_1.default)().subtract(7, 'day').valueOf()).orderBy("point", "desc").limit(100);
         return contents;
     }
     async official({}) {
-        const contents = await Database_1.default.from("contents").where("status", "approved").where("category", "Official").orderBy("id", "desc").limit(20);
+        const contents = await Database_1.default.from("contents").where("status", "approved").where("category", "Official").orderBy("id", "desc").limit(100);
         return contents;
     }
 }
