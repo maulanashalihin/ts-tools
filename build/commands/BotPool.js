@@ -8,8 +8,6 @@ const Redis_1 = __importDefault(global[Symbol.for('ioc.use')]("Adonis/Addons/Red
 const Database_1 = __importDefault(global[Symbol.for('ioc.use')]("Adonis/Lucid/Database"));
 const uuid_1 = require("uuid");
 const Bot_1 = __importDefault(global[Symbol.for('ioc.use')]("App/Services/Bot"));
-const Application_1 = __importDefault(global[Symbol.for('ioc.use')]("Adonis/Core/Application"));
-const fs_1 = __importDefault(require("fs"));
 class BotPool extends standalone_1.BaseCommand {
     async run() {
         Bot_1.default.on('message', async (msg) => {
@@ -72,21 +70,6 @@ class BotPool extends standalone_1.BaseCommand {
             }
         });
         console.log("bot pool is running");
-        setInterval(async () => {
-            for (let i = 0; i < 10; i++) {
-                const data_ = await Redis_1.default.spop("queue:riayah");
-                if (data_) {
-                    const data = JSON.parse(data_);
-                    if (data.file) {
-                        const stream = fs_1.default.createReadStream(Application_1.default.tmpPath('uploads') + "/" + data.file);
-                        Bot_1.default.sendPhoto(data.tg_id, stream, { caption: data.text });
-                    }
-                    else {
-                        Bot_1.default.sendMessage(data.tg_id, data.text);
-                    }
-                }
-            }
-        }, 1000);
     }
 }
 exports.default = BotPool;

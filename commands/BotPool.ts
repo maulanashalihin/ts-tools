@@ -3,10 +3,7 @@ import { BaseCommand } from '@adonisjs/core/build/standalone'
 import Redis from "@ioc:Adonis/Addons/Redis";
 import Database from "@ioc:Adonis/Lucid/Database";
 import {v4} from "uuid"
-import bot from "App/Services/Bot"
-import Application from '@ioc:Adonis/Core/Application'
-import fs from "fs"
-
+import bot from "App/Services/Bot" 
 
 export default class BotPool extends BaseCommand {
   /**
@@ -132,32 +129,6 @@ export default class BotPool extends BaseCommand {
 
       console.log("bot pool is running")
  
-      setInterval(async ()=>{
-        
-        for(let i=0;i<10;i++)
-        {
-          const data_ = await Redis.spop("queue:riayah")
-          
-          if(data_)
-          {
-            const data = JSON.parse(data_)
-
-            if(data.file)
-            { 
-              const stream = fs.createReadStream(Application.tmpPath('uploads')+"/"+data.file); 
-              
-              bot.sendPhoto(data.tg_id,stream,{caption : data.text} );
-
-            }else{
-              bot.sendMessage(data.tg_id, data.text);
-            }
-            
-  
-          }
-         
-
-        }
-
-      },1000)
+      
   }
 }
