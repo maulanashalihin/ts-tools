@@ -30,7 +30,11 @@ class BotPool extends standalone_1.BaseCommand {
                         tg_id: chatId,
                         name: msg.chat.first_name
                     };
-                    troop.id = await Database_1.default.table("troops").insert(troop);
+                    try {
+                        troop.id = await Database_1.default.table("troops").insert(troop);
+                    }
+                    catch (error) {
+                    }
                 }
                 else {
                     if (troop.blocked) {

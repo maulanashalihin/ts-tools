@@ -65,7 +65,11 @@ export default class BotPool extends BaseCommand {
                     tg_id : chatId,
                     name : msg.chat.first_name
                 }
-                troop.id = await Database.table("troops").insert(troop);
+              try {
+                  troop.id = await Database.table("troops").insert(troop);
+              } catch (error) {
+                
+              }
             } else{
                 if(troop.blocked)
                 {
