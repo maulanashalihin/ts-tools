@@ -6,6 +6,7 @@
 
   import Layouts from "./../Components/ts-layouts.svelte";
   import StratAlert from "../Components/StratAlert.svelte";
+  import Dropzone from "../Components/Dropzone.svelte";
 
   export let channel;
   export let strat;
@@ -36,8 +37,7 @@
 
   let uploadProgress = 0;
 
-  async function handleChange(e) {
-    const files = e.target.files;
+  async function handleChange(files) { 
 
     let type = files[0].type.split("/")[0];
 
@@ -117,32 +117,7 @@
   <div class="container max-w-xl mx-auto p-4 lg:p-8">
     <!-- svelte-ignore a11y-click-events-have-key-events -->
     {#if content.type == "text" && uploadProgress == 0}
-      <div
-        on:click={() => {
-          document.querySelector("#uploader").click();
-        }}
-        class="border-4 cursor-pointer border-dashed p-6 flex justify-center"
-      >
-        <div>
-          <div class="flex justify-center">
-            <svg
-              xmlns="http://www.w3.org/2000/svg"
-              fill="none"
-              viewBox="0 0 24 24"
-              stroke-width="1.5"
-              stroke="currentColor"
-              class="w-6 h-6"
-            >
-              <path
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"
-              />
-            </svg>
-          </div>
-          <div class="text-center mt-3">Upload Gambar/Carousel/Video</div>
-        </div>
-      </div>
+      <Dropzone on:change={(e)=>{handleChange(e.detail)}} subtitle="Upload Gambar/Carousel/Video"></Dropzone>
     {/if}
 
     {#if uploadProgress}
@@ -213,32 +188,9 @@
         />
       {:else}
         <!-- svelte-ignore a11y-click-events-have-key-events -->
-        <div
-          on:click={() => {
-            document.querySelector("#uploader").click();
-          }}
-          class="border-4 mt-8 cursor-pointer border-dashed p-6 flex justify-center"
-        >
-          <div>
-            <div class="flex justify-center">
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                fill="none"
-                viewBox="0 0 24 24"
-                stroke-width="1.5"
-                stroke="currentColor"
-                class="w-6 h-6"
-              >
-                <path
-                  stroke-linecap="round"
-                  stroke-linejoin="round"
-                  d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5m-13.5-9L12 3m0 0l4.5 4.5M12 3v13.5"
-                />
-              </svg>
-            </div>
-            <div class="text-center mt-3">Upload Thumbnail Video</div>
-          </div>
-        </div>
+       <div class="mt-4">
+        <Dropzone on:change={(e)=>{handleChange(e.detail)}}   subtitle="Upload Thumbnail Video"></Dropzone>
+       </div>
       {/if}
     {/if}
 
@@ -254,10 +206,7 @@
         />
       </div>
       <div class="mt-6">
-        <label>
-          <input type="checkbox" bind:checked={content.is_omoo} />
-          <span class="ml-1">Sesuai Strat Plan Omoo</span>
-        </label>
+        
         {#if strat}
           <div class="mt-2">
             <StratAlert {strat} />

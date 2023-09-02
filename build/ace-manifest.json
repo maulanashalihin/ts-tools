@@ -12,6 +12,18 @@
       "aliases": [],
       "flags": []
     },
+    "generate:token": {
+      "settings": {
+        "loadApp": true,
+        "stayAlive": false
+      },
+      "commandPath": "./commands/GenerateToken",
+      "commandName": "generate:token",
+      "description": "",
+      "args": [],
+      "aliases": [],
+      "flags": []
+    },
     "reminder:round": {
       "settings": {
         "loadApp": true,

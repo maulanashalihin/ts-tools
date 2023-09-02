@@ -102,6 +102,7 @@ export default class ContentsController {
   public async status({request,params}: HttpContextContract) {
     await Database.from("contents").where('id',params.id).update({
       status : request.input("status"),
+      is_omoo : request.input("is_omoo"),
       publish_date : Date.now().toString()
     })
   }
