@@ -16,8 +16,7 @@
   contents = contents;
 
   function UpdateStatus(post, status) {
-    post.status = status;
-    post.is_omoo = true;
+    post.status = status; 
     axios.put("/omoo-contents/" + post.id+"/status", { status: status, is_omoo : post.is_omoo });
     contents = contents;
   }
