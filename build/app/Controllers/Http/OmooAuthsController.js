@@ -107,7 +107,16 @@ class OmooAuthsController {
     async check({ auth }) {
         const check = await auth.use("api").check();
         if (check) {
-            return await auth.use("api").user;
+            const user = await auth.use("api").user;
+            ;
+            if (user) {
+                await Database_1.default.table("open_rates").insert({
+                    date: Date.now().toString(),
+                    city: user.city,
+                    troop_id: user.id
+                });
+            }
+            return user;
         }
         else {
             return check;

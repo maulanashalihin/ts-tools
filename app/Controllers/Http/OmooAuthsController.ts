@@ -215,7 +215,23 @@ export default class OmooAuthsController {
 
     if(check)
     {
-        return  await auth.use("api").user;
+
+      
+        const user = await auth.use("api").user;;
+
+      
+        if(user)
+        {
+          await Database.table("open_rates").insert({
+            date : Date.now().toString(),
+              // @ts-ignore
+            city : user.city, 
+            troop_id : user.id
+          })
+        }
+       
+
+        return  user
     }else{
         return check;
     }

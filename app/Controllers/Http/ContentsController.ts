@@ -128,6 +128,12 @@ export default class ContentsController {
      
       await Database.from("contents").where('id',params.id).increment({share : 1,point : 1})
       await Database.from("troops").where("id",user.id).increment({score : 1})
+      await Database.table("share_rates").insert({
+        // @ts-ignore
+        city : user.city,
+        date : Date.now(),
+        troop_id : user.id
+      }) 
       await Database.table("omoo_histories").insert({
         troop_id : user.id,
         notes : `${user.name} share konten omoo dari ${request.input("channel_name")}`,

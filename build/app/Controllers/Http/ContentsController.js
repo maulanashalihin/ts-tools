@@ -73,6 +73,11 @@ class ContentsController {
         if (user) {
             await Database_1.default.from("contents").where('id', params.id).increment({ share: 1, point: 1 });
             await Database_1.default.from("troops").where("id", user.id).increment({ score: 1 });
+            await Database_1.default.table("share_rates").insert({
+                city: user.city,
+                date: Date.now(),
+                troop_id: user.id
+            });
             await Database_1.default.table("omoo_histories").insert({
                 troop_id: user.id,
                 notes: `${user.name} share konten omoo dari ${request.input("channel_name")}`,
