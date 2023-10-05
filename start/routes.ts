@@ -86,7 +86,7 @@ Route.get('/login', async ({ inertia,auth,response }) => {
 
     Route.get("/messages","MessagesController.index")
 
-    
+    Route.get("/omoo-stats","StatsController.index")
 
     Route.get("/omoo-channels","ChannelsController.admins")
 
