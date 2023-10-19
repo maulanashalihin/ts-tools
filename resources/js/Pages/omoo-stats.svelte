@@ -11,6 +11,14 @@
   export let daily_share_rate_unique;
   export let share_rate_per_city;
 
+  open_rate_per_city = open_rate_per_city.sort((a, b) => {
+    return b.total - a.total;
+  });
+
+  share_rate_per_city = share_rate_per_city.sort((a, b) => {
+    return b.total - a.total;
+  });
+
   open_rate_per_city = open_rate_per_city.shift();
   share_rate_per_city = share_rate_per_city.shift();
 
@@ -88,15 +96,11 @@
         share_rate_cities_object[item.city] = item.total;
       });
 
-      let cities = open_rate_per_city
-        .sort((a, b) => {
-          return b.total - a.total;
-        })
-        .slice(0, 25);
+      let cities = open_rate_per_city.slice(0, 25);
 
-        let cities_share = cities.map(item=>share_rate_cities_object[item.city] || 0)
-
-
+      let cities_share = cities.map(
+        (item) => share_rate_cities_object[item.city] || 0
+      );
 
       new Chart(ctx, {
         type: "bar",
@@ -112,7 +116,7 @@
               label: "# Share Rate by Cities",
               data: cities_share,
               borderWidth: 1,
-            }
+            },
           ],
         },
         options: {
