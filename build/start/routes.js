@@ -37,6 +37,7 @@ Route_1.default.group(() => {
     Route_1.default.get("/download-troops", "TroopsController.download");
     Route_1.default.get("/messages", "MessagesController.index");
     Route_1.default.get("/omoo-stats", "StatsController.index");
+    Route_1.default.get("/omoo-stats/data", "StatsController.getData");
     Route_1.default.get("/omoo-channels", "ChannelsController.admins");
     Route_1.default.get("/omoo-channels/:id", "ChannelsController.adminView");
     Route_1.default.get("/omoo-contents", "ContentsController.index");

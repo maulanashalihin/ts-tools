@@ -88,6 +88,8 @@ Route.get('/login', async ({ inertia,auth,response }) => {
 
     Route.get("/omoo-stats","StatsController.index")
 
+    Route.get("/omoo-stats/data","StatsController.getData")
+
     Route.get("/omoo-channels","ChannelsController.admins")
 
     Route.get("/omoo-channels/:id","ChannelsController.adminView")

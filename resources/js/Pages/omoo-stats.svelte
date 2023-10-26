@@ -1,26 +1,26 @@
 <script>
   import dayjs from "dayjs";
   import { inertia, Link } from "@inertiajs/svelte";
-  import { t } from "../Language/lang";
   import Layouts from "../Components/layouts.svelte";
+  import { onMount } from "svelte";
+  import axios from "axios";
 
-  export let daily_open_rate;
-  export let daily_open_rate_unique;
-  export let open_rate_per_city;
-  export let daily_share_rate;
-  export let daily_share_rate_unique;
-  export let share_rate_per_city;
+  let daily_open_rate = [];
+  let daily_open_rate_unique = [];
+  let open_rate_per_city = [];
+  let daily_share_rate = [];
+  let daily_share_rate_unique = [];
+  let share_rate_per_city = [];
 
-  open_rate_per_city = open_rate_per_city.sort((a, b) => {
-    return b.total - a.total;
-  });
+  function ProcessData() {
+    open_rate_per_city = open_rate_per_city.sort((a, b) => {
+      return b.total - a.total;
+    });
 
-  share_rate_per_city = share_rate_per_city.sort((a, b) => {
-    return b.total - a.total;
-  });
-
-  open_rate_per_city = open_rate_per_city.shift();
-  share_rate_per_city = share_rate_per_city.shift();
+    share_rate_per_city = share_rate_per_city.sort((a, b) => {
+      return b.total - a.total;
+    });
+  }
 
   let model = "table";
 
@@ -129,6 +129,52 @@
       });
     }, 100);
   }
+
+  function LoadData(date1,date2)
+  {
+    axios
+            .get("/omoo-stats/data", {
+              params: {
+                from: date1.format("YYYY-MM-DD"),
+                to: date2.format("YYYY-MM-DD"),
+              },
+            })
+            .then((response) => {
+              daily_open_rate = response.data.daily_open_rate;
+              daily_open_rate_unique = response.data.daily_open_rate_unique;
+              open_rate_per_city = response.data.open_rate_per_city.filter(
+                (item) => item.city != null
+              );
+              daily_share_rate = response.data.daily_share_rate;
+              daily_share_rate_unique = response.data.daily_share_rate_unique;
+              share_rate_per_city = response.data.share_rate_per_city.filter(
+                (item) => item.city != null
+              );
+
+              ProcessData();
+            });
+  }
+  onMount(() => {
+    LoadData(dayjs().subtract(7, "day"), dayjs());
+
+    const picker = new Litepicker({
+      element: document.getElementById("start-date"), // Start date input
+      elementEnd: document.getElementById("end-date"), // End date input
+      singleMode: false, // Enable date range selection
+      startDate: dayjs().subtract(7, "day").format("YYYY-MM-DD"),
+      endDate: dayjs().format("YYYY-MM-DD"),
+      format: "YYYY-MM-DD", // Date format
+      autoApply: true, // Apply date selection automatically when the end date is selected
+      setup: (picker) => {
+        
+        picker.on("selected", (date1, date2) => {
+          // some action
+          LoadData(date1,date2);
+          
+        });
+      },
+    });
+  });
 </script>
 
 <Layouts>
@@ -156,6 +202,10 @@
 -->
 
     <div>
+      <div class="mb-4">
+        <input type="text" id="start-date" placeholder="Start Date" />
+        <input type="text" id="end-date" placeholder="End Date" />
+      </div>
       <div class="mb-5">
         <nav class="flex gap-6" aria-label="Tabs">
           <button
