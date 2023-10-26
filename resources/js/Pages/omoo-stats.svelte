@@ -12,16 +12,6 @@
   let daily_share_rate_unique = [];
   let share_rate_per_city = [];
 
-  function ProcessData() {
-    open_rate_per_city = open_rate_per_city.sort((a, b) => {
-      return b.total - a.total;
-    });
-
-    share_rate_per_city = share_rate_per_city.sort((a, b) => {
-      return b.total - a.total;
-    });
-  }
-
   let model = "table";
 
   function renderChart() {
@@ -130,29 +120,30 @@
     }, 100);
   }
 
-  function LoadData(date1,date2)
-  {
+  function LoadData(date1, date2) {
     axios
-            .get("/omoo-stats/data", {
-              params: {
-                from: date1.format("YYYY-MM-DD"),
-                to: date2.format("YYYY-MM-DD"),
-              },
-            })
-            .then((response) => {
-              daily_open_rate = response.data.daily_open_rate;
-              daily_open_rate_unique = response.data.daily_open_rate_unique;
-              open_rate_per_city = response.data.open_rate_per_city.filter(
-                (item) => item.city != null
-              );
-              daily_share_rate = response.data.daily_share_rate;
-              daily_share_rate_unique = response.data.daily_share_rate_unique;
-              share_rate_per_city = response.data.share_rate_per_city.filter(
-                (item) => item.city != null
-              );
-
-              ProcessData();
-            });
+      .get("/omoo-stats/data", {
+        params: {
+          from: date1.format("YYYY-MM-DD"),
+          to: date2.format("YYYY-MM-DD"),
+        },
+      })
+      .then((response) => {
+        daily_open_rate = response.data.daily_open_rate;
+        daily_open_rate_unique = response.data.daily_open_rate_unique;
+        open_rate_per_city = response.data.open_rate_per_city
+          .filter((item) => item.city != null)
+          .sort((a, b) => {
+            return b.total - a.total;
+          });
+        daily_share_rate = response.data.daily_share_rate;
+        daily_share_rate_unique = response.data.daily_share_rate_unique;
+        share_rate_per_city = response.data.share_rate_per_city
+          .filter((item) => item.city != null)
+          .sort((a, b) => {
+            return b.total - a.total;
+          });
+      });
   }
   onMount(() => {
     LoadData(dayjs().subtract(7, "day"), dayjs());
@@ -166,11 +157,9 @@
       format: "YYYY-MM-DD", // Date format
       autoApply: true, // Apply date selection automatically when the end date is selected
       setup: (picker) => {
-        
         picker.on("selected", (date1, date2) => {
           // some action
-          LoadData(date1,date2);
-          
+          LoadData(date1, date2);
         });
       },
     });
