@@ -10,8 +10,8 @@ class StatsController {
         return inertia.render("omoo-stats");
     }
     async getData({ request }) {
-        const from = (0, dayjs_1.default)(request.input("from", (0, dayjs_1.default)().subtract(1, 'month'))).valueOf().toString();
-        const to = (0, dayjs_1.default)(request.input("to", (0, dayjs_1.default)())).valueOf().toString();
+        const from = (0, dayjs_1.default)(request.input("from", (0, dayjs_1.default)().subtract(1, 'month'))).add(1, 'day').valueOf().toString();
+        const to = (0, dayjs_1.default)(request.input("to", (0, dayjs_1.default)())).add(1, 'day').valueOf().toString();
         const daily_open_rate = await Database_1.default.from("open_rates").whereBetween("date", [from, to]).select(Database_1.default.raw("DATE_FORMAT(FROM_UNIXTIME(date / 1000),'%Y-%m-%d') AS date_only")).count("* as total").groupBy("date_only");
         const daily_open_rate_unique = await Database_1.default.from("open_rates").whereBetween("date", [from, to]).select(Database_1.default.raw("DATE_FORMAT(FROM_UNIXTIME(date / 1000),'%Y-%m-%d') AS date_only")).countDistinct("troop_id as total").groupBy("date_only");
         const open_rate_per_city = await Database_1.default.from("open_rates").whereBetween("date", [from, to]).select("city").count("* as total").groupBy("city");

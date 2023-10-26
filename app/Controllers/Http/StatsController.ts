@@ -19,9 +19,9 @@ export default class StatsController {
   public async getData({request}: HttpContextContract) {
 
 
-    const from  = dayjs(request.input("from",dayjs().subtract(1,'month'))).valueOf().toString();
+    const from  = dayjs(request.input("from",dayjs().subtract(1,'month'))).add(1,'day').valueOf().toString();
 
-    const to  = dayjs(request.input("to",dayjs())).valueOf().toString();
+    const to  = dayjs(request.input("to",dayjs())).add(1,'day').valueOf().toString();
    
     const daily_open_rate = await Database.from("open_rates").whereBetween("date",[from,to]).select(Database.raw("DATE_FORMAT(FROM_UNIXTIME(date / 1000),'%Y-%m-%d') AS date_only")).count("* as total").groupBy("date_only");
 
