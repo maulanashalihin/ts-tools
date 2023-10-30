@@ -23,6 +23,13 @@ const databaseConfig = {
             healthCheck: false,
             debug: false,
         },
+        sqlite: {
+            client: 'better-sqlite3',
+            connection: {
+                filename: './app/Services/db.sqlite3'
+            },
+            useNullAsDefault: true
+        },
         dev_mysql: {
             client: 'mysql2',
             connection: {

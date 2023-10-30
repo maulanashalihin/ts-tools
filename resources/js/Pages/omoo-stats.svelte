@@ -15,14 +15,19 @@
 
   let events = [];
 
-  let allcity = []
+  let allcity = [];
 
-  let city = ''
+  let city = "";
 
-  let dummy = [{name: "Ram"}, {name: "Shyam"}, {name: "Hari"}, {name: "Krishna"}]
+  let dummy = [
+    { name: "Ram" },
+    { name: "Shyam" },
+    { name: "Hari" },
+    { name: "Krishna" },
+  ];
 
   let model = "table";
-  let act = "7day"
+  let act = "7day";
 
   function renderChart() {
     model = "chart";
@@ -56,7 +61,7 @@
         },
       });
     }, 100);
-    
+
     setTimeout(() => {
       const ctx = document.getElementById("daily_share_rate");
 
@@ -131,7 +136,6 @@
   }
 
   function LoadDataCustom(date1, date2, city) {
-
     axios
       .get("/omoo-stats/datacity", {
         params: {
@@ -141,22 +145,44 @@
         },
       })
       .then((response) => {
-
         daily_open_rate = response.data.open_rate;
-        daily_open_rate.unshift({date_only: 'Total', total: response.data.open_rate.reduce((sum, currentObj) => sum + currentObj.total, 0)})
+        daily_open_rate.unshift({
+          date_only: "Total",
+          total: response.data.open_rate.reduce(
+            (sum, currentObj) => sum + currentObj.total,
+            0
+          ),
+        });
 
         daily_open_rate_unique = response.data.open_rate_unique;
-        daily_open_rate_unique.unshift({date_only: 'Total', total: response.data.open_rate_unique.reduce((sum, currentObj) => sum + currentObj.total, 0)})
+        daily_open_rate_unique.unshift({
+          date_only: "Total",
+          total: response.data.open_rate_unique.reduce(
+            (sum, currentObj) => sum + currentObj.total,
+            0
+          ),
+        });
 
         daily_share_rate = response.data.share_rate;
-        daily_share_rate.unshift({date_only: 'Total', total: response.data.share_rate.reduce((sum, currentObj) => sum + currentObj.total, 0)})
+        daily_share_rate.unshift({
+          date_only: "Total",
+          total: response.data.share_rate.reduce(
+            (sum, currentObj) => sum + currentObj.total,
+            0
+          ),
+        });
 
         daily_share_rate_unique = response.data.share_rate_unique;
-        daily_share_rate_unique.unshift({date_only: 'Total', total: response.data.share_rate_unique.reduce((sum, currentObj) => sum + currentObj.total, 0)})
-    
-        share_rate_per_city = []
-        open_rate_per_city = []
+        daily_share_rate_unique.unshift({
+          date_only: "Total",
+          total: response.data.share_rate_unique.reduce(
+            (sum, currentObj) => sum + currentObj.total,
+            0
+          ),
+        });
 
+        share_rate_per_city = [];
+        open_rate_per_city = [];
       });
   }
 
@@ -169,33 +195,68 @@
         },
       })
       .then((response) => {
-        console.log(response.data.daily_open_rate)
+        console.log(response.data.daily_open_rate);
         daily_open_rate = response.data.daily_open_rate;
-        daily_open_rate.unshift({date_only: 'Total', total: response.data.daily_open_rate.reduce((sum, currentObj) => sum + currentObj.total, 0)})
+        daily_open_rate.unshift({
+          date_only: "Total",
+          total: response.data.daily_open_rate.reduce(
+            (sum, currentObj) => sum + currentObj.total,
+            0
+          ),
+        });
 
         daily_open_rate_unique = response.data.daily_open_rate_unique;
-        daily_open_rate_unique.unshift({date_only: 'Total', total: response.data.daily_open_rate_unique.reduce((sum, currentObj) => sum + currentObj.total, 0)})
+        daily_open_rate_unique.unshift({
+          date_only: "Total",
+          total: response.data.daily_open_rate_unique.reduce(
+            (sum, currentObj) => sum + currentObj.total,
+            0
+          ),
+        });
 
         open_rate_per_city = response.data.open_rate_per_city
           .filter((item) => item.city != null)
           .sort((a, b) => {
             return b.total - a.total;
           });
-        open_rate_per_city.unshift({city: 'Total', total: response.data.open_rate_per_city.reduce((sum, currentObj) => sum + currentObj.total, 0)})
+        open_rate_per_city.unshift({
+          city: "Total",
+          total: response.data.open_rate_per_city.reduce(
+            (sum, currentObj) => sum + currentObj.total,
+            0
+          ),
+        });
 
         daily_share_rate = response.data.daily_share_rate;
-        daily_share_rate.unshift({date_only: 'Total', total: response.data.daily_share_rate.reduce((sum, currentObj) => sum + currentObj.total, 0)})
+        daily_share_rate.unshift({
+          date_only: "Total",
+          total: response.data.daily_share_rate.reduce(
+            (sum, currentObj) => sum + currentObj.total,
+            0
+          ),
+        });
 
         daily_share_rate_unique = response.data.daily_share_rate_unique;
-        daily_share_rate_unique.unshift({date_only: 'Total', total: response.data.daily_share_rate_unique.reduce((sum, currentObj) => sum + currentObj.total, 0)})
+        daily_share_rate_unique.unshift({
+          date_only: "Total",
+          total: response.data.daily_share_rate_unique.reduce(
+            (sum, currentObj) => sum + currentObj.total,
+            0
+          ),
+        });
 
         share_rate_per_city = response.data.share_rate_per_city
           .filter((item) => item.city != null)
           .sort((a, b) => {
             return b.total - a.total;
           });
-        share_rate_per_city.unshift({city: 'Total', total: response.data.share_rate_per_city.reduce((sum, currentObj) => sum + currentObj.total, 0)})
-    
+        share_rate_per_city.unshift({
+          city: "Total",
+          total: response.data.share_rate_per_city.reduce(
+            (sum, currentObj) => sum + currentObj.total,
+            0
+          ),
+        });
       });
   }
 
@@ -205,32 +266,44 @@
     });
   }
 
-
-
   onMount(() => {
     LoadData(dayjs().subtract(7, "day"), dayjs());
     getCityName();
 
-      const picker = new Litepicker({
-      element: document.getElementById("start-date"), // Start date input
-      elementEnd: document.getElementById("end-date"), // End date input
-      singleMode: false, // Enable date range selection
-      startDate: dayjs().subtract(7, "day").format("YYYY-MM-DD"),
-      endDate: dayjs().format("YYYY-MM-DD"),
-      format: "YYYY-MM-DD", // Date format
-      autoApply: true, // Apply date selection automatically when the end date is selected
-      setup: (picker) => {
-        picker.on("selected", (date1, date2) => {
+    let start_date = dayjs().subtract(7, "day").format("YYYY-MM-DD");
+    let end_date = dayjs().format("YYYY-MM-DD");
+
+    const picker = new easepick.create({
+      element: document.getElementById("datepicker"),
+      css: [
+        "https://cdn.jsdelivr.net/npm/@easepick/core@1.2.1/dist/index.css",
+        "https://cdn.jsdelivr.net/npm/@easepick/range-plugin@1.2.1/dist/index.css",
+      ],
+      plugins: ["RangePlugin"],
+      RangePlugin: {
+        tooltip: true,
+      },
+      setup(picker) {
+        picker.on("select", (e) => {
+          const { end, start } = e.detail;
+
+          start_date = dayjs(start);
+          end_date = dayjs(end);
+
           // some action
-          if(city.length > 0) {
-              LoadDataCustom(date1, date2, city)
-            } else {
-              city = ''
-              LoadData(date1, date2)
+          if (city.length > 0) {
+            LoadDataCustom(start_date, end_date, city);
+          } else {
+            city = "";
+            LoadData(start_date, end_date);
           }
+
+          // do something
         });
       },
     });
+
+    picker.setDateRange(start_date, end_date);
 
   });
 </script>
@@ -260,28 +333,29 @@
 -->
 
     <div>
-
       <div class="mb-4">
-
-        <div class="space-y-2 sm:space-y-0 sm:flex sm:space-x-2 md:w-1/4 rounded-lg">
-
+        <div
+          class="space-y-2 sm:space-y-0 sm:flex sm:space-x-2 md:w-1/4 rounded-lg"
+        >
           <Typeahead
-          hideLabel=true
-          limit={5}
-          placeholder={`Cari nama kota`}
-          data={allcity}
-          extract={(item) => item.name}
-          on:select={(item) => {
-            city = item.detail.selected
-            LoadDataCustom(dayjs().subtract(7, "day"), dayjs(), item.detail.selected)
-          }}
-	        on:clear={() => {
-            city = ''
-            LoadData(dayjs().subtract(7, "day"), dayjs())
-          }}
-      /> 
-     
-    
+            hideLabel="true"
+            limit={5}
+            placeholder={`Cari nama kota`}
+            data={allcity}
+            extract={(item) => item.name}
+            on:select={(item) => {
+              city = item.detail.selected;
+              LoadDataCustom(
+                dayjs().subtract(7, "day"),
+                dayjs(),
+                item.detail.selected
+              );
+            }}
+            on:clear={() => {
+              city = "";
+              LoadData(dayjs().subtract(7, "day"), dayjs());
+            }}
+          />
 
           <!-- <input class="block border border-gray-200 rounded py-2 leading-5 text-sm w-full  p-2" type="text" name="cityname" id="cityname" placeholder="Cari nama kota" />
           <button on:click={() => {
@@ -295,77 +369,67 @@
           }} class="inline-flex justify-center items-center space-x-2 border font-semibold focus:outline-none px-3 py-2 leading-5 text-sm rounded-lg border-emerald-200 bg-emerald-200 text-emerald-700 hover:text-emerald-700 hover:bg-emerald-300 hover:border-emerald-300 focus:ring focus:ring-emerald-500 focus:ring-opacity-50 active:bg-emerald-200">
             Cari
           </button> -->
-        </div> <br>
-        
+        </div>
+        <br />
+
         <button
-            on:click={() => {
-              act = "7day"
-              model = "table"
-              document.getElementById('customdate').classList.add("hidden");
-              if(city.length > 0) {
-                LoadDataCustom(dayjs().subtract(7, "day"), dayjs())
-              } else {
-                LoadData(dayjs().subtract(7, "day"), dayjs())
-              }
-            }}
-            class="{act == "7day"
-              ? 'shrink-0 rounded-lg bg-sky-100 p-2 text-sm font-medium text-sky-600'
-              : ' shrink-0 rounded-lg p-2 text-sm font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-700'}  "
-          >
-            7 Hari
-          </button>
-          <button
-            on:click={() => {
-              act = "30day"
-              model = "table"
-              document.getElementById('customdate').classList.add("hidden");
-              if(city.length > 0) {
-                LoadDataCustom(dayjs().subtract(30, "day"), dayjs())
-              } else {
-                LoadData(dayjs().subtract(30, "day"), dayjs())
-              }
-            }}
-            class="{act == "30day"
-              ? 'shrink-0 rounded-lg bg-sky-100 p-2 text-sm font-medium text-sky-600'
-              : ' shrink-0 rounded-lg p-2 text-sm font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-700'}  "
-          >
-            30 Hari
-          </button>
-          <button
-            on:click={() => {
-              model = "table";
-              act = "custom"
-              document.getElementById('customdate').classList.remove("hidden");
-            }}
-            class="{act == "custom"
-              ? 'shrink-0 rounded-lg bg-sky-100 p-2 text-sm font-medium text-sky-600'
-              : ' shrink-0 rounded-lg p-2 text-sm font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-700'}  "
-          >
-            Custom
-          </button>
-          <br>
+          on:click={() => {
+            act = "7day";
+            model = "table";
+            document.getElementById("customdate").classList.add("hidden");
+            if (city.length > 0) {
+              LoadDataCustom(dayjs().subtract(7, "day"), dayjs());
+            } else {
+              LoadData(dayjs().subtract(7, "day"), dayjs());
+            }
+          }}
+          class="{act == '7day'
+            ? 'shrink-0 rounded-lg bg-sky-100 p-2 text-sm font-medium text-sky-600'
+            : ' shrink-0 rounded-lg p-2 text-sm font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-700'}  "
+        >
+          7 Hari
+        </button>
+        <button
+          on:click={() => {
+            act = "30day";
+            model = "table";
+            document.getElementById("customdate").classList.add("hidden");
+            if (city.length > 0) {
+              LoadDataCustom(dayjs().subtract(30, "day"), dayjs());
+            } else {
+              LoadData(dayjs().subtract(30, "day"), dayjs());
+            }
+          }}
+          class="{act == '30day'
+            ? 'shrink-0 rounded-lg bg-sky-100 p-2 text-sm font-medium text-sky-600'
+            : ' shrink-0 rounded-lg p-2 text-sm font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-700'}  "
+        >
+          30 Hari
+        </button>
+        <button
+          on:click={() => {
+            model = "table";
+            act = "custom";
+            document.getElementById("customdate").classList.remove("hidden");
+          }}
+          class="{act == 'custom'
+            ? 'shrink-0 rounded-lg bg-sky-100 p-2 text-sm font-medium text-sky-600'
+            : ' shrink-0 rounded-lg p-2 text-sm font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-700'}  "
+        >
+          Custom
+        </button>
+        <br />
 
-          <div class="hidden" id="customdate">
-            <br>
-            <div class="flex gap-3"> 
-              
-              <div class="relative">
-                <div class="absolute inset-y-0 left-0 w-10 my-px ml-px flex items-center justify-center pointer-events-none rounded-l-lg text-sky-600 bg-sky-100 border-r ">
-                  <svg class="hi-outline hi-calendar inline-block w-6 h-6" stroke="currentColor" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                </div>
-                <input class="block border border-gray-200 rounded-lg pl-12 py-2 leading-5 text-sm w-full" type="text" id="start-date" placeholder="0,00" />
-              </div>
-
-              <div class="relative">
-                <div class="absolute inset-y-0 left-0 w-10 my-px ml-px flex items-center justify-center pointer-events-none rounded-l-lg text-sky-600 bg-sky-100 border-r">
-                  <svg class="hi-outline hi-calendar inline-block w-6 h-6" stroke="currentColor" fill="none" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 7V3m8 4V3m-9 8h10M5 21h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v12a2 2 0 002 2z"/></svg>
-                </div>
-                <input class="block border border-gray-200 rounded-lg pl-12 py-2 leading-5 text-sm w-full " type="text" id="end-date" placeholder="0,00" />
-              </div>
-
-            </div>
+        <div class="hidden" id="customdate">
+          <br />
+          <div class="flex gap-3">
+            <input
+            class="bg-gray-50 border border-gray-300 outline-none text-gray-900 text-sm rounded-lg focus:ring-cyan-500 focus:border-cyan-500 block w-full p-2.5 placeholder-gray-400"
+            type="text"
+            id="datepicker"
+         />
           </div>
-        
+        </div>
       </div>
       <div class="mb-5">
         <nav class="flex gap-6" aria-label="Tabs">
@@ -460,39 +524,37 @@
 
         <div>
           {#if open_rate_per_city.length > 0}
-          <div class="bg-white p-6">
-            <div class="mb-3 text-lg font-medium">Tingkat Buka Perkota</div>
-            {#each open_rate_per_city as item}
-              <div class="flex justify-between">
-                <div>
-                  {item.city}
+            <div class="bg-white p-6">
+              <div class="mb-3 text-lg font-medium">Tingkat Buka Perkota</div>
+              {#each open_rate_per_city as item}
+                <div class="flex justify-between">
+                  <div>
+                    {item.city}
+                  </div>
+                  <div>
+                    {item.total.toLocaleString("id")}
+                  </div>
                 </div>
-                <div>
-                  {item.total.toLocaleString("id")}
-                </div>
-              </div>
-            {/each}
-          </div>
+              {/each}
+            </div>
           {/if}
         </div>
         <div>
-
-          {#if share_rate_per_city.length > 0} 
-          <div class="bg-white p-6">
-            <div class="mb-3 text-lg font-medium">Tingkat Share Perkota</div>
-            {#each share_rate_per_city as item}
-              <div class="flex justify-between">
-                <div>
-                  {item.city}
+          {#if share_rate_per_city.length > 0}
+            <div class="bg-white p-6">
+              <div class="mb-3 text-lg font-medium">Tingkat Share Perkota</div>
+              {#each share_rate_per_city as item}
+                <div class="flex justify-between">
+                  <div>
+                    {item.city}
+                  </div>
+                  <div>
+                    {item.total.toLocaleString("id")}
+                  </div>
                 </div>
-                <div>
-                  {item.total.toLocaleString("id")}
-                </div>
-              </div>
-            {/each}
-          </div>
+              {/each}
+            </div>
           {/if}
-
         </div>
 
         <!--
@@ -521,16 +583,15 @@
         </div>
 
         {#if open_rate_per_city.length > 0}
-        <div class="bg-white p-6">
-          <div class="mb-3 text-lg font-medium">Sebaran Kota/Kabupaten</div>
-          <div class="flex justify-center">
-            <div class="w-full">
-              <canvas id="sebaran_kota" />
+          <div class="bg-white p-6">
+            <div class="mb-3 text-lg font-medium">Sebaran Kota/Kabupaten</div>
+            <div class="flex justify-center">
+              <div class="w-full">
+                <canvas id="sebaran_kota" />
+              </div>
             </div>
           </div>
-        </div>
         {/if}
-
       </div>
     {/if}
   </div></Layouts

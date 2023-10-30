@@ -27,7 +27,35 @@ class StatsController {
             share_rate_per_city
         };
     }
-    async store({}) { }
+    async getDataCity({ request }) {
+        const from = (0, dayjs_1.default)(request.input("from", (0, dayjs_1.default)().subtract(1, 'month'))).add(1, 'day').valueOf().toString();
+        const to = (0, dayjs_1.default)(request.input("to", (0, dayjs_1.default)())).add(1, 'day').valueOf().toString();
+        const city = request.input("city", "Jakarta");
+        const cityresult = (await Database_1.default.from("open_rates").whereBetween("date", [from, to]).whereILike("city", `%${city}%`).select("city").first()).city;
+        const open_rate = await Database_1.default.from("open_rates").whereBetween("date", [from, to]).where("city", cityresult).select(Database_1.default.raw("DATE_FORMAT(FROM_UNIXTIME(date / 1000),'%Y-%m-%d') AS date_only")).count("* as total").groupBy("date_only");
+        const open_rate_unique = await Database_1.default.from("open_rates").whereBetween("date", [from, to]).where("city", cityresult).select(Database_1.default.raw("DATE_FORMAT(FROM_UNIXTIME(date / 1000),'%Y-%m-%d') AS date_only")).countDistinct("troop_id as total").groupBy("date_only");
+        const share_rate = await Database_1.default.from("share_rates").whereBetween("date", [from, to]).where("city", cityresult).select(Database_1.default.raw("DATE_FORMAT(FROM_UNIXTIME(date / 1000),'%Y-%m-%d') AS date_only")).count("* as total").groupBy("date_only");
+        const share_rate_unique = await Database_1.default.from("share_rates").whereBetween("date", [from, to]).where("city", cityresult).select(Database_1.default.raw("DATE_FORMAT(FROM_UNIXTIME(date / 1000),'%Y-%m-%d') AS date_only")).countDistinct("troop_id as total").groupBy("date_only");
+        return {
+            cityresult,
+            open_rate,
+            open_rate_unique,
+            share_rate,
+            share_rate_unique
+        };
+    }
+    async getCityName({}) {
+        const city = await Database_1.default.from("open_rates").select("city");
+        const cityresult = city.filter((item) => item.city !== null).map((item) => item.city).filter((value, index, self) => self.indexOf(value) === index);
+        cityresult.forEach((item, index) => {
+            cityresult[index] = {
+                name: item,
+            };
+        });
+        return {
+            cityresult
+        };
+    }
     async show({}) { }
     async edit({}) { }
     async update({}) { }
