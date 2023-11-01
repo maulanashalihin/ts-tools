@@ -58,27 +58,24 @@ export default class StatsController {
   
       const to  = dayjs(request.input("to",dayjs())).add(1,'day').valueOf().toString();
   
-      const city = request.input("city", "Jakarta");
-
-      const cityresult = (await Database.from("open_rates").whereBetween("date",[from,to]).whereILike("city",`%${city}%`).select("city").first()).city;
-
+      const city = request.input("city", "Kota Jakarta Timur");
 
       //get open rate per city and fix date
-      const open_rate = await Database.from("open_rates").whereBetween("date",[from,to]).where("city", cityresult).select(Database.raw("DATE_FORMAT(FROM_UNIXTIME(date / 1000),'%Y-%m-%d') AS date_only")).count("* as total").groupBy("date_only");
+      const open_rate = await Database.from("open_rates").whereBetween("date",[from,to]).where("city", city).select(Database.raw("DATE_FORMAT(FROM_UNIXTIME(date / 1000),'%Y-%m-%d') AS date_only")).count("* as total").groupBy("date_only");
 
       //get open rate unique
-      const open_rate_unique = await Database.from("open_rates").whereBetween("date",[from,to]).where("city", cityresult).select(Database.raw("DATE_FORMAT(FROM_UNIXTIME(date / 1000),'%Y-%m-%d') AS date_only")).countDistinct("troop_id as total").groupBy("date_only");
+      const open_rate_unique = await Database.from("open_rates").whereBetween("date",[from,to]).where("city", city).select(Database.raw("DATE_FORMAT(FROM_UNIXTIME(date / 1000),'%Y-%m-%d') AS date_only")).countDistinct("troop_id as total").groupBy("date_only");
       
 
       //get share rate per city and fix date
-      const share_rate = await Database.from("share_rates").whereBetween("date",[from,to]).where("city", cityresult).select(Database.raw("DATE_FORMAT(FROM_UNIXTIME(date / 1000),'%Y-%m-%d') AS date_only")).count("* as total").groupBy("date_only");
+      const share_rate = await Database.from("share_rates").whereBetween("date",[from,to]).where("city", city).select(Database.raw("DATE_FORMAT(FROM_UNIXTIME(date / 1000),'%Y-%m-%d') AS date_only")).count("* as total").groupBy("date_only");
 
       //get share rate unique
-      const share_rate_unique = await Database.from("share_rates").whereBetween("date",[from,to]).where("city", cityresult).select(Database.raw("DATE_FORMAT(FROM_UNIXTIME(date / 1000),'%Y-%m-%d') AS date_only")).countDistinct("troop_id as total").groupBy("date_only");
+      const share_rate_unique = await Database.from("share_rates").whereBetween("date",[from,to]).where("city", city).select(Database.raw("DATE_FORMAT(FROM_UNIXTIME(date / 1000),'%Y-%m-%d') AS date_only")).countDistinct("troop_id as total").groupBy("date_only");
      
 
       return {
-        cityresult,
+        city,
         open_rate,
         open_rate_unique,
         share_rate,
@@ -105,7 +102,26 @@ export default class StatsController {
     return {
       cityresult
     }
-}
+  }
+
+  public async getTrendingKonten({request}: HttpContextContract) {
+
+    const from  = dayjs(request.input("from",dayjs().subtract(1,'month'))).add(1,'day').valueOf().toString();
+  
+    const to  = dayjs(request.input("to",dayjs())).add(1,'day').valueOf().toString();
+
+    //get konten by point and fix date
+    const konten = await Database.from("contents").whereBetween("publish_date",[from,to]).orderBy("point","desc").limit(10);
+
+    //fix date unixtime in konten
+    konten.forEach((item, index) => {
+      konten[index].publish_date = dayjs.unix(item.publish_date / 1000).format("YYYY-MM-DD");
+    });
+
+    return {
+      konten
+    }
+  }
 
   public async show({}: HttpContextContract) {}
 

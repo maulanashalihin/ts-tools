@@ -5,6 +5,7 @@
   import { onMount } from "svelte";
   import axios from "axios";
   import Typeahead from "svelte-typeahead";
+  import Carousel from "../Components/Carousel.svelte";
 
   let daily_open_rate = [];
   let daily_open_rate_unique = [];
@@ -12,6 +13,8 @@
   let daily_share_rate = [];
   let daily_share_rate_unique = [];
   let share_rate_per_city = [];
+
+  let trending = []
 
   let events = [];
 
@@ -113,12 +116,12 @@
           labels: cities.map((item) => item.city),
           datasets: [
             {
-              label: "# Tingkat Buka Perkota",
+              label: "# Frekuensi Buka Tiap Kota",
               data: cities.map((item) => item.total),
               borderWidth: 1,
             },
             {
-              label: "# Tingkat Share Perkota",
+              label: "# Frekuensi Share Tiap Kota",
               data: cities_share,
               borderWidth: 1,
             },
@@ -260,6 +263,22 @@
       });
   }
 
+  function loadDataTrending(date1, date2) {
+    axios.get("/omoo-stats/trending", {
+        params: {
+          from: date1.format("YYYY-MM-DD"),
+          to: date2.format("YYYY-MM-DD"),
+        },
+      }).then((response) => {
+      trending = response.data.konten;
+      trending.forEach((item) => {
+        if (item.type == "slide") {
+          item.images_url = JSON.parse(item.images_url);
+        }
+      });
+    });
+  }
+
   function getCityName() {
     axios.get("/omoo-stats/cityname").then((response) => {
       allcity = response.data.cityresult;
@@ -291,12 +310,16 @@
           end_date = dayjs(end);
 
           // some action
-          if (city.length > 0) {
-            LoadDataCustom(start_date, end_date, city);
-          } else {
-            city = "";
-            LoadData(start_date, end_date);
-          }
+          if (model == "konten") {
+              loadDataTrending(start_date, end_date);
+            } else if (city.length > 0) {
+              model = "table";
+              LoadDataCustom(start_date, end_date, city);
+            } else {
+              model = "table";
+              city = "";
+              LoadData(start_date, end_date);
+            }
 
           // do something
         });
@@ -345,6 +368,7 @@
             extract={(item) => item.name}
             on:select={(item) => {
               city = item.detail.selected;
+              model = "table";
               LoadDataCustom(
                 dayjs().subtract(7, "day"),
                 dayjs(),
@@ -375,13 +399,17 @@
         <button
           on:click={() => {
             act = "7day";
-            model = "table";
             document.getElementById("customdate").classList.add("hidden");
-            if (city.length > 0) {
+            if (model == "konten") {
+              loadDataTrending(dayjs().subtract(7, "day"), dayjs());
+            } else if (city.length > 0) {
+              model = "table";
               LoadDataCustom(dayjs().subtract(7, "day"), dayjs());
             } else {
+              model = "table";
               LoadData(dayjs().subtract(7, "day"), dayjs());
             }
+            
           }}
           class="{act == '7day'
             ? 'shrink-0 rounded-lg bg-sky-100 p-2 text-sm font-medium text-sky-600'
@@ -392,11 +420,14 @@
         <button
           on:click={() => {
             act = "30day";
-            model = "table";
             document.getElementById("customdate").classList.add("hidden");
-            if (city.length > 0) {
+            if (model == "konten") {
+              loadDataTrending(dayjs().subtract(30, "day"), dayjs());
+            } else if (city.length > 0) {
+              model = "table";
               LoadDataCustom(dayjs().subtract(30, "day"), dayjs());
             } else {
+              model = "table";
               LoadData(dayjs().subtract(30, "day"), dayjs());
             }
           }}
@@ -408,7 +439,6 @@
         </button>
         <button
           on:click={() => {
-            model = "table";
             act = "custom";
             document.getElementById("customdate").classList.remove("hidden");
           }}
@@ -423,16 +453,24 @@
         <div class="hidden" id="customdate">
           <br />
           <div class="flex gap-3">
-            <input
-            class="bg-gray-50 border border-gray-300 outline-none text-gray-900 text-sm rounded-lg focus:ring-cyan-500 focus:border-cyan-500 block w-full p-2.5 placeholder-gray-400"
+            
+            <div class="flex items-center">
+              <button type="button" class="inline-flex justify-center items-center space-x-2 border font-medium focus:outline-none flex-none z-1 px-3 py-2 leading-5 text-sm rounded-l-lg active:z-1 focus:z-1 -mr-px bg-sky-100 text-sky-600">
+                Rentang Waktu
+              </button>
+              <input class="z-50 block border border-gray-200 p-2 rounded-r-lg py-2 leading-5 text-sm w-full active:z-1 focus:z-1" type="text" id="datepicker" />
+            </div>
+
+            <!-- <input
+            class="bg-gray-50 border border-gray-300 outline-none text-gray-900 text-sm rounded-lg focus:ring-cyan-500 focus:border-cyan-500 block p-2.5 placeholder-gray-400 w-2/3 md:w-1/3"
             type="text"
             id="datepicker"
-         />
+         /> -->
           </div>
         </div>
       </div>
       <div class="mb-5">
-        <nav class="flex gap-6" aria-label="Tabs">
+        <nav class="flex gap-2" aria-label="Tabs">
           <button
             on:click={() => {
               model = "table";
@@ -452,6 +490,19 @@
           >
             Chart
           </button>
+
+          <button
+            on:click={() => {
+              model = "konten";
+              loadDataTrending(dayjs().subtract(7, "day"), dayjs());
+            }}
+            class="{model == 'konten'
+              ? 'shrink-0 rounded-lg bg-sky-100 p-2 text-sm font-medium text-sky-600'
+              : ' shrink-0 rounded-lg p-2 text-sm font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-700'}  "
+          >
+            Konten
+          </button>
+
         </nav>
       </div>
     </div>
@@ -459,7 +510,7 @@
       <div class="grid gap-3 lg:grid-cols-3">
         <div>
           <div class="bg-white p-6">
-            <div class="mb-3 text-lg font-medium">Tingkat Buka Harian</div>
+            <div class="mb-3 text-lg font-medium">Frekuensi Buka Harian</div>
             {#each daily_open_rate as item}
               <div class="flex justify-between">
                 <div>
@@ -474,7 +525,7 @@
         </div>
         <div>
           <div class="bg-white p-6">
-            <div class="mb-3 text-lg font-medium">Tingkat Share Harian</div>
+            <div class="mb-3 text-lg font-medium">Frekuensi Share Harian</div>
             {#each daily_share_rate as item}
               <div class="flex justify-between">
                 <div>
@@ -490,7 +541,7 @@
         <div>
           <div class="bg-white p-6">
             <div class="mb-3 text-lg font-medium">
-              Jumlah Orang Membuka Per Hari
+              Jumlah Orang Membuka OMOO (Harian)
             </div>
             {#each daily_open_rate_unique as item}
               <div class="flex justify-between">
@@ -507,7 +558,7 @@
         <div>
           <div class="bg-white p-6">
             <div class="mb-3 text-lg font-medium">
-              Jumlah Orang Share Per Hari
+              Jumlah Orang Share Konten (Harian)
             </div>
             {#each daily_share_rate_unique as item}
               <div class="flex justify-between">
@@ -525,7 +576,7 @@
         <div>
           {#if open_rate_per_city.length > 0}
             <div class="bg-white p-6">
-              <div class="mb-3 text-lg font-medium">Tingkat Buka Perkota</div>
+              <div class="mb-3 text-lg font-medium">Frekuensi Buka Tiap Kota</div>
               {#each open_rate_per_city as item}
                 <div class="flex justify-between">
                   <div>
@@ -542,7 +593,7 @@
         <div>
           {#if share_rate_per_city.length > 0}
             <div class="bg-white p-6">
-              <div class="mb-3 text-lg font-medium">Tingkat Share Perkota</div>
+              <div class="mb-3 text-lg font-medium">Frekuensi Share Tiap Kota</div>
               {#each share_rate_per_city as item}
                 <div class="flex justify-between">
                   <div>
@@ -566,7 +617,7 @@
     {:else if model == "chart"}
       <div class="space-y-6">
         <div class="bg-white p-6">
-          <div class="mb-3 text-lg font-medium">Tingkat Buka Harian</div>
+          <div class="mb-3 text-lg font-medium">Frekuensi Buka Harian</div>
           <div class="flex justify-center">
             <div class="w-full">
               <canvas id="daily_open_rate" />
@@ -574,7 +625,7 @@
           </div>
         </div>
         <div class="bg-white p-6">
-          <div class="mb-3 text-lg font-medium">Tingkat Share Harian</div>
+          <div class="mb-3 text-lg font-medium">Frekuensi Share Harian</div>
           <div class="flex justify-center">
             <div class="w-full">
               <canvas id="daily_share_rate" />
@@ -593,6 +644,52 @@
           </div>
         {/if}
       </div>
+
+    {:else if model == "konten"}
+    <div class="grid lg:grid-cols-3 grid-cols-1 gap-4 mt-5 z-0">
+      {#each trending as item, index}
+        <!-- content here -->
+        <div class="bg-white rounded  ">
+          <div class="px-3 py-2 flex gap-3">
+            <img
+              class="w-10 h-10 rounded-full"
+              src={item.channel_avatar}
+              alt=""
+            />
+            <div class="flex items-center">
+               {item.channel_name}
+              <br> Rank : {index + 1} | Point : {item.point}
+              <br> Like : {item.likes} | Share : {item.share}
+            </div>
+          </div>
+          <div class="relative z-0">
+            {#if item.type == "image"}
+              <img src={item.images_url} class="z-0" alt="" />
+            {/if}
+            {#if item.type == "slide"}
+              <Carousel images={item.images_url} />
+            {/if}
+
+            {#if item.type == "video"}
+              <!-- svelte-ignore a11y-media-has-caption -->
+              <video
+                controls
+                poster={item.thumbnail ||
+                  "https://cdn.dribbble.com/users/17914/screenshots/4902225/media/0d6d47739dae97adc81ca7076ee56cc9.png?compress=1&resize=400x300"}
+              >
+                <source src={item.video_url} type="video/mp4" />
+                <source src="movie.ogg" type="video/ogg" />
+                Your browser does not support the video tag.
+              </video>
+            {/if}
+
+            
+          </div>
+        </div>
+      {/each}
+    </div>
+     
     {/if}
+
   </div></Layouts
 >
