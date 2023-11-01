@@ -22,13 +22,6 @@
 
   let city = "";
 
-  let dummy = [
-    { name: "Ram" },
-    { name: "Shyam" },
-    { name: "Hari" },
-    { name: "Krishna" },
-  ];
-
   let model = "table";
   let act = "7day";
 
@@ -38,19 +31,22 @@
     setTimeout(() => {
       const ctx = document.getElementById("daily_open_rate");
 
-      let daily_open = new Chart(ctx, {
+      let dailyopen = daily_open_rate.slice(1)
+      let dailyopenunique = daily_open_rate_unique.slice(1)
+
+      new Chart(ctx, {
         type: "bar",
         data: {
-          labels: daily_open_rate.map((item) => item.date_only),
+          labels: dailyopen.map((item) => item.date_only),
           datasets: [
             {
               label: "# Total Aplikasi dibuka",
-              data: daily_open_rate.map((item) => item.total),
+              data: dailyopen.map((item) => item.total),
               borderWidth: 1,
             },
             {
               label: "# Jumlah Orang Membuka Aplikasi",
-              data: daily_share_rate_unique.map((item) => item.total),
+              data: dailyopenunique.map((item) => item.total),
               borderWidth: 1,
             },
           ],
@@ -68,19 +64,22 @@
     setTimeout(() => {
       const ctx = document.getElementById("daily_share_rate");
 
-      let daily_share = new Chart(ctx, {
+      let dailyshare = daily_share_rate.slice(1)
+      let dailyshareunique = daily_share_rate_unique.slice(1)
+
+      new Chart(ctx, {
         type: "bar",
         data: {
-          labels: daily_share_rate.map((item) => item.date_only),
+          labels: dailyshare.map((item) => item.date_only),
           datasets: [
             {
               label: "# Total Konten dishare",
-              data: daily_share_rate.map((item) => item.total),
+              data: dailyshare.map((item) => item.total),
               borderWidth: 1,
             },
             {
               label: "# Jumlah Orang Share Konten",
-              data: daily_share_rate_unique.map((item) => item.total),
+              data: dailyshareunique.map((item) => item.total),
               borderWidth: 1,
             },
           ],
@@ -100,11 +99,15 @@
 
       let share_rate_cities_object = {};
 
-      share_rate_per_city.forEach((item) => {
+      let shareratecities = share_rate_per_city.slice(1);
+
+      shareratecities.forEach((item) => {
         share_rate_cities_object[item.city] = item.total;
       });
 
-      let cities = open_rate_per_city.slice(0, 25);
+      let openratecity = open_rate_per_city.slice(1);
+
+      let cities = openratecity.slice(0, 25);
 
       let cities_share = cities.map(
         (item) => share_rate_cities_object[item.city] || 0
@@ -618,6 +621,8 @@
       <div class="space-y-6">
         <div class="bg-white p-6">
           <div class="mb-3 text-lg font-medium">Frekuensi Buka Harian</div>
+          <div>Total Aplikasi Dibuka : {daily_open_rate[0].total}</div>
+          <div>Jumlah Orang Membuka Aplikasi : {daily_open_rate_unique[0].total}</div>
           <div class="flex justify-center">
             <div class="w-full">
               <canvas id="daily_open_rate" />
@@ -626,6 +631,8 @@
         </div>
         <div class="bg-white p-6">
           <div class="mb-3 text-lg font-medium">Frekuensi Share Harian</div>
+          <div >Total Konten Dishare : {daily_share_rate[0].total}</div>
+          <div >Jumlah Orang Share Konten : {daily_share_rate_unique[0].total}</div>
           <div class="flex justify-center">
             <div class="w-full">
               <canvas id="daily_share_rate" />
@@ -636,6 +643,8 @@
         {#if open_rate_per_city.length > 0}
           <div class="bg-white p-6">
             <div class="mb-3 text-lg font-medium">Sebaran Kota/Kabupaten</div>
+            <div >Frekuensi Buka Tiap Kota : {open_rate_per_city[0].total}</div>
+            <div >Frekuensi Share Tiap Kota : {share_rate_per_city[0].total}</div>
             <div class="flex justify-center">
               <div class="w-full">
                 <canvas id="sebaran_kota" />
