@@ -671,7 +671,7 @@
               <br> Like : {item.likes} | Share : {item.share}
             </div>
           </div>
-          <div class="relative z-0">
+          <div class=" ">
             {#if item.type == "image"}
               <img src={item.images_url} class="z-0" alt="" />
             {/if}
