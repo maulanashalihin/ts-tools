@@ -56,9 +56,10 @@ class StatsController {
         };
     }
     async getTrendingKonten({ request }) {
+        const isOmoo = JSON.parse(request.input("omoo", false));
         const from = (0, dayjs_1.default)(request.input("from", (0, dayjs_1.default)().subtract(1, 'month'))).add(1, 'day').valueOf().toString();
         const to = (0, dayjs_1.default)(request.input("to", (0, dayjs_1.default)())).add(1, 'day').valueOf().toString();
-        const konten = await Database_1.default.from("contents").whereBetween("publish_date", [from, to]).orderBy("point", "desc").limit(10);
+        const konten = await Database_1.default.from("contents").whereBetween("publish_date", [from, to]).where("is_omoo", isOmoo).orderBy("point", "desc").limit(10);
         konten.forEach((item, index) => {
             konten[index].publish_date = dayjs_1.default.unix(item.publish_date / 1000).format("YYYY-MM-DD");
         });
