@@ -106,12 +106,14 @@ export default class StatsController {
 
   public async getTrendingKonten({request}: HttpContextContract) {
 
+    const isOmoo = JSON.parse(request.input("omoo",false))
+
     const from  = dayjs(request.input("from",dayjs().subtract(1,'month'))).add(1,'day').valueOf().toString();
   
     const to  = dayjs(request.input("to",dayjs())).add(1,'day').valueOf().toString();
 
     //get konten by point and fix date
-    const konten = await Database.from("contents").whereBetween("publish_date",[from,to]).orderBy("point","desc").limit(10);
+    const konten = await Database.from("contents").whereBetween("publish_date",[from,to]).where("is_omoo", isOmoo).orderBy("point","desc").limit(10);
 
     //fix date unixtime in konten
     konten.forEach((item, index) => {

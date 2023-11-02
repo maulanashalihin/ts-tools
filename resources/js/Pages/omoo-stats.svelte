@@ -21,6 +21,7 @@
   let allcity = [];
 
   let city = "";
+  let stratplan = false
 
   let model = "table";
   let act = "7day";
@@ -271,6 +272,7 @@
         params: {
           from: date1.format("YYYY-MM-DD"),
           to: date2.format("YYYY-MM-DD"),
+          omoo: stratplan
         },
       }).then((response) => {
       trending = response.data.konten;
@@ -649,6 +651,26 @@
       </div>
 
     {:else if model == "konten"}
+    
+    
+    <div class="inline-flex items-center space-x-3">
+      <input type="checkbox" id="tk-form-switches-with-labels-small"  class="form-switch transition-all duration-150 ease-out rounded-full h-6 w-10 text-sky-600" on:click={() => {
+        stratplan = !stratplan
+        //select sesuai act
+        if(act == "7day") loadDataTrending(dayjs().subtract(7, "day"), dayjs())
+        else if(act == "30day") loadDataTrending(dayjs().subtract(30, "day"), dayjs())
+        else if(act == "custom") {
+          let start_date = dayjs(document.getElementById("datepicker").value.split(" - ")[0])
+          let end_date = dayjs(document.getElementById("datepicker").value.split(" - ")[1])
+          loadDataTrending(start_date, end_date)
+        }
+      }} />
+      <label for="tk-form-switches-with-labels-small" class="text-sm text-gray-500 font-medium">
+        Filter Konten Sesuai Strat Plan OMOO
+      </label>
+    </div>
+
+
     <div class="grid lg:grid-cols-3 grid-cols-1 gap-4 mt-5 z-0">
       {#each trending as item, index}
         <!-- content here -->
