@@ -453,22 +453,16 @@
         </button>
         <br />
 
-        <div class="hidden" id="customdate">
-          <br />
-          <div class="flex gap-3">
+        <div  >
+           
+          <div class="mt-3">
             
             <div class="flex items-center">
               <button type="button" class="inline-flex justify-center items-center space-x-2 border font-medium focus:outline-none flex-none z-1 px-3 py-2 leading-5 text-sm rounded-l-lg active:z-1 focus:z-1 -mr-px bg-sky-100 text-sky-600">
                 Rentang Waktu
               </button>
               <input class="z-50 block border border-gray-200 p-2 rounded-r-lg py-2 leading-5 text-sm w-full active:z-1 focus:z-1" type="text" id="datepicker" />
-            </div>
-
-            <!-- <input
-            class="bg-gray-50 border border-gray-300 outline-none text-gray-900 text-sm rounded-lg focus:ring-cyan-500 focus:border-cyan-500 block p-2.5 placeholder-gray-400 w-2/3 md:w-1/3"
-            type="text"
-            id="datepicker"
-         /> -->
+            </div> 
           </div>
         </div>
       </div>
