@@ -463,7 +463,7 @@
               <button type="button" class="inline-flex justify-center items-center space-x-2 border font-medium focus:outline-none flex-none z-1 px-3 py-2 leading-5 text-sm rounded-l-lg active:z-1 focus:z-1 -mr-px bg-sky-100 text-sky-600">
                 Rentang Waktu
               </button>
-              <input class="z-50 block border border-gray-200 p-2 rounded-r-lg py-2 leading-5 text-sm w-full active:z-1 focus:z-1" type="text" id="datepicker" />
+              <input class="z-50 block border border-gray-200 p-2 rounded-r-lg py-2 leading-5 text-sm w-full active:z-1 focus:z-1 md:w-1/6" type="text" id="datepicker" />
             </div> 
           </div>
         </div>
@@ -510,31 +510,31 @@
         <div>
           <div class="bg-white p-6">
             <div class="mb-3 text-lg font-medium">Frekuensi Buka Harian</div>
-            {#each daily_open_rate as item}
-              <div class="flex justify-between">
-                <div>
-                  {item.date_only}
-                </div>
-                <div>
-                  {item.total.toLocaleString("id")}
-                </div>
-              </div>
-            {/each}
+
+              <table class="w-full">
+                {#each daily_open_rate as item}
+                  <tr>
+                    <td>{item.date_only}</td>
+                    <td class="text-right">{item.total.toLocaleString("id")}</td>
+                  </tr>
+                {/each}
+              </table>
+
           </div>
         </div>
         <div>
           <div class="bg-white p-6">
             <div class="mb-3 text-lg font-medium">Frekuensi Share Harian</div>
-            {#each daily_share_rate as item}
-              <div class="flex justify-between">
-                <div>
-                  {item.date_only}
-                </div>
-                <div>
-                  {item.total.toLocaleString("id")}
-                </div>
-              </div>
-            {/each}
+
+            <table class="w-full">
+              {#each daily_share_rate as item}
+                <tr>
+                  <td>{item.date_only}</td>
+                  <td class="text-right">{item.total.toLocaleString("id")}</td>
+                </tr>
+              {/each}
+            </table>
+
           </div>
         </div>
         <div>
@@ -542,16 +542,16 @@
             <div class="mb-3 text-lg font-medium">
               Jumlah Orang Membuka OMOO (Harian)
             </div>
-            {#each daily_open_rate_unique as item}
-              <div class="flex justify-between">
-                <div>
-                  {item.date_only}
-                </div>
-                <div>
-                  {item.total.toLocaleString("id")}
-                </div>
-              </div>
-            {/each}
+
+            <table class="w-full">
+              {#each daily_open_rate_unique as item}
+                <tr>
+                  <td>{item.date_only}</td>
+                  <td class="text-right">{item.total.toLocaleString("id")}</td>
+                </tr>
+              {/each}
+            </table>
+
           </div>
         </div>
         <div>
@@ -559,16 +559,16 @@
             <div class="mb-3 text-lg font-medium">
               Jumlah Orang Share Konten (Harian)
             </div>
-            {#each daily_share_rate_unique as item}
-              <div class="flex justify-between">
-                <div>
-                  {item.date_only}
-                </div>
-                <div>
-                  {item.total.toLocaleString("id")}
-                </div>
-              </div>
-            {/each}
+
+            <table class="w-full">
+              {#each daily_share_rate_unique as item}
+                <tr>
+                  <td>{item.date_only}</td>
+                  <td class="text-right">{item.total.toLocaleString("id")}</td>
+                </tr>
+              {/each}
+            </table>
+
           </div>
         </div>
 
@@ -576,16 +576,16 @@
           {#if open_rate_per_city.length > 0}
             <div class="bg-white p-6">
               <div class="mb-3 text-lg font-medium">Frekuensi Buka Tiap Kota</div>
-              {#each open_rate_per_city as item}
-                <div class="flex justify-between">
-                  <div>
-                    {item.city}
-                  </div>
-                  <div>
-                    {item.total.toLocaleString("id")}
-                  </div>
-                </div>
-              {/each}
+
+              <table class="w-full">
+                {#each open_rate_per_city as item}
+                  <tr>
+                    <td>{item.city}</td>
+                    <td class="text-right">{item.total.toLocaleString("id")}</td>
+                  </tr>
+                {/each}
+              </table>
+
             </div>
           {/if}
         </div>
@@ -593,16 +593,16 @@
           {#if share_rate_per_city.length > 0}
             <div class="bg-white p-6">
               <div class="mb-3 text-lg font-medium">Frekuensi Share Tiap Kota</div>
-              {#each share_rate_per_city as item}
-                <div class="flex justify-between">
-                  <div>
-                    {item.city}
-                  </div>
-                  <div>
-                    {item.total.toLocaleString("id")}
-                  </div>
-                </div>
-              {/each}
+
+              <table class="w-full">
+                {#each share_rate_per_city as item}
+                  <tr>
+                    <td>{item.city}</td>
+                    <td class="text-right">{item.total.toLocaleString("id")}</td>
+                  </tr>
+                {/each}
+              </table>
+
             </div>
           {/if}
         </div>
