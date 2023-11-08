@@ -578,9 +578,9 @@
               <div class="mb-3 text-lg font-medium">Frekuensi Buka Tiap Kota</div>
 
               <table class="w-full">
-                {#each open_rate_per_city as item}
+                {#each open_rate_per_city as item, index}
                   <tr>
-                    <td>{item.city}</td>
+                    <td>{index == 0 ? '' : `${index}.`} {item.city}</td>
                     <td class="text-right">{item.total.toLocaleString("id")}</td>
                   </tr>
                 {/each}
@@ -595,9 +595,9 @@
               <div class="mb-3 text-lg font-medium">Frekuensi Share Tiap Kota</div>
 
               <table class="w-full">
-                {#each share_rate_per_city as item}
+                {#each share_rate_per_city as item, index}
                   <tr>
-                    <td>{item.city}</td>
+                    <td>{index == 0 ? '' : `${index}.`} {item.city}</td>
                     <td class="text-right">{item.total.toLocaleString("id")}</td>
                   </tr>
                 {/each}
