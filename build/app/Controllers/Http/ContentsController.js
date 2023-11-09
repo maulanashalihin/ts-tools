@@ -100,19 +100,49 @@ class ContentsController {
         }
     }
     async destroy({}) { }
-    async omoo({}) {
+    async publist({}) {
+        const contents = await Database_1.default.from("contents").select("channel_name");
+        const channel = contents.filter((item) => item.channel_name !== null).map((item) => item.channel_name).filter((value, index, self) => self.indexOf(value) === index);
+        channel.forEach((item, index) => {
+            channel[index] = {
+                name: item,
+            };
+        });
+        return channel;
+    }
+    async omoo({ request }) {
+        const pubname = request.input("publisher", "");
+        if (pubname !== "") {
+            const contents = await Database_1.default.from("contents").where("status", "approved").where("is_omoo", true).where("channel_name", pubname).orderBy("id", "desc").limit(100);
+            return contents;
+        }
         const contents = await Database_1.default.from("contents").where("status", "approved").where("is_omoo", true).orderBy("id", "desc").limit(100);
         return contents;
     }
-    async latest({}) {
+    async latest({ request }) {
+        const pubname = request.input("publisher", "");
+        if (pubname !== "") {
+            const contents = await Database_1.default.from("contents").where("status", "approved").where("channel_name", pubname).orderBy("publish_date", "desc").limit(100);
+            return contents;
+        }
         const contents = await Database_1.default.from("contents").where("status", "approved").orderBy("publish_date", "desc").limit(100);
         return contents;
     }
-    async trending({}) {
+    async trending({ request }) {
+        const pubname = request.input("publisher", "");
+        if (pubname !== "") {
+            const contents = await Database_1.default.from("contents").where("status", "approved").where("created", ">", (0, dayjs_1.default)().subtract(7, 'day').valueOf()).where("channel_name", pubname).orderBy("point", "desc").limit(100);
+            return contents;
+        }
         const contents = await Database_1.default.from("contents").where("status", "approved").where("created", ">", (0, dayjs_1.default)().subtract(7, 'day').valueOf()).orderBy("point", "desc").limit(100);
         return contents;
     }
-    async official({}) {
+    async official({ request }) {
+        const pubname = request.input("publisher", "");
+        if (pubname !== "") {
+            const contents = await Database_1.default.from("contents").where("status", "approved").where("category", "Official").where("channel_name", pubname).orderBy("id", "desc").limit(100);
+            return contents;
+        }
         const contents = await Database_1.default.from("contents").where("status", "approved").where("category", "Official").orderBy("id", "desc").limit(100);
         return contents;
     }

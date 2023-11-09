@@ -112,6 +112,7 @@ Route_1.default.get("/api/surah/:id", "QuransController.show");
 Route_1.default.get("/api/random-ayat", "QuransController.randomAyat");
 Route_1.default.get("/api/adzan/:location/:year/:month", "QuransController.adzan");
 Route_1.default.group(() => {
+    Route_1.default.get("/publist", "ContentsController.publist");
     Route_1.default.get("/contents/omoo", "ContentsController.omoo");
     Route_1.default.get("/contents/terkini", "ContentsController.latest");
     Route_1.default.get("/contents/trending", "ContentsController.trending");

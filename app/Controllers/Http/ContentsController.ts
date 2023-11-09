@@ -166,28 +166,73 @@ export default class ContentsController {
 
   public async destroy({}: HttpContextContract) {}
 
-  public async omoo({}: HttpContextContract) {
+  public async publist({}: HttpContextContract) {
+
+    const contents = await Database.from("contents").select("channel_name")
+
+    //delete null and delete duplicate channel_name
+    const channel = contents.filter((item) => item.channel_name !== null).map((item) => item.channel_name).filter((value, index, self) => self.indexOf(value) === index);
+
+    //parse channel as name and value key pair
+    channel.forEach((item, index) => {
+      channel[index] = {
+        name: item,
+      }
+    });
+    
+    return channel;
+  }
+
+  public async omoo({request}: HttpContextContract) {
+
+    const pubname = request.input("publisher","")
+
+    if (pubname !== "") {
+      const contents = await Database.from("contents").where("status","approved").where("is_omoo",true).where("channel_name", pubname).orderBy("id","desc").limit(100)
+      return contents;
+    }
 
     const contents = await Database.from("contents").where("status","approved").where("is_omoo",true).orderBy("id","desc").limit(100)
     
     return contents;
   }
 
-  public async latest({}: HttpContextContract) {
+  public async latest({request}: HttpContextContract) {
+
+    const pubname = request.input("publisher","")
+
+    if (pubname !== "") {
+      const contents = await Database.from("contents").where("status","approved").where("channel_name", pubname).orderBy("publish_date","desc").limit(100)
+      return contents;
+    }
 
     const contents = await Database.from("contents").where("status","approved").orderBy("publish_date","desc").limit(100)
     
     return contents;
   }
 
-  public async trending({}: HttpContextContract) {
+  public async trending({request}: HttpContextContract) {
+
+    const pubname = request.input("publisher","")
+
+    if (pubname !== "") {
+      const contents = await Database.from("contents").where("status","approved").where("created",">",dayjs().subtract(7,'day').valueOf()).where("channel_name", pubname).orderBy("point","desc").limit(100)
+      return contents;
+    }
 
     const contents = await Database.from("contents").where("status","approved").where("created",">",dayjs().subtract(7,'day').valueOf()).orderBy("point","desc").limit(100)
     
     return contents;
   }
 
-  public async official({}: HttpContextContract) {
+  public async official({request}: HttpContextContract) {
+
+    const pubname = request.input("publisher","")
+
+    if (pubname !== "") {
+      const contents = await Database.from("contents").where("status","approved").where("category","Official").where("channel_name", pubname).orderBy("id","desc").limit(100)
+      return contents;
+    }
 
     const contents = await Database.from("contents").where("status","approved").where("category","Official").orderBy("id","desc").limit(100)
 

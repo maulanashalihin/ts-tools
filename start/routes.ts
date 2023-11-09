@@ -241,6 +241,8 @@ Route.get('/login', async ({ inertia,auth,response }) => {
 
   Route.group(()=>{
 
+    Route.get("/publist","ContentsController.publist")
+
     Route.get("/contents/omoo","ContentsController.omoo")
 
     Route.get("/contents/terkini","ContentsController.latest")
