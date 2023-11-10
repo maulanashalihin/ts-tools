@@ -75,7 +75,7 @@ export default class ChannelsController {
         {
           const channel = await Database.from("channels").where("id",params.id).first()
     
-          const contents = await Database.from("contents").where("channel_id",params.id)
+          const contents = await Database.from("contents").where("channel_id",params.id).orderBy("id","desc")
            
         const strat = await Database.from("strat_plans").orderBy("id","desc").first();
  

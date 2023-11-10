@@ -21,6 +21,14 @@
     contents = contents;
   }
 
+  function deletePost(channelId, postId) {
+    return function () {
+      axios.delete("/channel/" + channelId + "/content/" + postId);
+      contents = contents.filter((item) => item.id != postId);
+    };
+  }
+  
+
   const statusColor = {
     pending: "bg-gray-500",
     approved: "bg-green-500",
@@ -75,6 +83,8 @@
           Rejected
         </button>
         </a>
+
+        
 
       </div>
       
@@ -142,9 +152,9 @@
                     type="button"
                     class="{item.status == 'pending'
                       ? 'bg-indigo-100 text-indigo-700'
-                      : 'hover:bg-gray-100'}   -mr-px border px-2 py-1 border "
+                      : 'hover:bg-gray-100'}   -mr-px px-2 py-1 border "
                   >
-                    pending
+                    Pending
                   </button>
                   <button
                     on:click={() => {
@@ -153,9 +163,9 @@
                     type="button"
                     class="{item.status == 'approved'
                       ? 'bg-green-100 text-green-700'
-                      : 'hover:bg-gray-100'}    border px-2 py-1 border"
+                      : 'hover:bg-gray-100'}    px-2 py-1 border"
                   >
-                    approve
+                    Approve
                   </button>
                   <button
                     on:click={() => {
@@ -164,10 +174,15 @@
                     type="button"
                     class="{item.status == 'rejected'
                       ? 'bg-red-100 text-red-700'
-                      : 'hover:bg-gray-100'}  -ml-px  border px-2 py-1 border"
+                      : 'hover:bg-gray-100'}  -ml-px  px-2 py-1 border"
                   >
-                    reject
+                    Reject
                   </button>
+
+                  <button on:click={deletePost(item.channel_id, item.id)} class="font-semibold inline-flex px-2 py-1 ml-4 bg-red-200 text-red-800">
+                    Delete
+                  </button>
+
                 </div>
               </div>
             </div>

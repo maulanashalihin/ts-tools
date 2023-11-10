@@ -43,7 +43,7 @@ class ChannelsController {
             const check = await Database_1.default.from("channel_admins").where("troop_id", user.id).where("channel_id", params.id).first();
             if (check) {
                 const channel = await Database_1.default.from("channels").where("id", params.id).first();
-                const contents = await Database_1.default.from("contents").where("channel_id", params.id);
+                const contents = await Database_1.default.from("contents").where("channel_id", params.id).orderBy("id", "desc");
                 const strat = await Database_1.default.from("strat_plans").orderBy("id", "desc").first();
                 return inertia.render("omoo-contents", { contents, channel, strat });
             }

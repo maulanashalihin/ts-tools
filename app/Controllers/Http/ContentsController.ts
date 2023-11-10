@@ -164,7 +164,9 @@ export default class ContentsController {
 
   
 
-  public async destroy({}: HttpContextContract) {}
+  public async destroy({params}: HttpContextContract) {
+    await Database.from("contents").where('id',params.id).delete()
+  }
 
   public async publist({}: HttpContextContract) {
 

@@ -99,7 +99,9 @@ class ContentsController {
             });
         }
     }
-    async destroy({}) { }
+    async destroy({ params }) {
+        await Database_1.default.from("contents").where('id', params.id).delete();
+    }
     async publist({}) {
         const contents = await Database_1.default.from("contents").select("channel_name");
         const channel = contents.filter((item) => item.channel_name !== null).map((item) => item.channel_name).filter((value, index, self) => self.indexOf(value) === index);
