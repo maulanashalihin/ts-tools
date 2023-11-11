@@ -28,15 +28,34 @@ class ContentsController {
         await Database_1.default.table("contents").insert(request.all());
         return response.redirect("/channel/" + params.channel_id);
     }
-    async show({ inertia, auth, params }) {
+    async show({}) {
+    }
+    async customshow({ auth, params }) {
         const user = auth.use("web").user;
         if (user) {
-            if (params.id == 'pending') {
-                const contents = await Database_1.default.from("contents").orderBy("id", "asc").where("status", params.id);
-                return inertia.render("omoo-contents-admins", { contents });
+            const pub = decodeURIComponent(params.pub);
+            if (params.pub == "semua") {
+                if (params.status != "semua") {
+                    if (params.status == 'pending') {
+                        const contents = await Database_1.default.from("contents").orderBy("id", "asc").where("status", params.status).limit(50);
+                        return contents;
+                    }
+                    const contents = await Database_1.default.from("contents").orderBy("id", "desc").where("status", params.status).limit(50);
+                    return contents;
+                }
+                const contents = await Database_1.default.from("contents").orderBy("id", "desc").limit(50);
+                return contents;
             }
-            const contents = await Database_1.default.from("contents").orderBy("id", "desc").where("status", params.id);
-            return inertia.render("omoo-contents-admins", { contents });
+            if (params.status != "semua") {
+                if (params.status == 'pending') {
+                    const contents = await Database_1.default.from("contents").orderBy("id", "asc").where("channel_name", pub).where("status", params.status).limit(50);
+                    return contents;
+                }
+                const contents = await Database_1.default.from("contents").orderBy("id", "desc").where("channel_name", pub).where("status", params.status).limit(50);
+                return contents;
+            }
+            const contents = await Database_1.default.from("contents").orderBy("id", "desc").where("channel_name", pub).limit(50);
+            return contents;
         }
     }
     async edit({ inertia, params, auth }) {

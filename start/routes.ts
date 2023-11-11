@@ -102,7 +102,11 @@ Route.get('/login', async ({ inertia,auth,response }) => {
 
     Route.get("/omoo-contents","ContentsController.index")
 
-    Route.get("/omoo-contents/:id","ContentsController.show")
+    Route.get("/omoo-contents/publist","ContentsController.publist")
+
+    Route.get("/omoo-contents/:status","ContentsController.customshow")
+
+    Route.get("/omoo-contents/:status/:pub","ContentsController.customshow")
 
     Route.put("/omoo-contents/:id","ContentsController.update") 
 
@@ -236,7 +240,6 @@ Route.get('/login', async ({ inertia,auth,response }) => {
   Route.get("/api/random-ayat","QuransController.randomAyat")
 
   Route.get("/api/adzan/:location/:year/:month","QuransController.adzan")
-  
 
 
   Route.group(()=>{

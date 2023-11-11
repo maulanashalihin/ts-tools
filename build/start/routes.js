@@ -44,7 +44,9 @@ Route_1.default.group(() => {
     Route_1.default.get("/omoo-channels", "ChannelsController.admins");
     Route_1.default.get("/omoo-channels/:id", "ChannelsController.adminView");
     Route_1.default.get("/omoo-contents", "ContentsController.index");
-    Route_1.default.get("/omoo-contents/:id", "ContentsController.show");
+    Route_1.default.get("/omoo-contents/publist", "ContentsController.publist");
+    Route_1.default.get("/omoo-contents/:status", "ContentsController.customshow");
+    Route_1.default.get("/omoo-contents/:status/:pub", "ContentsController.customshow");
     Route_1.default.put("/omoo-contents/:id", "ContentsController.update");
     Route_1.default.put("/omoo-contents/:id/status", "ContentsController.status");
     Route_1.default.put("/make-official-channel/:id", "ChannelsController.makeOfficial");

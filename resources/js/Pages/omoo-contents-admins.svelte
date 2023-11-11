@@ -6,6 +6,10 @@
   import Modal from "../Components/Modal.svelte";
   import TsLayouts from "./../Components/layouts.svelte";
   import Carousel from "../Components/Carousel.svelte";
+  import Typeahead from "svelte-typeahead";
+
+  let publist
+  let publisher = "semua";
 
   export let contents;
   contents.forEach((item) => {
@@ -27,6 +31,23 @@
       contents = contents.filter((item) => item.id != postId);
     };
   }
+
+  function getCustomContents(status, pub) {
+    axios.get(`/omoo-contents/${status}/${pub}`).then((response) => {
+      contents = response.data;
+      contents.forEach((item) => {
+        if (item.type == "slide") {
+          item.images_url = JSON.parse(item.images_url);
+        }
+      });
+      contents = contents;
+    });
+  }
+
+  //get publisher list
+  axios.get("/omoo-contents/publist").then((response) => {
+    publist = response.data;
+  });
   
 
   const statusColor = {
@@ -44,48 +65,77 @@
     <div class="container xl:max-w-7xl mx-auto p-4 lg:p-8">
       <div class="text-xl font-medium">Konten Omoo</div>
 
+      
+
       <div id="button-group" class="inline-flex rounded-lg border border-gray-100 bg-gray-100 p-1">
 
 
 
-        <a href="/omoo-contents" use:inertia>
+       
           <button
           class="{current === 'semua' ? 'btngroup-select text-blue-500' : 'btngroup-unselect'}"
-	        on:click="{() => current = 'semua'}"
+	        on:click="{() => {
+            current = "semua"
+              getCustomContents(current, publisher)
+          }}"
         >
           Semua
         </button>
-        </a>
         
-        <a href="/omoo-contents/pending" use:inertia>
+        
           <button
           class="{current === 'pending' ? 'btngroup-select text-orange-500' : 'btngroup-unselect'}"
-	        on:click="{() => current = 'pending'}"
+	        on:click="{() => {
+            current = "pending"
+              getCustomContents(current, publisher)
+          }}"
         >
           Pending
         </button>
-        </a>
+        
 
-        <a href="/omoo-contents/approved" use:inertia>
           <button
           class="{current === 'approved' ? 'btngroup-select text-green-500' : 'btngroup-unselect'}"
-	        on:click="{() => current = 'approved'}"
+	        on:click="{() => {
+            current = "approved"
+              getCustomContents(current, publisher)
+          }}"
         >
           Approved
         </button>
-        </a>
+       
       
-        <a href="/omoo-contents/rejected" use:inertia>
+        
           <button
           class="{current === 'rejected' ? 'btngroup-select text-red-500' : 'btngroup-unselect'}"
-	        on:click="{() => current = 'rejected'}"
+	        on:click="{() => {
+            current = "rejected"
+              getCustomContents(current, publisher)
+          }}"
         >
           Rejected
         </button>
-        </a>
-
         
 
+
+      </div>
+
+      <div class="w-full md:w-1/4">
+        <Typeahead
+            hideLabel="true"
+            limit={5}
+            placeholder={`Cari nama publisher`}
+            data={publist}
+            extract={(item) => item.name}
+            on:select={(item) => {
+              publisher = item.detail.selected
+              getCustomContents(current, publisher)
+            }}
+            on:clear={() => {
+              publisher = "semua";
+              getCustomContents(current, publisher)
+            }}
+          />
       </div>
       
 

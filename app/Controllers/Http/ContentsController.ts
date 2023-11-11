@@ -9,14 +9,13 @@ export default class ContentsController {
 
     if(user)
     {
+
       const contents = await Database.from("contents").orderBy("id","desc").limit(50)
      
       return inertia.render("omoo-contents-admins",{contents})
 
-      
     }
   }
-
 
   public async create({inertia,params,auth}: HttpContextContract) {
 
@@ -53,22 +52,53 @@ export default class ContentsController {
 
   }
 
-  public async show({inertia, auth, params}: HttpContextContract) {
+  public async show({}: HttpContextContract) {
+
+  }
+
+  public async customshow({auth, params}: HttpContextContract) {
 
     const user = auth.use("web").user;
 
     if(user)
     {
-      if(params.id == 'pending') {
-        const contents = await Database.from("contents").orderBy("id","asc").where("status", params.id)
-        return inertia.render("omoo-contents-admins",{contents})
+      //decode url params.pub
+      const pub = decodeURIComponent(params.pub)
+
+      if(params.pub == "semua") {
+        if(params.status != "semua") {
+
+          if(params.status == 'pending') {
+            const contents = await Database.from("contents").orderBy("id","asc").where("status", params.status).limit(50)
+            return contents
+          }
+    
+          const contents = await Database.from("contents").orderBy("id","desc").where("status", params.status).limit(50)
+          return contents
+  
+        }
+  
+        const contents = await Database.from("contents").orderBy("id","desc").limit(50)
+        return contents
       }
 
-      const contents = await Database.from("contents").orderBy("id","desc").where("status", params.id)
-      return inertia.render("omoo-contents-admins",{contents})
+      if(params.status != "semua") {
 
+        if(params.status == 'pending') {
+          const contents = await Database.from("contents").orderBy("id","asc").where("channel_name", pub).where("status", params.status).limit(50)
+          return contents
+        }
+  
+        const contents = await Database.from("contents").orderBy("id","desc").where("channel_name", pub).where("status", params.status).limit(50)
+        return contents
+
+      }
+
+      const contents = await Database.from("contents").orderBy("id","desc").where("channel_name", pub).limit(50)
+      return contents
       
     }
+    
   }
 
   public async edit({inertia,params,auth}: HttpContextContract) {
