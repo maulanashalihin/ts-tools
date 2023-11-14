@@ -26,6 +26,13 @@
   let model = "table";
   let act = "7day";
 
+  let countday = 7
+
+  let showAllShare = false;
+  let showAllOpen = false;
+
+  function toggleShowAll(type) { type === 'share' ? showAllShare = !showAllShare : showAllOpen = !showAllOpen; }
+
   function renderChart() {
     model = "chart";
 
@@ -143,6 +150,7 @@
   }
 
   function LoadDataCustom(date1, date2, city) {
+    countday = Math.abs(dayjs(date1).diff(dayjs(date2), 'day'))
     axios
       .get("/omoo-stats/datacity", {
         params: {
@@ -194,6 +202,7 @@
   }
 
   function LoadData(date1, date2) {
+    countday = Math.abs(dayjs(date1).diff(dayjs(date2), 'day'))
     axios
       .get("/omoo-stats/data", {
         params: {
@@ -296,6 +305,9 @@
 
     let start_date = dayjs().subtract(7, "day").format("YYYY-MM-DD");
     let end_date = dayjs().format("YYYY-MM-DD");
+
+    countday = Math.abs(dayjs(start_date).diff(dayjs(end_date), 'day'))
+    console.log(countday)
 
     const picker = new easepick.create({
       element: document.getElementById("datepicker"),
@@ -404,7 +416,7 @@
         <button
           on:click={() => {
             act = "7day";
-            document.getElementById("customdate").classList.add("hidden");
+            
             if (model == "konten") {
               loadDataTrending(dayjs().subtract(7, "day"), dayjs());
             } else if (city.length > 0) {
@@ -425,7 +437,7 @@
         <button
           on:click={() => {
             act = "30day";
-            document.getElementById("customdate").classList.add("hidden");
+            
             if (model == "konten") {
               loadDataTrending(dayjs().subtract(30, "day"), dayjs());
             } else if (city.length > 0) {
@@ -445,7 +457,7 @@
         <button
           on:click={() => {
             act = "custom";
-            document.getElementById("customdate").classList.remove("hidden");
+            
           }}
           class="{act == 'custom'
             ? 'shrink-0 rounded-lg bg-sky-100 p-2 text-sm font-medium text-sky-600'
@@ -508,7 +520,7 @@
     {#if model == "table"}
       <div class="grid gap-3 lg:grid-cols-3">
         <div>
-          <div class="bg-white p-6">
+          <div class="bg-white p-6 h-full rounded-lg">
             <div class="mb-3 text-lg font-medium">Frekuensi Buka Harian</div>
 
               <table class="w-full">
@@ -522,8 +534,9 @@
 
           </div>
         </div>
+
         <div>
-          <div class="bg-white p-6">
+          <div class="bg-white p-6 h-full rounded-lg">
             <div class="mb-3 text-lg font-medium">Frekuensi Share Harian</div>
 
             <table class="w-full">
@@ -537,8 +550,9 @@
 
           </div>
         </div>
+
         <div>
-          <div class="bg-white p-6">
+          <div class="bg-white p-6 h-full rounded-lg">
             <div class="mb-3 text-lg font-medium">
               Jumlah Orang Membuka OMOO (Harian)
             </div>
@@ -554,8 +568,9 @@
 
           </div>
         </div>
+
         <div>
-          <div class="bg-white p-6">
+          <div class="bg-white p-6 h-full rounded-lg">
             <div class="mb-3 text-lg font-medium">
               Jumlah Orang Share Konten (Harian)
             </div>
@@ -573,45 +588,74 @@
         </div>
 
         <div>
+          <div class="bg-white p-6 h-full rounded-lg">
+            <div class="mb-3 text-lg font-medium">
+              Frekuensi Search Tiap Publisher 
+            </div>
+
+            <table class="w-full">
+             
+            </table>
+
+          </div>
+        </div>
+
+        <div>
           {#if open_rate_per_city.length > 0}
-            <div class="bg-white p-6">
+            <div class="bg-white p-6 h-full rounded-lg">
               <div class="mb-3 text-lg font-medium">Frekuensi Buka Tiap Kota</div>
 
               <table class="w-full">
                 {#each open_rate_per_city as item, index}
-                  <tr>
-                    <td>{index == 0 ? '' : `${index}.`} {item.city}</td>
-                    <td class="text-right">{item.total.toLocaleString("id")}</td>
-                  </tr>
+
+                  {#if index <= countday || showAllOpen}
+                    <tr>
+                      <td>{index == 0 ? '' : `${index}.`} {item.city}</td>
+                      <td class="text-right">{item.total.toLocaleString("id")}</td>
+                    </tr>
+                  {:else}
+                    <tr style="display: none">
+                      <td>{index == 0 ? '' : `${index}.`} {item.city}</td>
+                      <td class="text-right">{item.total.toLocaleString("id")}</td>
+                    </tr>
+                  {/if}
+                  
                 {/each}
               </table>
+             <button on:click={() => toggleShowAll('open')} class="text-blue-500 mt-0.5">{showAllOpen ? 'Lihat Lebih Sedikit' : 'Lihat Semua Kota'}</button>
 
             </div>
           {/if}
         </div>
+
         <div>
           {#if share_rate_per_city.length > 0}
-            <div class="bg-white p-6">
+            <div class="bg-white p-6 h-full rounded-lg">
               <div class="mb-3 text-lg font-medium">Frekuensi Share Tiap Kota</div>
 
               <table class="w-full">
                 {#each share_rate_per_city as item, index}
+
+                {#if index <= countday || showAllShare}
                   <tr>
                     <td>{index == 0 ? '' : `${index}.`} {item.city}</td>
                     <td class="text-right">{item.total.toLocaleString("id")}</td>
                   </tr>
+                {:else}
+                  <tr style="display: none">
+                    <td>{index == 0 ? '' : `${index}.`} {item.city}</td>
+                    <td class="text-right">{item.total.toLocaleString("id")}</td>
+                  </tr>
+                {/if}
+                  
                 {/each}
               </table>
+              <button on:click={() => toggleShowAll('share')} class="text-blue-500 mt-0.5">{showAllShare ? 'Lihat Lebih Sedikit' : 'Lihat Semua Kota'}</button>
 
             </div>
           {/if}
         </div>
 
-        <!--
-        
-        ADD YOUR MAIN CONTENT ABOVE
-              
-        -->
       </div>
     {:else if model == "chart"}
       <div class="space-y-6">
