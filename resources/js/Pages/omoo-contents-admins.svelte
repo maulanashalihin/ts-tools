@@ -25,12 +25,15 @@
     contents = contents;
   }
 
-  function deletePost(channelId, postId) {
-    return function () {
+function deletePost(channelId, postId) {
+  return function () {
+    const confirmDelete = confirm("Yakin hapus konten ini?");
+    if (confirmDelete) {
       axios.delete("/channel/" + channelId + "/content/" + postId);
       contents = contents.filter((item) => item.id != postId);
-    };
-  }
+    }
+  };
+}
 
   function getCustomContents(status, pub) {
     axios.get(`/omoo-contents/${status}/${pub}`).then((response) => {
