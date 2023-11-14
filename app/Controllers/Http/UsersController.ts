@@ -65,5 +65,11 @@ export default class UsersController {
     return response.redirect('/users',false,303)
   }
 
-  public async destroy({}: HttpContextContract) {}
+  public async destroy({ params, response }: HttpContextContract) {
+    const user = await User.findOrFail(params.id)
+    await user.delete()
+
+    //no content -- success delete
+    return response.status(204)
+  }
 }

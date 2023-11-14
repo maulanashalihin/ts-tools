@@ -4,6 +4,17 @@
   import axios from "axios";
   import Layouts from "../Components/layouts.svelte";
   export let users;
+
+  function deleteItem(item) {
+    const check = confirm(
+      `Apakah kamu yakin akan menghapus user ${item.name}?`
+    );
+    if (check) {
+      users = users.filter((user) => user.id !== item.id);
+      axios.delete("/users/" + item.id);
+    }
+  }
+
 </script>
 
 <div>
@@ -21,18 +32,18 @@
       </div>
       <hr class="my-6 " />
       <div class="grid gap-3">
-        {#each users as item}
-          <!-- content here -->
-          <div class="flex justify-between">
-            <div>
-              {item.name}
-            </div>
-            <div class="text-gray-400 text-xs">
-              {item.email}
-            </div>
-          </div>
-        {/each}
+  {#each users as item}
+    <div class="flex justify-between items-center">
+      <div>
+        {item.name}
+        <span class="text-gray-400 text-xs ml-2">
+          {item.email}
+        </span>
       </div>
+      <button class="bg-red-500 hover:bg-red-600 text-white font-bold py-1 px-2 rounded-md text-sm" on:click={() => deleteItem(item)}>Delete</button>
+    </div>
+  {/each}
+</div>
     </div>
   </Layouts>
 </div>
