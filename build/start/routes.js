@@ -40,6 +40,7 @@ Route_1.default.group(() => {
     Route_1.default.get("/omoo-stats/data", "StatsController.getData");
     Route_1.default.get("/omoo-stats/datacity", "StatsController.getDataCity");
     Route_1.default.get("/omoo-stats/cityname", "StatsController.getCityName");
+    Route_1.default.get("/omoo-stats/adminlist", "StatsController.getAllChannelsWithAdmins");
     Route_1.default.get("/omoo-stats/trending", "StatsController.getTrendingKonten");
     Route_1.default.get("/omoo-channels", "ChannelsController.admins");
     Route_1.default.get("/omoo-channels/:id", "ChannelsController.adminView");

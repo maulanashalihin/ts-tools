@@ -55,6 +55,15 @@ class StatsController {
             cityresult
         };
     }
+    async getAllChannelsWithAdmins({}) {
+        const channels = await Database_1.default.from("channels").select(["id", "name"]);
+        const channelsWithAdmins = await Promise.all(channels.map(async (channel) => {
+            const adminIds = await Database_1.default.from("channel_admins").where("channel_id", channel.id).select(["troop_id"]);
+            const admins = await Database_1.default.from("troops").whereIn("id", adminIds.map(item => item.troop_id)).select(["name", "phone"]);
+            return { ...channel, admins };
+        }));
+        return channelsWithAdmins;
+    }
     async getTrendingKonten({ request }) {
         const isOmoo = JSON.parse(request.input("omoo", false));
         const from = (0, dayjs_1.default)(request.input("from", (0, dayjs_1.default)().subtract(1, 'month'))).add(1, 'day').valueOf().toString();

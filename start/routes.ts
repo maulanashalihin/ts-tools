@@ -94,6 +94,8 @@ Route.get('/login', async ({ inertia,auth,response }) => {
 
     Route.get("/omoo-stats/cityname","StatsController.getCityName")
 
+    Route.get("/omoo-stats/adminlist","StatsController.getAllChannelsWithAdmins")
+
     Route.get("/omoo-stats/trending","StatsController.getTrendingKonten")
 
     Route.get("/omoo-channels","ChannelsController.admins")

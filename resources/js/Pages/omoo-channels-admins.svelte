@@ -17,12 +17,40 @@
       axios.put("/make-official-channel/" + channel.id, channel);
     }
   }
+
+  function downloadAdminList() {
+  axios.get("/omoo-stats/adminlist")
+    .then(response => {
+      const data = response.data;
+      const csvContent = "data:text/csv;charset=utf-8," 
+        + "Nama Channel,Nama Admin,Phone\n"
+        + data.map(row => {
+          const adminNames = Array.isArray(row.admins) ? row.admins.map(admin => admin.name) : [row.admins.name];
+          const adminPhones = Array.isArray(row.admins) ? row.admins.map(admin => admin.phone) : [row.admins.phone];
+          const rows = adminNames.map((name, index) => [row.name, name, adminPhones[index]].join(","));
+          return rows.filter(row => row.trim() !== "").join("\n");
+        }).join("\n").replace(/\n{2,}/g, "\n");
+      const encodedUri = encodeURI(csvContent);
+      const link = document.createElement("a");
+      link.setAttribute("href", encodedUri);
+      link.setAttribute("download", "adminlist.csv");
+      document.body.appendChild(link);
+      link.click();
+    })
+    .catch(error => {
+      console.error(error);
+    });
+}
+
 </script>
 
 <div>
   <TsLayouts>
     <div class="container xl:max-w-7xl mx-auto p-4 lg:p-8">
       <div class="text-xl font-medium">Daftar Channel</div>
+
+      <button class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded w-full md:w-1/5 mt-2" on:click={downloadAdminList}>Download Admin List</button>
+
       <div class="grid lg:grid-cols-3 gap-4 mt-5">
         {#each channels as item}
           <!-- content here -->

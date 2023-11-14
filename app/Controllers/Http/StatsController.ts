@@ -104,6 +104,18 @@ export default class StatsController {
     }
   }
 
+  public async getAllChannelsWithAdmins({}: HttpContextContract) {
+    const channels = await Database.from("channels").select(["id", "name"]);
+    const channelsWithAdmins = await Promise.all(
+      channels.map(async (channel) => {
+        const adminIds = await Database.from("channel_admins").where("channel_id", channel.id).select(["troop_id"]);
+        const admins = await Database.from("troops").whereIn("id", adminIds.map(item=>item.troop_id)).select(["name", "phone"]);
+        return { ...channel, admins };
+      })
+    );
+    return channelsWithAdmins;
+  }
+
   public async getTrendingKonten({request}: HttpContextContract) {
 
     const isOmoo = JSON.parse(request.input("omoo",false))

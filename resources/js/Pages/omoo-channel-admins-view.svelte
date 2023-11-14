@@ -31,20 +31,6 @@
     }
   }
 
-  function downloadAdminList(admins, channel) {
-    const csvData = "Name,Number,Channel Name\n" +
-    admins.map((admin) => `${admin.name},${admin.phone},${channel.name}`).join("\n");
-    const blob = new Blob([csvData], { type: "text/csv" });
-    const url = URL.createObjectURL(blob);
-    const link = document.createElement("a");
-    link.href = url;
-    link.download = "admin-list.csv";
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
-    URL.revokeObjectURL(url);
-  }
-
   export let admins;
 </script>
 
@@ -313,7 +299,7 @@
               </table>
               <!-- END Bordered Table -->
             </div>
-            <button class="bg-green-500 hover:bg-green-600 text-white font-bold py-2 px-4 rounded w-1/2 mx-auto mt-2" on:click={() => downloadAdminList(admins, channel)}>Download Admin List</button>
+            
             <!-- END Responsive Table Container -->
           </div>
           <!-- Card: User Profile -->
