@@ -323,6 +323,14 @@
         "postal_code": "11220"
       },
       {
+        "city_id": "55",
+        "province_id": "9",
+        "province": "Megapolitan",
+        "type": "Kota",
+        "city_name": "Bekasi",
+        "postal_code": "17121"
+      },
+      {
         "city_id": "457",
         "province_id": "3",
         "province": "Megapolitan",
@@ -583,14 +591,6 @@
         "type": "Kota",
         "city_name": "Banjar",
         "postal_code": "46311"
-      },
-      {
-        "city_id": "55",
-        "province_id": "9",
-        "province": "Jawa Barat",
-        "type": "Kota",
-        "city_name": "Bekasi",
-        "postal_code": "17121"
       },
       {
         "city_id": "79",
