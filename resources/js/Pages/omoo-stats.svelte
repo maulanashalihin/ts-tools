@@ -6,6 +6,7 @@
   import axios from "axios";
   import Typeahead from "svelte-typeahead";
   import Carousel from "../Components/Carousel.svelte";
+  import cities from "../Components/cities.json";
 
   let daily_open_rate = [];
   let daily_open_rate_unique = [];
@@ -20,6 +21,13 @@
 
   let allcity = [];
 
+  let province = Object.values(cities)
+    .flatMap(cityList => cityList.map(city => city.province))
+    .filter((province, index, self) => self.indexOf(province) === index)
+    .map(province => ({name: province}));
+
+  console.log(province)
+
   let city = "";
   let stratplan = false
 
@@ -30,6 +38,24 @@
 
   let showAllShare = false;
   let showAllOpen = false;
+
+  function getDataCity(province) {
+    const filteredCities = Object.values(cities).reduce((acc, provCities) => {
+      const citiesInProvince = provCities.filter(city => city.province === province);
+      return acc.concat(citiesInProvince.map(city => ({
+        city: `${city.type} ${city.city_name}`,
+      })));
+    }, []);
+
+    if (filteredCities.length === 0) {
+      console.log('not found any data city');
+    }
+
+    return filteredCities;
+  }
+
+  const result = getDataCity('Bali');
+  console.log(result);
 
   function toggleShowAll(type) { type === 'share' ? showAllShare = !showAllShare : showAllOpen = !showAllOpen; }
 
@@ -151,6 +177,13 @@
 
   function LoadDataCustom(date1, date2, city) {
     countday = Math.abs(dayjs(date1).diff(dayjs(date2), 'day'))
+
+    const foundProvince = province.find(p => p.name === city);
+    if (foundProvince) {
+      city =  getDataCity(foundProvince.name)
+      city = city.map(c => c.city).join(',');
+    }
+
     axios
       .get("/omoo-stats/datacity", {
         params: {
@@ -296,10 +329,14 @@
   function getCityName() {
     axios.get("/omoo-stats/cityname").then((response) => {
       allcity = response.data.cityresult;
+      allcity.push(...province);
     });
+
+    
+
   }
 
-  onMount(() => {
+  onMount(async () => {
     LoadData(dayjs().subtract(7, "day"), dayjs());
     getCityName();
 
@@ -380,7 +417,7 @@
           <Typeahead
             hideLabel="true"
             limit={5}
-            placeholder={`Cari nama kota`}
+            placeholder={`Cari nama kota/provinsi`}
             data={allcity}
             extract={(item) => item.name}
             on:select={(item) => {
@@ -475,7 +512,7 @@
               <button type="button" class="inline-flex justify-center items-center space-x-2 border font-medium focus:outline-none flex-none z-1 px-3 py-2 leading-5 text-sm rounded-l-lg active:z-1 focus:z-1 -mr-px bg-sky-100 text-sky-600">
                 Rentang Waktu
               </button>
-              <input class="z-50 block border border-gray-200 p-2 rounded-r-lg py-2 leading-5 text-sm w-full active:z-1 focus:z-1 md:w-1/6" type="text" id="datepicker" />
+              <input class="block border border-gray-200 p-2 rounded-r-lg py-2 leading-5 text-sm w-full active:z-1 focus:z-1 md:w-1/6" type="text" id="datepicker" />
             </div> 
           </div>
         </div>
