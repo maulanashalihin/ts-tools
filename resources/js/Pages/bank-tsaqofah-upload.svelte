@@ -41,27 +41,29 @@
     })
   }
 
-  function uploadThumb(e)
-  {
-    const file = e.target.files[0]
+  function uploadThumb(e) {
+  const file = e.target.files[0];
 
+  if (file) {
     var formData = new FormData();
-
-    formData.append("file", file); 
+    formData.append("file", file);
+    formData.append("uuid", v4());
 
     axios
-        .post("/tsq-upload", formData, {
-          headers: {
-            "Content-Type": "multipart/form-data"
-          }
-        }).then(response=>{
-            if (typeof response.data == "string") { 
-                content.thumbnail = response.data; 
-            }
-        })
-
-
+      .post("/tsq-upload", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data"
+        }
+      })
+      .then(response => {
+        if (typeof response.data === "string") {
+          content.thumbnail = response.data;
+        }
+      });
+  } else {
+    console.log("No file selected");
   }
+}
 
   async function handleChange(e) {
     const _files = e.target.files;
