@@ -41,7 +41,11 @@ class UsersController {
         }
         return response.redirect('/users', false, 303);
     }
-    async destroy({}) { }
+    async destroy({ params, response }) {
+        const user = await User_1.default.findOrFail(params.id);
+        await user.delete();
+        return response.status(204);
+    }
 }
 exports.default = UsersController;
 //# sourceMappingURL=UsersController.js.map

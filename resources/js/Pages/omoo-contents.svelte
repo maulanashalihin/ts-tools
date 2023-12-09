@@ -20,11 +20,19 @@
   contents = contents;
 
   function deletePost(channelId, postId) {
-    return function () {
-      axios.delete("/channel/" + channelId + "/content/" + postId);
-      contents = contents.filter((item) => item.id != postId);
-    };
-  }
+  return function () {
+    const confirmDelete = confirm("Yakin hapus konten ini?");
+    if (confirmDelete) {
+      axios.delete("/channel/" + channelId + "/content/" + postId)
+        .then(() => {
+          contents = contents.filter((item) => item.id != postId);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
+    }
+  };
+}
 
   const statusColor = {
     pending: "bg-gray-500",
@@ -106,9 +114,9 @@
 
               <div class="flex justify-center gap-10 mt-3">
                 <a use:inertia href="{channel.id}/content/{item.id}/edit"
-                class="font-semibold inline-flex px-3 py-1 leading-4 rounded-full bg-cyan-200 text-cyan-800" >Edit</a
+                class="font-semibold inline-flex px-3 py-1 leading-4 rounded-md bg-cyan-200 text-cyan-800" >Edit</a
                 >
-                <button on:click={deletePost(channel.id, item.id)} class="font-semibold inline-flex px-3 py-1 leading-4 rounded-full bg-red-200 text-red-800">Delete</button
+                <button on:click={deletePost(channel.id, item.id)} class="font-semibold inline-flex px-3 py-1 leading-4 rounded-md bg-red-200 text-red-800">Delete</button
                 >
               </div>
             </div>

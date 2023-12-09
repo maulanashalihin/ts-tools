@@ -5,13 +5,7 @@ import dayjs from 'dayjs';
 export default class StatsController {
   public async index({inertia}: HttpContextContract) {
 
-   
-
- 
-    
-
     return   inertia.render("omoo-stats")
-
   }
 
 
@@ -58,20 +52,22 @@ export default class StatsController {
   
       const to  = dayjs(request.input("to",dayjs())).add(1,'day').valueOf().toString();
   
-      const city = request.input("city", "Kota Jakarta Timur");
+      let city = request.input("city", "Kota Jakarta Timur");
+
+      city = city.split(',')
 
       //get open rate per city and fix date
-      const open_rate = await Database.from("open_rates").whereBetween("date",[from,to]).where("city", city).select(Database.raw("DATE_FORMAT(FROM_UNIXTIME(date / 1000),'%Y-%m-%d') AS date_only")).count("* as total").groupBy("date_only");
+      const open_rate = await Database.from("open_rates").whereBetween("date",[from,to]).whereIn("city", city).select(Database.raw("DATE_FORMAT(FROM_UNIXTIME(date / 1000),'%Y-%m-%d') AS date_only")).count("* as total").groupBy("date_only");
 
       //get open rate unique
-      const open_rate_unique = await Database.from("open_rates").whereBetween("date",[from,to]).where("city", city).select(Database.raw("DATE_FORMAT(FROM_UNIXTIME(date / 1000),'%Y-%m-%d') AS date_only")).countDistinct("troop_id as total").groupBy("date_only");
+      const open_rate_unique = await Database.from("open_rates").whereBetween("date",[from,to]).whereIn("city", city).select(Database.raw("DATE_FORMAT(FROM_UNIXTIME(date / 1000),'%Y-%m-%d') AS date_only")).countDistinct("troop_id as total").groupBy("date_only");
       
 
       //get share rate per city and fix date
-      const share_rate = await Database.from("share_rates").whereBetween("date",[from,to]).where("city", city).select(Database.raw("DATE_FORMAT(FROM_UNIXTIME(date / 1000),'%Y-%m-%d') AS date_only")).count("* as total").groupBy("date_only");
+      const share_rate = await Database.from("share_rates").whereBetween("date",[from,to]).whereIn("city", city).select(Database.raw("DATE_FORMAT(FROM_UNIXTIME(date / 1000),'%Y-%m-%d') AS date_only")).count("* as total").groupBy("date_only");
 
       //get share rate unique
-      const share_rate_unique = await Database.from("share_rates").whereBetween("date",[from,to]).where("city", city).select(Database.raw("DATE_FORMAT(FROM_UNIXTIME(date / 1000),'%Y-%m-%d') AS date_only")).countDistinct("troop_id as total").groupBy("date_only");
+      const share_rate_unique = await Database.from("share_rates").whereBetween("date",[from,to]).whereIn("city", city).select(Database.raw("DATE_FORMAT(FROM_UNIXTIME(date / 1000),'%Y-%m-%d') AS date_only")).countDistinct("troop_id as total").groupBy("date_only");
      
 
       return {
