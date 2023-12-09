@@ -6,12 +6,14 @@ export default class extends BaseSchema {
   public async up () {
     this.schema.alterTable(this.tableName, (table) => {
       table.boolean('isPopup').defaultTo(false);
+      table.integer('PopUpCount').defaultTo(0);
     });
   }
 
   public async down () {
     this.schema.alterTable(this.tableName, (table) => {
-      table.dropColumn('popup');
+      table.dropColumn('isPopup');
+      table.dropColumn('PopUpCount');
     });
   }
 }
