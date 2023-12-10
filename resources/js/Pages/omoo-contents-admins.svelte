@@ -118,6 +118,16 @@ function deletePost(channelId, postId) {
         >
           Rejected
         </button>
+
+        <button
+          class="{current === 'popup' ? 'btngroup-select text-blue-500' : 'btngroup-unselect'}"
+	        on:click="{() => {
+            current = "popup"
+              getCustomContents(current, publisher)
+          }}"
+        >
+          PopUp
+        </button>
         
 
 
@@ -198,6 +208,11 @@ function deletePost(channelId, postId) {
               </label>
               <div class="flex justify-center gap-3 mt-3">
                 <div class="inline-flex">
+
+                  <!-- <button on:click={deletePost(item.channel_id, item.id)} class="font-semibold inline-flex px-2 py-1 mr-2 bg-cyan-200 text-cyan-800">
+                    PopUp
+                  </button> -->
+
                   <button
                     on:click={() => {
                       UpdateStatus(item, "pending");
@@ -232,7 +247,7 @@ function deletePost(channelId, postId) {
                     Reject
                   </button>
 
-                  <button on:click={deletePost(item.channel_id, item.id)} class="font-semibold inline-flex px-2 py-1 ml-4 bg-red-200 text-red-800">
+                  <button on:click={deletePost(item.channel_id, item.id)} class="font-semibold inline-flex px-2 py-1 ml-2 bg-red-200 text-red-800">
                     Delete
                   </button>
 

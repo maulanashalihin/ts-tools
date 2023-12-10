@@ -35,6 +35,7 @@
   let act = "7day";
 
   let countday = 7
+  let gender = "all"
 
   let showAllShare = false;
   let showAllOpen = false;
@@ -190,6 +191,7 @@
           from: date1.format("YYYY-MM-DD"),
           to: date2.format("YYYY-MM-DD"),
           city: city,
+          gender: gender
         },
       })
       .then((response) => {
@@ -241,6 +243,7 @@
         params: {
           from: date1.format("YYYY-MM-DD"),
           to: date2.format("YYYY-MM-DD"),
+          gender: gender
         },
       })
       .then((response) => {
@@ -430,6 +433,7 @@
               );
             }}
             on:clear={() => {
+              act = "7day";
               city = "";
               LoadData(dayjs().subtract(7, "day"), dayjs());
             }}
@@ -448,7 +452,100 @@
             Cari
           </button> -->
         </div>
-        <br />
+
+        <div class="mt-3 mb-3">
+          <button
+            on:click={() => {
+              act = "7day";
+              gender = "all"
+            
+              if (model == "konten") {
+                loadDataTrending(dayjs().subtract(7, "day"), dayjs());
+              } else if (city.length > 0) {
+                model = "table";
+                LoadDataCustom(dayjs().subtract(7, "day"), dayjs());
+              } else {
+                model = "table";
+                LoadData(dayjs().subtract(7, "day"), dayjs());
+              }
+              
+            }}
+              class="{gender == 'all'
+                ? 'shrink-0 rounded-lg bg-sky-100 p-2 text-sm font-medium text-sky-600'
+                : ' shrink-0 rounded-lg p-2 text-sm font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-700'}  "
+              >
+              Semua
+          </button>
+
+          <button
+            on:click={() => {
+              act = "7day";
+              gender = "Laki-Laki"
+            
+              if (model == "konten") {
+                loadDataTrending(dayjs().subtract(7, "day"), dayjs());
+              } else if (city.length > 0) {
+                model = "table";
+                LoadDataCustom(dayjs().subtract(7, "day"), dayjs());
+              } else {
+                model = "table";
+                LoadData(dayjs().subtract(7, "day"), dayjs());
+              }
+              
+            }}
+              class="{gender == 'Laki-Laki'
+                ? 'shrink-0 rounded-lg bg-sky-100 p-2 text-sm font-medium text-sky-600'
+                : ' shrink-0 rounded-lg p-2 text-sm font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-700'}  "
+              >
+              Laki-laki
+          </button>
+
+          <button
+            on:click={() => {
+              act = "7day";
+              gender = "Perempuan"
+            
+              if (model == "konten") {
+                loadDataTrending(dayjs().subtract(7, "day"), dayjs());
+              } else if (city.length > 0) {
+                model = "table";
+                LoadDataCustom(dayjs().subtract(7, "day"), dayjs());
+              } else {
+                model = "table";
+                LoadData(dayjs().subtract(7, "day"), dayjs());
+              }
+              
+            }}
+              class="{gender == 'Perempuan'
+                ? 'shrink-0 rounded-lg bg-sky-100 p-2 text-sm font-medium text-sky-600'
+                : ' shrink-0 rounded-lg p-2 text-sm font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-700'}  "
+              >
+              Perempuan
+          </button>
+
+          <button
+            on:click={() => {
+              act = "7day";
+              gender = null
+            
+              if (model == "konten") {
+                loadDataTrending(dayjs().subtract(7, "day"), dayjs());
+              } else if (city.length > 0) {
+                model = "table";
+                LoadDataCustom(dayjs().subtract(7, "day"), dayjs());
+              } else {
+                model = "table";
+                LoadData(dayjs().subtract(7, "day"), dayjs());
+              }
+              
+            }}
+              class="{gender == null
+                ? 'shrink-0 rounded-lg bg-sky-100 p-2 text-sm font-medium text-sky-600'
+                : ' shrink-0 rounded-lg p-2 text-sm font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-700'}  "
+              >
+              Null
+          </button>
+        </div>
 
         <button
           on:click={() => {
@@ -467,7 +564,7 @@
           }}
           class="{act == '7day'
             ? 'shrink-0 rounded-lg bg-sky-100 p-2 text-sm font-medium text-sky-600'
-            : ' shrink-0 rounded-lg p-2 text-sm font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-700'}  "
+            : 'shrink-0 rounded-lg p-2 text-sm font-medium text-gray-500 hover:bg-gray-50 hover:text-gray-700'}  "
         >
           7 Hari
         </button>
