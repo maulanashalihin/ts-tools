@@ -159,9 +159,9 @@ function deletePost(channelId, postId) {
                 <div class="mt-2 grid grid-cols-1 gap-2 text-sm md:text-base">
                     <label for="popup" >Tampilkan PopUp ? </label>
                     <div class="flex flex-wrap gap-2">
-                      <input type="radio" bind:group={contentMenu.isPopUp} class="mt-1" name="option" value={true} />
+                      <input type="radio" on:click={() => {isPopUp = true}} class="mt-1" name="option" />
                       <label for="yes">Ya</label>
-                      <input type="radio" bind:group={contentMenu.isPopUp} class="mt-1" name="option" value={false} />
+                      <input type="radio" on:click={() => {isPopUp = false}} class="mt-1" name="option" />
                       <label for="no">Tidak</label>
                     </div>
 
