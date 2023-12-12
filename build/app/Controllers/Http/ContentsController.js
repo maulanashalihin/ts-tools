@@ -58,6 +58,18 @@ class ContentsController {
             return contents;
         }
     }
+    async popupshow({ auth, params }) {
+        const user = auth.use("web").user;
+        if (user) {
+            const pub = decodeURIComponent(params.pub);
+            if (pub == "semua") {
+                const contents = await Database_1.default.from("contents").orderBy("id", "desc").where("isPopUp", true).limit(50);
+                return contents;
+            }
+            const contents = await Database_1.default.from("contents").orderBy("id", "desc").where("channel_name", pub).where("isPopUp", true).limit(50);
+            return contents;
+        }
+    }
     async edit({ inertia, params, auth }) {
         const user = auth.use("buzzer").user;
         if (user) {
@@ -71,6 +83,11 @@ class ContentsController {
     }
     async update({ request, params }) {
         await Database_1.default.from("contents").where('id', params.id).update(request.except(['id']));
+    }
+    async popup({ request, params }) {
+        const isPopUp = request.input("isPopUp");
+        const popUpCount = request.input("popUpCount");
+        await Database_1.default.from("contents").where('id', params.id).update({ isPopUp, popUpCount });
     }
     async status({ request, params }) {
         await Database_1.default.from("contents").where('id', params.id).update({
@@ -138,6 +155,15 @@ class ContentsController {
             return contents;
         }
         const contents = await Database_1.default.from("contents").where("status", "approved").where("is_omoo", true).orderBy("id", "desc").limit(100);
+        return contents;
+    }
+    async popupcontent({ request }) {
+        const pubname = request.input("publisher", "");
+        if (pubname !== "") {
+            const contents = await Database_1.default.from("contents").where("isPopUp", true).where("channel_name", pubname).orderBy("id", "desc").limit(100);
+            return contents;
+        }
+        const contents = await Database_1.default.from("contents").where("isPopUp", true).orderBy("id", "desc").limit(100);
         return contents;
     }
     async latest({ request }) {

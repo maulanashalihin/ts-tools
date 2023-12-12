@@ -46,9 +46,10 @@ Route_1.default.group(() => {
     Route_1.default.get("/omoo-channels/:id", "ChannelsController.adminView");
     Route_1.default.get("/omoo-contents", "ContentsController.index");
     Route_1.default.get("/omoo-contents/publist", "ContentsController.publist");
-    Route_1.default.get("/omoo-contents/:status", "ContentsController.customshow");
-    Route_1.default.get("/omoo-contents/:status/:pub", "ContentsController.customshow");
+    Route_1.default.get("/omoo-contents/popup/:pub", "ContentsController.popupshow");
+    Route_1.default.get("/omoo-contents/:status/pub/:pub", "ContentsController.customshow");
     Route_1.default.put("/omoo-contents/:id", "ContentsController.update");
+    Route_1.default.put("/omoo-contents/:id/popup", "ContentsController.popup");
     Route_1.default.put("/omoo-contents/:id/status", "ContentsController.status");
     Route_1.default.put("/make-official-channel/:id", "ChannelsController.makeOfficial");
     Route_1.default.put("/messages/:id", "MessagesController.update");
@@ -117,6 +118,7 @@ Route_1.default.get("/api/adzan/:location/:year/:month", "QuransController.adzan
 Route_1.default.group(() => {
     Route_1.default.get("/publist", "ContentsController.publist");
     Route_1.default.get("/contents/omoo", "ContentsController.omoo");
+    Route_1.default.get("/contents/popup", "ContentsController.popupcontent");
     Route_1.default.get("/contents/terkini", "ContentsController.latest");
     Route_1.default.get("/contents/trending", "ContentsController.trending");
     Route_1.default.get("/contents/official", "ContentsController.official");
