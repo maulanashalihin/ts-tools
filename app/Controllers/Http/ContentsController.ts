@@ -261,13 +261,26 @@ export default class ContentsController {
 
     const pubname = request.input("publisher","")
 
+    let contents;
     if (pubname !== "") {
-      const contents = await Database.from("contents").where("isPopUp",true).where("channel_name", pubname).orderBy("id","desc").limit(100)
-      return contents;
+      contents = await Database.from("contents").where("isPopUp",true).where("channel_name", pubname).orderBy("id","desc").limit(100)
+    } else {
+      contents = await Database.from("contents").where("isPopUp",true).orderBy("id","desc").limit(100)
     }
 
-    const contents = await Database.from("contents").where("isPopUp",true).orderBy("id","desc").limit(100)
-    
+    for (let content of contents) {
+      if (content.share >= content.PopUpCount) {
+        await Database.from("contents").where("id", content.id).delete()
+      }
+    }
+
+    // Reload contents after deletion
+    if (pubname !== "") {
+      contents = await Database.from("contents").where("isPopUp",true).where("channel_name", pubname).orderBy("id","desc").limit(100)
+    } else {
+      contents = await Database.from("contents").where("isPopUp",true).orderBy("id","desc").limit(100)
+    }
+
     return contents;
   }
 
