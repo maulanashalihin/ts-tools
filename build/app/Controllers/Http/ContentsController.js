@@ -191,10 +191,10 @@ class ContentsController {
     async trending({ request }) {
         const pubname = request.input("publisher", "");
         if (pubname !== "") {
-            const contents = await Database_1.default.from("contents").where("status", "approved").where("created", ">", (0, dayjs_1.default)().subtract(7, 'day').valueOf()).where("channel_name", pubname).orderBy("point", "desc").limit(100);
+            const contents = await Database_1.default.from("contents").where("status", "approved").where("created", ">", (0, dayjs_1.default)().subtract(7, 'day').valueOf()).where("channel_name", pubname).orderBy("point", "desc").limit(20);
             return contents;
         }
-        const contents = await Database_1.default.from("contents").where("status", "approved").where("created", ">", (0, dayjs_1.default)().subtract(7, 'day').valueOf()).orderBy("point", "desc").limit(100);
+        const contents = await Database_1.default.from("contents").where("status", "approved").where("created", ">", (0, dayjs_1.default)().subtract(7, 'day').valueOf()).orderBy("point", "desc").limit(20);
         return contents;
     }
     async official({ request }) {

@@ -18,7 +18,7 @@ class StatsController {
             .add(1, "day")
             .valueOf()
             .toString();
-        const gender = request.input("gender", null);
+        const gender = request.input("gender", "all");
         if (gender != "all") {
             const daily_open_rate = await Database_1.default.from("open_rates")
                 .join("troops", "open_rates.troop_id", "troops.id")
@@ -204,18 +204,14 @@ class StatsController {
         };
     }
     async getCityName({}) {
-        const city = await Database_1.default.from("open_rates").select("city");
-        const cityresult = city
-            .filter((item) => item.city !== null)
-            .map((item) => item.city)
-            .filter((value, index, self) => self.indexOf(value) === index);
-        cityresult.forEach((item, index) => {
-            cityresult[index] = {
-                name: item,
+        const city = await Database_1.default.from("open_rates").whereNotNull("city").distinct("city");
+        city.forEach((item, index) => {
+            city[index] = {
+                name: item.city,
             };
         });
         return {
-            cityresult,
+            city,
         };
     }
     async getAllChannelsWithAdmins({}) {
