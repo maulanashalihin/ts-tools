@@ -18,7 +18,7 @@ export default class StatsController {
       .valueOf()
       .toString();
 
-    const gender = request.input("gender", null);
+    const gender = request.input("gender", "all");
 
     if (gender != "all") {
       const daily_open_rate = await Database.from("open_rates")
@@ -306,23 +306,17 @@ export default class StatsController {
 
   public async getCityName({}: HttpContextContract) {
     //get city froom open rate
-    const city = await Database.from("open_rates").select("city");
-
-    //delete null city and delete duplicate city
-    const cityresult = city
-      .filter((item) => item.city !== null)
-      .map((item) => item.city)
-      .filter((value, index, self) => self.indexOf(value) === index);
+    const city = await Database.from("open_rates").whereNotNull("city").distinct("city");
 
     //parse cityresult as name and value key pair
-    cityresult.forEach((item, index) => {
-      cityresult[index] = {
-        name: item,
+    city.forEach((item, index) => {
+      city[index] = {
+        name: item.city,
       };
     });
 
     return {
-      cityresult,
+      city,
     };
   }
 

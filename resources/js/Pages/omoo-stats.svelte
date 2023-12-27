@@ -331,7 +331,7 @@
 
   function getCityName() {
     axios.get("/omoo-stats/cityname").then((response) => {
-      allcity = response.data.cityresult;
+      allcity = response.data.city;
       allcity.push(...province);
     });
 
