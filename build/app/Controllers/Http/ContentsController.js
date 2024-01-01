@@ -157,26 +157,14 @@ class ContentsController {
         const contents = await Database_1.default.from("contents").where("status", "approved").where("is_omoo", true).orderBy("id", "desc").limit(100);
         return contents;
     }
-    async popupcontent({ request }) {
-        const pubname = request.input("publisher", "");
-        let contents;
-        if (pubname !== "") {
-            contents = await Database_1.default.from("contents").where("isPopUp", true).where("channel_name", pubname).orderBy("id", "desc").limit(100);
-        }
-        else {
-            contents = await Database_1.default.from("contents").where("isPopUp", true).orderBy("id", "desc").limit(100);
-        }
+    async popupcontent({}) {
+        let contents = await Database_1.default.from("contents").where("isPopUp", true).orderBy("id", "desc").limit(100);
         for (let content of contents) {
             if (content.share >= content.PopUpCount) {
                 await Database_1.default.from("contents").where("id", content.id).update({ isPopUp: false });
             }
         }
-        if (pubname !== "") {
-            contents = await Database_1.default.from("contents").where("isPopUp", true).where("channel_name", pubname).orderBy("id", "desc").limit(100);
-        }
-        else {
-            contents = await Database_1.default.from("contents").where("isPopUp", true).orderBy("id", "desc").limit(100);
-        }
+        contents = await Database_1.default.from("contents").where("isPopUp", true).orderBy("id", "desc").limit(100);
         return contents;
     }
     async latest({ request }) {

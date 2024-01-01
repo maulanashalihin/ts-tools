@@ -257,16 +257,9 @@ export default class ContentsController {
     return contents;
   }
 
-  public async popupcontent({request}: HttpContextContract) {
+  public async popupcontent({}: HttpContextContract) {
 
-    const pubname = request.input("publisher","")
-
-    let contents;
-    if (pubname !== "") {
-      contents = await Database.from("contents").where("isPopUp",true).where("channel_name", pubname).orderBy("id","desc").limit(100)
-    } else {
-      contents = await Database.from("contents").where("isPopUp",true).orderBy("id","desc").limit(100)
-    }
+    let contents = await Database.from("contents").where("isPopUp",true).orderBy("id","desc").limit(100)
 
     for (let content of contents) {
       if (content.share >= content.PopUpCount) {
@@ -275,11 +268,8 @@ export default class ContentsController {
     }
 
     // Reload contents after deletion
-    if (pubname !== "") {
-      contents = await Database.from("contents").where("isPopUp",true).where("channel_name", pubname).orderBy("id","desc").limit(100)
-    } else {
-      contents = await Database.from("contents").where("isPopUp",true).orderBy("id","desc").limit(100)
-    }
+    contents = await Database.from("contents").where("isPopUp",true).orderBy("id","desc").limit(100)
+
 
     return contents;
   }
