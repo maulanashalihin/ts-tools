@@ -168,7 +168,7 @@ class ContentsController {
         }
         for (let content of contents) {
             if (content.share >= content.PopUpCount) {
-                await Database_1.default.from("contents").where("id", content.id).delete();
+                await Database_1.default.from("contents").where("id", content.id).update({ isPopUp: false });
             }
         }
         if (pubname !== "") {
