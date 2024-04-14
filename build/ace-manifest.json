@@ -24,6 +24,18 @@
       "aliases": [],
       "flags": []
     },
+    "migrate:db": {
+      "settings": {
+        "loadApp": true,
+        "stayAlive": false
+      },
+      "commandPath": "./commands/MigrateDb",
+      "commandName": "migrate:db",
+      "description": "",
+      "args": [],
+      "aliases": [],
+      "flags": []
+    },
     "reminder:round": {
       "settings": {
         "loadApp": true,

@@ -49,6 +49,23 @@ const databaseConfig: DatabaseConfig = {
       healthCheck: false,
       debug: false,
     },
+    localsql: {
+      client: 'mysql2',
+      connection: {
+        host: Env.get('MYSQL_HOST'),
+        port: Env.get('MYSQL_PORT'),
+        user: Env.get('MYSQL_USER'),
+        password: Env.get('MYSQL_PASSWORD', ''),
+        database: Env.get('MYSQL_DB_NAME'), 
+        charset : 'utf8mb4'
+
+      },
+      migrations: {
+        naturalSort: true,
+      },
+      healthCheck: false,
+      debug: false,
+    },
     sqlite: {
       client: 'better-sqlite3', // or 'better-sqlite3'
       connection: {

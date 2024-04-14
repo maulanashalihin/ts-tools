@@ -32,6 +32,8 @@ export default class ReminderRound extends BaseCommand {
   public async run() {
     this.logger.info('Hello world!')
 
+
+
     const campaign = await Database.from("campaigns").orderBy("id",'desc').first();
 
     if(campaign)

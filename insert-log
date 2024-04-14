@@ -1,0 +1,2 @@
+sqlite3 app/Services/db.sqlite3 < pscale_dump_ts-tools_main_20240409_131948/ts-tools.api_keys.00001.sql
+sqlite3 app/Services/db.sqlite3 < pscale_dump_ts-tools_main_20240409_131948/ts-tools.api_tokens.00001.sql 
