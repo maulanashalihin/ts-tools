@@ -106,11 +106,13 @@ Route.get('/login', async ({ inertia,auth,response }) => {
 
     Route.get("/omoo-contents/publist","ContentsController.publist")
 
-    Route.get("/omoo-contents/:status","ContentsController.customshow")
+    Route.get("/omoo-contents/popup/:pub","ContentsController.popupshow")
 
-    Route.get("/omoo-contents/:status/:pub","ContentsController.customshow")
+    Route.get("/omoo-contents/:status/pub/:pub","ContentsController.customshow")
 
     Route.put("/omoo-contents/:id","ContentsController.update") 
+
+    Route.put("/omoo-contents/:id/popup","ContentsController.popup") 
 
     Route.put("/omoo-contents/:id/status","ContentsController.status") 
 
@@ -249,6 +251,8 @@ Route.get('/login', async ({ inertia,auth,response }) => {
     Route.get("/publist","ContentsController.publist")
 
     Route.get("/contents/omoo","ContentsController.omoo")
+
+    Route.get("/contents/popup","ContentsController.popupcontent")
 
     Route.get("/contents/terkini","ContentsController.latest")
 

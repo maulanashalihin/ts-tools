@@ -77,7 +77,7 @@ export default class ContentsController {
           return contents
   
         }
-  
+
         const contents = await Database.from("contents").orderBy("id","desc").limit(50)
         return contents
       }
@@ -95,6 +95,27 @@ export default class ContentsController {
       }
 
       const contents = await Database.from("contents").orderBy("id","desc").where("channel_name", pub).limit(50)
+      return contents
+      
+    }
+    
+  }
+
+  public async popupshow({auth, params}: HttpContextContract) {
+
+    const user = auth.use("web").user;
+
+    if(user)
+    {
+      //decode url params.pub
+      const pub = decodeURIComponent(params.pub)
+
+      if(pub == "semua") {
+        const contents = await Database.from("contents").orderBy("id","desc").where("isPopUp", true).limit(50)
+        return contents
+      }
+
+      const contents = await Database.from("contents").orderBy("id","desc").where("channel_name", pub).where("isPopUp", true).limit(50)
       return contents
       
     }
@@ -127,6 +148,13 @@ export default class ContentsController {
   }
   public async update({request,params}: HttpContextContract) {
     await Database.from("contents").where('id',params.id).update(request.except(['id']))
+  }
+
+  public async popup({request, params}: HttpContextContract) {
+    const isPopUp = request.input("isPopUp")
+    const popUpCount = request.input("popUpCount")
+
+    await Database.from("contents").where('id',params.id).update({ isPopUp, popUpCount })
   }
 
   public async status({request,params}: HttpContextContract) {
@@ -229,6 +257,23 @@ export default class ContentsController {
     return contents;
   }
 
+  public async popupcontent({}: HttpContextContract) {
+
+    let contents = await Database.from("contents").where("isPopUp",true).orderBy("id","desc").limit(100)
+
+    for (let content of contents) {
+      if (content.share >= content.PopUpCount) {
+        await Database.from("contents").where("id", content.id).update({ isPopUp: false })
+      }
+    }
+
+    // Reload contents after deletion
+    contents = await Database.from("contents").where("isPopUp",true).orderBy("id","desc").limit(100)
+
+
+    return contents;
+  }
+
   public async latest({request}: HttpContextContract) {
 
     const pubname = request.input("publisher","")
@@ -248,11 +293,11 @@ export default class ContentsController {
     const pubname = request.input("publisher","")
 
     if (pubname !== "") {
-      const contents = await Database.from("contents").where("status","approved").where("created",">",dayjs().subtract(7,'day').valueOf()).where("channel_name", pubname).orderBy("point","desc").limit(100)
+      const contents = await Database.from("contents").where("status","approved").where("created",">",dayjs().subtract(7,'day').valueOf()).where("channel_name", pubname).orderBy("point","desc").limit(20)
       return contents;
     }
 
-    const contents = await Database.from("contents").where("status","approved").where("created",">",dayjs().subtract(7,'day').valueOf()).orderBy("point","desc").limit(100)
+    const contents = await Database.from("contents").where("status","approved").where("created",">",dayjs().subtract(7,'day').valueOf()).orderBy("point","desc").limit(20)
     
     return contents;
   }

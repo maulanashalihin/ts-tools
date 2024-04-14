@@ -4,7 +4,11 @@ module.exports = {
     "./resources/**/*.{js,ts,svelte,edge}",
   ],
   theme: {
-    extend: {},
+    extend: {
+      opacity: {
+      '02': '0.02',
+      }
+    },
   },
   plugins: [],
 }

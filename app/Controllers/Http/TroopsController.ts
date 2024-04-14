@@ -88,7 +88,11 @@ export default class TroopsController {
 
   public async index({inertia,request}: HttpContextContract) {
 
-     
+    // const genderCounts = await Database.from("troops")
+    //   .whereNull('gender');
+
+    // console.log(genderCounts.length)
+
 
     const troops = await Database.from("troops").select(['id','score','twitter_username','name','blocked']).orderBy("score","desc").paginate(request.input("page",1),100);
  
