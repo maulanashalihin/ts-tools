@@ -58,6 +58,7 @@ export default class MigrateDb extends BaseCommand {
         if(data.length)
         {
           latest_id = data[data.length-1].id;
+          console.log("latest_id "+latest_id)
         }
         
         for await (const row of data) {
