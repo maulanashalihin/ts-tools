@@ -31,7 +31,7 @@ export default class MigrateDb extends BaseCommand {
 
  
 
-    const headers = ["users","campaigns","troops","tweets","medias","tweet_to_buzzes","campaign_attendances","api_keys","messages","riayahs","channels","contents","channel_admins","api_tokens","bank_tsaqofahs","strat_plans","request_unblocks","open_rates","share_rates","search_rates","popup_contents"];
+    const headers = ["popup_contents"];
 
     for await (const table of headers) {
       const data = await Database.connection("mysql").from(table);
