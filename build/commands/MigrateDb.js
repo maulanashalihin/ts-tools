@@ -22,9 +22,11 @@ class MigrateDb extends standalone_1.BaseCommand {
                 }
                 data_length = data.length;
                 console.log("migrating " + data_length + " " + table + " data");
+                if (data.length) {
+                    latest_id = data[data.length - 1].id;
+                }
                 for await (const row of data) {
                     await Database_1.default.table(table).insert(row);
-                    latest_id = row.id;
                 }
             }
             console.log("done migrate " + table + " table");
