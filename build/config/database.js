@@ -46,6 +46,13 @@ const databaseConfig = {
             },
             useNullAsDefault: true
         },
+        prod_sqlite: {
+            client: 'better-sqlite3',
+            connection: {
+                filename: './db.sqlite3'
+            },
+            useNullAsDefault: true
+        },
         dev_mysql: {
             client: 'mysql2',
             connection: {

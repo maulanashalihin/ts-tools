@@ -1,14 +1,37 @@
+ 
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import Database from '@ioc:Adonis/Lucid/Database'
+import Hash from '@ioc:Adonis/Core/Hash'
+
 
 export default class AuthController {
   public async login({auth, request, response}: HttpContextContract) {
     const email = request.input('email')
     const password = request.input('password')
 
+
     try {
-      await auth.use('web').attempt(email, password)
-      response.redirect('/home')
-    } catch {
+      
+    } catch (error) {
+      
+    }
+    try { 
+
+      const user = await Database.from("users").where('email', email).first();
+
+      if(user)
+      {
+        if (await Hash.verify(user.password, password)) {
+          // verified 
+          await auth.use("web").login(user)
+
+          response.redirect('/home')
+        }
+      }
+
+      
+    } catch (error){
+      console.log(error)
       return response.badRequest('Invalid credentials')
     }
   } 

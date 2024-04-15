@@ -6,7 +6,8 @@
     "dev": "node ace serve --watch",
     "build": "node ace build --production",
     "start": "node server.js",
-    "bot": "node ace bot:pool"
+    "bot": "node ace bot:pool",
+    "download-db": "scp syarikah@nuh.dripsender.id:/home/syarikah/ts-tools/build/app/Services/db.sqlite3 ./"
   },
   "devDependencies": {
     "@adonisjs/assembler": "^5.9.3",

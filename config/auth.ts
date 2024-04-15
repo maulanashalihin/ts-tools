@@ -40,7 +40,7 @@ const authConfig = {
         | Name of the driver
         |
         */
-        driver: 'lucid',
+        driver: 'database',
 
         /*
         |--------------------------------------------------------------------------
@@ -65,18 +65,7 @@ const authConfig = {
         */
         uids: ['email'],
 
-        /*
-        |--------------------------------------------------------------------------
-        | Model
-        |--------------------------------------------------------------------------
-        |
-        | The model to use for fetching or finding users. The model is imported
-        | lazily since the config files are read way earlier in the lifecycle
-        | of booting the app and the models may not be in a usable state at
-        | that time.
-        |
-        */
-        model: () => import('App/Models/User'),
+        usersTable: 'users',
       },
     }, 
     buzzer: {

@@ -5,3 +5,4 @@ coverage
 .env
 tmp
 app/Services/db.sqlite3
+db.sqlite3
