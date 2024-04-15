@@ -24,7 +24,7 @@ class StatsController {
                 .join("troops", "open_rates.troop_id", "troops.id")
                 .whereBetween("open_rates.date", [from, to])
                 .andWhere("troops.gender", gender)
-                .select(Database_1.default.raw("DATE_FORMAT(FROM_UNIXTIME(open_rates.date / 1000),'%Y-%m-%d') AS date_only"))
+                .select(Database_1.default.raw("strftime('%Y-%m-%d', open_rates.date  / 1000, 'unixepoch') AS date_only"))
                 .count("* as total")
                 .groupBy("date_only")
                 .orderBy("date_only", "asc");
@@ -32,7 +32,7 @@ class StatsController {
                 .join("troops", "open_rates.troop_id", "troops.id")
                 .whereBetween("date", [from, to])
                 .andWhere("troops.gender", gender)
-                .select(Database_1.default.raw("DATE_FORMAT(FROM_UNIXTIME(date / 1000),'%Y-%m-%d') AS date_only"))
+                .select(Database_1.default.raw("strftime('%Y-%m-%d', date  / 1000, 'unixepoch') AS date_only"))
                 .countDistinct("troop_id as total")
                 .groupBy("date_only")
                 .orderBy("date_only", "asc");
@@ -47,7 +47,7 @@ class StatsController {
                 .join("troops", "share_rates.troop_id", "troops.id")
                 .whereBetween("date", [from, to])
                 .andWhere("troops.gender", gender)
-                .select(Database_1.default.raw("DATE_FORMAT(FROM_UNIXTIME(date / 1000),'%Y-%m-%d') AS date_only"))
+                .select(Database_1.default.raw("strftime('%Y-%m-%d', date  / 1000, 'unixepoch') AS date_only"))
                 .count("* as total")
                 .groupBy("date_only")
                 .orderBy("date_only", "asc");
@@ -55,7 +55,7 @@ class StatsController {
                 .join("troops", "share_rates.troop_id", "troops.id")
                 .whereBetween("date", [from, to])
                 .andWhere("troops.gender", gender)
-                .select(Database_1.default.raw("DATE_FORMAT(FROM_UNIXTIME(date / 1000),'%Y-%m-%d') AS date_only"))
+                .select(Database_1.default.raw("strftime('%Y-%m-%d', date  / 1000, 'unixepoch') AS date_only"))
                 .countDistinct("troop_id as total")
                 .groupBy("date_only")
                 .orderBy("date_only", "asc");
@@ -78,12 +78,12 @@ class StatsController {
         const daily_open_rate = await Database_1.default.from("open_rates")
             .join("troops", "open_rates.troop_id", "troops.id")
             .whereBetween("date", [from, to])
-            .select(Database_1.default.raw("DATE_FORMAT(FROM_UNIXTIME(date / 1000),'%Y-%m-%d') AS date_only"))
+            .select(Database_1.default.raw("strftime('%Y-%m-%d', date  / 1000, 'unixepoch') AS date_only"))
             .count("* as total")
             .groupBy("date_only");
         const daily_open_rate_unique = await Database_1.default.from("open_rates")
             .whereBetween("date", [from, to])
-            .select(Database_1.default.raw("DATE_FORMAT(FROM_UNIXTIME(date / 1000),'%Y-%m-%d') AS date_only"))
+            .select(Database_1.default.raw("strftime('%Y-%m-%d', date  / 1000, 'unixepoch') AS date_only"))
             .countDistinct("troop_id as total")
             .groupBy("date_only");
         const open_rate_per_city = await Database_1.default.from("open_rates")
@@ -93,12 +93,12 @@ class StatsController {
             .groupBy("city");
         const daily_share_rate = await Database_1.default.from("share_rates")
             .whereBetween("date", [from, to])
-            .select(Database_1.default.raw("DATE_FORMAT(FROM_UNIXTIME(date / 1000),'%Y-%m-%d') AS date_only"))
+            .select(Database_1.default.raw("strftime('%Y-%m-%d', date  / 1000, 'unixepoch') AS date_only"))
             .count("* as total")
             .groupBy("date_only");
         const daily_share_rate_unique = await Database_1.default.from("share_rates")
             .whereBetween("date", [from, to])
-            .select(Database_1.default.raw("DATE_FORMAT(FROM_UNIXTIME(date / 1000),'%Y-%m-%d') AS date_only"))
+            .select(Database_1.default.raw("strftime('%Y-%m-%d', date  / 1000, 'unixepoch') AS date_only"))
             .countDistinct("troop_id as total")
             .groupBy("date_only");
         const share_rate_per_city = await Database_1.default.from("share_rates")
@@ -133,7 +133,7 @@ class StatsController {
                 .whereBetween("date", [from, to])
                 .whereIn("open_rates.city", city)
                 .where("troops.gender", gender)
-                .select(Database_1.default.raw("DATE_FORMAT(FROM_UNIXTIME(open_rates.date / 1000),'%Y-%m-%d') AS date_only"))
+                .select(Database_1.default.raw("strftime('%Y-%m-%d', open_rates.date  / 1000, 'unixepoch') AS date_only"))
                 .count("* as total")
                 .groupBy("date_only")
                 .orderBy("date_only", "asc");
@@ -142,7 +142,7 @@ class StatsController {
                 .whereBetween("date", [from, to])
                 .whereIn("open_rates.city", city)
                 .where("troops.gender", gender)
-                .select(Database_1.default.raw("DATE_FORMAT(FROM_UNIXTIME(open_rates.date / 1000),'%Y-%m-%d') AS date_only"))
+                .select(Database_1.default.raw("strftime('%Y-%m-%d', open_rates.date  / 1000, 'unixepoch') AS date_only"))
                 .countDistinct("open_rates.troop_id as total")
                 .groupBy("date_only")
                 .orderBy("date_only", "asc");
@@ -151,7 +151,7 @@ class StatsController {
                 .whereBetween("date", [from, to])
                 .whereIn("share_rates.city", city)
                 .where("troops.gender", gender)
-                .select(Database_1.default.raw("DATE_FORMAT(FROM_UNIXTIME(share_rates.date / 1000),'%Y-%m-%d') AS date_only"))
+                .select(Database_1.default.raw("strftime('%Y-%m-%d', share_rates.date  / 1000, 'unixepoch') AS date_only"))
                 .count("* as total")
                 .groupBy("date_only");
             const share_rate_unique = await Database_1.default.from("share_rates")
@@ -159,7 +159,7 @@ class StatsController {
                 .whereBetween("date", [from, to])
                 .whereIn("share_rates.city", city)
                 .where("troops.gender", gender)
-                .select(Database_1.default.raw("DATE_FORMAT(FROM_UNIXTIME(share_rates.date / 1000),'%Y-%m-%d') AS date_only"))
+                .select(Database_1.default.raw("strftime('%Y-%m-%d', share_rates.date  / 1000, 'unixepoch') AS date_only"))
                 .countDistinct("share_rates.troop_id as total")
                 .groupBy("date_only")
                 .orderBy("date_only", "asc");
@@ -174,25 +174,25 @@ class StatsController {
         const open_rate = await Database_1.default.from("open_rates")
             .whereBetween("date", [from, to])
             .whereIn("city", city)
-            .select(Database_1.default.raw("DATE_FORMAT(FROM_UNIXTIME(date / 1000),'%Y-%m-%d') AS date_only"))
+            .select(Database_1.default.raw("strftime('%Y-%m-%d', date  / 1000, 'unixepoch') AS date_only"))
             .count("* as total")
             .groupBy("date_only");
         const open_rate_unique = await Database_1.default.from("open_rates")
             .whereBetween("date", [from, to])
             .whereIn("city", city)
-            .select(Database_1.default.raw("DATE_FORMAT(FROM_UNIXTIME(date / 1000),'%Y-%m-%d') AS date_only"))
+            .select(Database_1.default.raw("strftime('%Y-%m-%d', date  / 1000, 'unixepoch') AS date_only"))
             .countDistinct("troop_id as total")
             .groupBy("date_only");
         const share_rate = await Database_1.default.from("share_rates")
             .whereBetween("date", [from, to])
             .whereIn("city", city)
-            .select(Database_1.default.raw("DATE_FORMAT(FROM_UNIXTIME(date / 1000),'%Y-%m-%d') AS date_only"))
+            .select(Database_1.default.raw("strftime('%Y-%m-%d', date  / 1000, 'unixepoch') AS date_only"))
             .count("* as total")
             .groupBy("date_only");
         const share_rate_unique = await Database_1.default.from("share_rates")
             .whereBetween("date", [from, to])
             .whereIn("city", city)
-            .select(Database_1.default.raw("DATE_FORMAT(FROM_UNIXTIME(date / 1000),'%Y-%m-%d') AS date_only"))
+            .select(Database_1.default.raw("strftime('%Y-%m-%d', date  / 1000, 'unixepoch') AS date_only"))
             .countDistinct("troop_id as total")
             .groupBy("date_only");
         return {
