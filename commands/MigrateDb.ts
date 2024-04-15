@@ -31,13 +31,17 @@ export default class MigrateDb extends BaseCommand {
 
  
 
+     
     const headers = ["omoo_histories","open_rates","share_rates"];
+
+
 
     for await (const table of headers) {
       let latest_id = 0;
+      let data_length = 1000;
       let total  = await Database.connection("mysql").from(table).count("* as total").first();
 
-      if(total && total.total > 0)
+      while(total && total.total > 0 && data_length == 1000)
       {
         let data;
 
@@ -48,8 +52,9 @@ export default class MigrateDb extends BaseCommand {
         else {
           data = await Database.connection("mysql").from(table).where("id",">",latest_id).limit(1000);
         }
-
-        console.log(data.length)
+ 
+        data_length = data.length;
+        console.log("migrating "+data_length+" "+table+" data")
         
         for await (const row of data) {
           await Database.table(table).insert(row);
