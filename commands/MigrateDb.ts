@@ -35,7 +35,7 @@ export default class MigrateDb extends BaseCommand {
 
     for await (const table of headers) {
       let latest_id = 0;
-      let total  = await Database.from(table).count("* as total").first();
+      let total  = await Database.connection("mysql").from(table).count("* as total").first();
 
       if(total && total.total > 0)
       {
@@ -48,6 +48,8 @@ export default class MigrateDb extends BaseCommand {
         else {
           data = await Database.connection("mysql").from(table).where("id",">",latest_id).limit(1000);
         }
+
+        console.log(data.length)
         
         for await (const row of data) {
           await Database.table(table).insert(row);

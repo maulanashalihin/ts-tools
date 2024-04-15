@@ -10,7 +10,7 @@ class MigrateDb extends standalone_1.BaseCommand {
         const headers = ["omoo_histories", "open_rates", "share_rates"];
         for await (const table of headers) {
             let latest_id = 0;
-            let total = await Database_1.default.from(table).count("* as total").first();
+            let total = await Database_1.default.connection("mysql").from(table).count("* as total").first();
             if (total && total.total > 0) {
                 let data;
                 if (latest_id = 0) {
@@ -19,6 +19,7 @@ class MigrateDb extends standalone_1.BaseCommand {
                 else {
                     data = await Database_1.default.connection("mysql").from(table).where("id", ">", latest_id).limit(1000);
                 }
+                console.log(data.length);
                 for await (const row of data) {
                     await Database_1.default.table(table).insert(row);
                     latest_id = row.id;
