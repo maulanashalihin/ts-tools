@@ -62,7 +62,11 @@ export default class MigrateDb extends BaseCommand {
         }
         
         for await (const row of data) {
-          await Database.table(table).insert(row); 
+          try {
+            await Database.table(table).insert(row); 
+          } catch (error) {
+            
+          }
         }
       }
       

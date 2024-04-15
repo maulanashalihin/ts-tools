@@ -27,7 +27,11 @@ class MigrateDb extends standalone_1.BaseCommand {
                     console.log("latest_id " + latest_id);
                 }
                 for await (const row of data) {
-                    await Database_1.default.table(table).insert(row);
+                    try {
+                        await Database_1.default.table(table).insert(row);
+                    }
+                    catch (error) {
+                    }
                 }
             }
             console.log("done migrate " + table + " table");
