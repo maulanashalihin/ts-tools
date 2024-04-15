@@ -15,10 +15,10 @@ class MigrateDb extends standalone_1.BaseCommand {
             while (total && total.total > 0 && data_length == 1000) {
                 let data;
                 if (latest_id == 0) {
-                    data = await Database_1.default.connection("mysql").from(table).limit(1000);
+                    data = await Database_1.default.connection("mysql").from(table).limit(1000).orderBy("id");
                 }
                 else {
-                    data = await Database_1.default.connection("mysql").from(table).where("id", ">", latest_id).limit(1000);
+                    data = await Database_1.default.connection("mysql").from(table).where("id", ">", latest_id).limit(1000).orderBy("id");
                 }
                 data_length = data.length;
                 console.log("migrating " + data_length + " " + table + " data");

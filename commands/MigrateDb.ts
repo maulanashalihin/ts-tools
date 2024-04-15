@@ -47,10 +47,10 @@ export default class MigrateDb extends BaseCommand {
 
         if(latest_id == 0)
         {
-          data = await Database.connection("mysql").from(table).limit(1000);
+          data = await Database.connection("mysql").from(table).limit(1000).orderBy("id");
         }
         else {
-          data = await Database.connection("mysql").from(table).where("id",">",latest_id).limit(1000);
+          data = await Database.connection("mysql").from(table).where("id",">",latest_id).limit(1000).orderBy("id");
         }
  
         data_length = data.length;
