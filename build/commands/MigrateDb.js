@@ -14,7 +14,7 @@ class MigrateDb extends standalone_1.BaseCommand {
             let total = await Database_1.default.connection("mysql").from(table).count("* as total").first();
             while (total && total.total > 0 && data_length == 1000) {
                 let data;
-                if (latest_id = 0) {
+                if (latest_id == 0) {
                     data = await Database_1.default.connection("mysql").from(table).limit(1000);
                 }
                 else {

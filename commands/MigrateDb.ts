@@ -45,7 +45,7 @@ export default class MigrateDb extends BaseCommand {
       {
         let data;
 
-        if(latest_id = 0)
+        if(latest_id == 0)
         {
           data = await Database.connection("mysql").from(table).limit(1000);
         }
