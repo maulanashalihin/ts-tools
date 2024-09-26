@@ -1,17 +1,5 @@
 {
   "commands": {
-    "bot:pool": {
-      "settings": {
-        "loadApp": true,
-        "stayAlive": true
-      },
-      "commandPath": "./commands/BotPool",
-      "commandName": "bot:pool",
-      "description": "",
-      "args": [],
-      "aliases": [],
-      "flags": []
-    },
     "generate:token": {
       "settings": {
         "loadApp": true,
@@ -55,6 +43,18 @@
       },
       "commandPath": "./commands/SendRiayahMessage",
       "commandName": "send:riayah_message",
+      "description": "",
+      "args": [],
+      "aliases": [],
+      "flags": []
+    },
+    "telebot1": {
+      "settings": {
+        "loadApp": true,
+        "stayAlive": true
+      },
+      "commandPath": "./commands/Telebot1",
+      "commandName": "telebot1",
       "description": "",
       "args": [],
       "aliases": [],

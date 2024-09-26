@@ -46,7 +46,7 @@ export default class StatsController {
         .countDistinct("troop_id as total")
         .groupBy("date_only")
         .orderBy("date_only", "asc");
-
+        
       const open_rate_per_city = await Database.from("open_rates")
         .join("troops", "open_rates.troop_id", "troops.id")
         .whereBetween("date", [from, to])
