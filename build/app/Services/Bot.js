@@ -36,7 +36,7 @@ class Bot {
                 await Redis_1.default.setex(`token:` + ott, 600, troop.id);
                 bot.sendMessage(chatId, "Silakan gunakan token di bawah ini  untuk login ke dalam Aplikasi. klik pada token untuk copy text");
                 setTimeout(() => {
-                    bot.sendMessage(chatId, "`" + ott + "`", { parse_mode: "MarkDown" });
+                    bot.sendMessage(chatId, "`" + ott + "`", { parseMode: "MarkDown" });
                 }, 100);
             }
             else if (msg.text == "help") {
@@ -50,7 +50,7 @@ class Bot {
             }
             else if (msg.text == "CHECK ID" || msg.text == "/check_id") {
                 bot.sendMessage(chatId, "ID anda adalah `" + chatId + "`", {
-                    parse_mode: "MarkDown",
+                    parseMode: "MarkDown",
                 });
             }
             else if (msg.text == "DELETE AKUN" || msg.text == "/delete_akun") {
@@ -65,7 +65,7 @@ class Bot {
                     await Database_1.default.from("troops").where("tg_id", chatId).delete();
                 }
                 bot.sendMessage(chatId, "ID `" + chatId + "` telah dihapus", {
-                    parse_mode: "MarkDown",
+                    parseMode: "MarkDown",
                 });
             }
             else {

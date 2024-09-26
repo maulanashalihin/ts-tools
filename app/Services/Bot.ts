@@ -44,7 +44,7 @@ export default class Bot {
         );
 
         setTimeout(() => {
-          bot.sendMessage(chatId, "`" + ott + "`", { parse_mode: "MarkDown" });
+          bot.sendMessage(chatId, "`" + ott + "`", { parseMode: "MarkDown" });
         }, 100);
       }
 
@@ -63,7 +63,7 @@ export default class Bot {
 
       else if (msg.text == "CHECK ID" || msg.text == "/check_id") {
         bot.sendMessage(chatId, "ID anda adalah `" + chatId + "`", {
-          parse_mode: "MarkDown",
+          parseMode: "MarkDown",
         });
       }
 
@@ -86,7 +86,7 @@ export default class Bot {
         }
 
         bot.sendMessage(chatId, "ID `" + chatId + "` telah dihapus", {
-          parse_mode: "MarkDown",
+          parseMode: "MarkDown",
         });
       }else{
 
@@ -98,6 +98,7 @@ export default class Bot {
               ],
             },
           });
+          
       }
 
      
