@@ -48,7 +48,7 @@ export default class Bot {
         }, 100);
       }
 
-     else if (msg.text == "help") {
+     else if (msg.text == "/help") {
         bot.sendMessage(
           chatId,
           `Beberapa perintah yang bisa dilakukan untuk bot :
