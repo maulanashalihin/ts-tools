@@ -51,10 +51,7 @@ export default class ChannelsController {
         avatar : request.input("avatar")
       })
 
-      console.log({
-        troop_id : user.id,
-        channel_id
-      })
+    
       await Database.table("channel_admins").insert({
         troop_id : user.id,
         channel_id

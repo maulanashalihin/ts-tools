@@ -53,11 +53,11 @@ __decorate([
 __decorate([
     Orm_1.column.dateTime({ autoCreate: true }),
     __metadata("design:type", luxon_1.DateTime)
-], User.prototype, "createdAt", void 0);
+], User.prototype, "created_at", void 0);
 __decorate([
     Orm_1.column.dateTime({ autoCreate: true, autoUpdate: true }),
     __metadata("design:type", luxon_1.DateTime)
-], User.prototype, "updatedAt", void 0);
+], User.prototype, "updated_at", void 0);
 __decorate([
     (0, Orm_1.beforeSave)(),
     __metadata("design:type", Function),

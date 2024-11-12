@@ -66,8 +66,7 @@ export default class UsersController {
   }
 
   public async destroy({ params, response }: HttpContextContract) {
-    const user = await User.findOrFail(params.id)
-    await user.delete()
+    await Database.from("users").where("id",params.id).delete()
 
     //no content -- success delete
     return response.status(204)

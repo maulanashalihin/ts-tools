@@ -30,10 +30,6 @@ class ChannelsController {
                 name: request.input("name"),
                 avatar: request.input("avatar")
             });
-            console.log({
-                troop_id: user.id,
-                channel_id
-            });
             await Database_1.default.table("channel_admins").insert({
                 troop_id: user.id,
                 channel_id

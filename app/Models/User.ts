@@ -27,10 +27,10 @@ export default class User extends BaseModel {
   public rememberMeToken: string | null
 
   @column.dateTime({ autoCreate: true })
-  public createdAt: DateTime
+  public created_at: DateTime
 
   @column.dateTime({ autoCreate: true, autoUpdate: true })
-  public updatedAt: DateTime
+  public updated_at: DateTime
   pin_hash: any
   pin_set: any
   tg_id: any
