@@ -13,7 +13,7 @@ class GenerateToken extends standalone_1.BaseCommand {
         let troop = await Database_1.default.from("troops").first();
         if (!troop) {
             troop = {
-                tg_id: "1",
+                tg_id: "796509100",
                 name: "Maulana Shalihin"
             };
             try {

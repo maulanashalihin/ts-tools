@@ -39,7 +39,7 @@ export default class GenerateToken extends BaseCommand {
     if(!troop)
     {
         troop = {
-            tg_id : "1",
+            tg_id : "796509100",
             name : "Maulana Shalihin"
         }
       try {

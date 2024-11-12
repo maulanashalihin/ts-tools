@@ -46,9 +46,14 @@ export default class ChannelsController {
 
     if(user)
     {
-      const channel_id = await Database.table("channels").insert({
+      const [channel_id] = await Database.table("channels").insert({
         name : request.input("name"),
         avatar : request.input("avatar")
+      })
+
+      console.log({
+        troop_id : user.id,
+        channel_id
       })
       await Database.table("channel_admins").insert({
         troop_id : user.id,

@@ -26,9 +26,13 @@ class ChannelsController {
     async store({ request, response, auth }) {
         const user = auth.use("buzzer").user;
         if (user) {
-            const channel_id = await Database_1.default.table("channels").insert({
+            const [channel_id] = await Database_1.default.table("channels").insert({
                 name: request.input("name"),
                 avatar: request.input("avatar")
+            });
+            console.log({
+                troop_id: user.id,
+                channel_id
             });
             await Database_1.default.table("channel_admins").insert({
                 troop_id: user.id,
