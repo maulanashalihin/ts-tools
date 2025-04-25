@@ -43,7 +43,7 @@ class Telebot1 extends standalone_1.BaseCommand {
                 await Redis_1.default.setex(`token:${ott}`, 600, troop.id);
                 await ctx.reply('Silakan gunakan token di bawah ini untuk login ke dalam Aplikasi. klik pada token untuk copy text');
                 setTimeout(() => {
-                    ctx.replyWithMarkdown(`\`${ott}\``);
+                    ctx.replyWithMarkdownV2(`\`${ott}\``);
                 }, 100);
             }
             else if (text === 'help' || text === '/help') {
@@ -56,7 +56,7 @@ class Telebot1 extends standalone_1.BaseCommand {
           Terima kasih.`);
             }
             else if (text === 'CHECK ID' || text === '/check_id') {
-                ctx.replyWithMarkdown(`ID anda adalah \`${chatId}\``);
+                ctx.replyWithMarkdownV2(`ID anda adalah \`${chatId}\``);
             }
             else if (text === 'DELETE AKUN' || text === '/delete_akun') {
                 let troop = await Database_1.default.from('troops').where('tg_id', chatId).first();

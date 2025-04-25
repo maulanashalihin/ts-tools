@@ -53,7 +53,7 @@ export default class Telebot1 extends BaseCommand {
 
         await ctx.reply('Silakan gunakan token di bawah ini untuk login ke dalam Aplikasi. klik pada token untuk copy text')
         setTimeout(() => {
-          ctx.replyWithMarkdown(`\`${ott}\``)
+          ctx.replyWithMarkdownV2(`\`${ott}\``)
         }, 100)
       }
 
@@ -68,7 +68,7 @@ export default class Telebot1 extends BaseCommand {
       }
 
       else if (text === 'CHECK ID' || text === '/check_id') {
-        ctx.replyWithMarkdown(`ID anda adalah \`${chatId}\``)
+        ctx.replyWithMarkdownV2(`ID anda adalah \`${chatId}\``)
       }
 
       else if (text === 'DELETE AKUN' || text === '/delete_akun') {
