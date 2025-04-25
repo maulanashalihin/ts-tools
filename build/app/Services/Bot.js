@@ -10,6 +10,7 @@ class Bot {
     constructor(bot) {
         bot.on("text", async (msg) => {
             const chatId = msg.chat.id;
+            console.log(msg);
             if (msg.text.toUpperCase() == "LOGIN OMOO" ||
                 msg.text.toUpperCase() == "LOGIN TS" ||
                 "/login" == msg.text) {
