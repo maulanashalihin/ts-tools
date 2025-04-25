@@ -46,6 +46,7 @@
     "better-sqlite3": "^9.0.0",
     "bluebird": "^3.7.2",
     "dayjs": "^1.11.6",
+    "grammy": "^1.36.1",
     "luxon": "^3.0.4",
     "meilisearch": "^0.30.0",
     "mysql2": "^2.3.3",

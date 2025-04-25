@@ -55,7 +55,7 @@
       },
       "commandPath": "./commands/Telebot1",
       "commandName": "telebot1",
-      "description": "",
+      "description": "Start Telegram bot",
       "args": [],
       "aliases": [],
       "flags": []
