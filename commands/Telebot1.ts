@@ -84,17 +84,7 @@ export default class Telebot1 extends BaseCommand {
       }
     })
 
-    bot.launch({
-      webhook: {
-        // Public domain for webhook; e.g.: example.com
-        domain: "https://bot.belanabi.com",
-    
-        // Port to listen on; e.g.: 8080
-        port: 8005,
-    
-        
-      },
-    });
+    bot.launch()
     
 
     process.once('SIGINT', () => bot.stop('SIGINT'))

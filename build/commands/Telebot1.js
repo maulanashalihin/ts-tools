@@ -69,12 +69,7 @@ class Telebot1 extends standalone_1.BaseCommand {
                 ctx.replyWithMarkdown(`ID \`${chatId}\` telah dihapus`);
             }
         });
-        bot.launch({
-            webhook: {
-                domain: "https://bot.belanabi.com",
-                port: 8005,
-            },
-        });
+        bot.launch();
         process.once('SIGINT', () => bot.stop('SIGINT'));
         process.once('SIGTERM', () => bot.stop('SIGTERM'));
     }
