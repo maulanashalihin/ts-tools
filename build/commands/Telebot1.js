@@ -4,32 +4,48 @@ var __importDefault = (this && this.__importDefault) || function (mod) {
 };
 Object.defineProperty(exports, "__esModule", { value: true });
 const standalone_1 = require("@adonisjs/core/build/standalone");
-const telegraf_1 = require("telegraf");
 const Redis_1 = __importDefault(global[Symbol.for('ioc.use')]("Adonis/Addons/Redis"));
 const Database_1 = __importDefault(global[Symbol.for('ioc.use')]("Adonis/Lucid/Database"));
 const uuid_1 = require("uuid");
+const TeleBot = require('telebot');
 class Telebot1 extends standalone_1.BaseCommand {
     async run() {
-        const bot = new telegraf_1.Telegraf("5956181108:AAHzvP-hAqqI9TY9bwxuQnDclkW80Njl0Wk");
-        bot.start((ctx) => {
-            ctx.reply('Selamat datang di BOT OMOO. /help', {
-                reply_markup: {
+        const TELEGRAM_BOT_TOKEN = "5956181108:AAHzvP-hAqqI9TY9bwxuQnDclkW80Njl0Wk";
+        let bot;
+        if (process.env.TG_PORT && process.env.TG_WEBHOOK_URL) {
+            bot = new TeleBot({
+                token: TELEGRAM_BOT_TOKEN,
+                webhook: {
+                    url: process.env.TG_WEBHOOK_URL,
+                    host: "0.0.0.0",
+                    port: process.env.TG_PORT,
+                },
+            });
+        }
+        else {
+            bot = new TeleBot(TELEGRAM_BOT_TOKEN);
+            console.log("bot started");
+        }
+        bot.on('/start', (msg) => {
+            return bot.sendMessage(msg.from.id, 'Selamat datang di BOT OMOO. /help', {
+                replyMarkup: {
                     keyboard: [
                         ['LOGIN OMOO', 'LOGIN TS'],
                         ['CHECK ID', 'DELETE AKUN']
-                    ]
+                    ],
+                    resize: true
                 }
             });
         });
-        bot.on('text', async (ctx) => {
-            const chatId = ctx.message.chat.id;
-            const text = ctx.message.text;
+        bot.on('text', async (msg) => {
+            const chatId = msg.from.id;
+            const text = msg.text;
             if (text.toUpperCase() === 'LOGIN OMOO' || text.toUpperCase() === 'LOGIN TS' || text === '/login') {
                 let troop = await Database_1.default.from('troops').where('tg_id', chatId).first();
                 if (!troop) {
                     troop = {
                         tg_id: chatId,
-                        name: ctx.message.chat.type === 'private' ? ctx.message.chat.first_name : ctx.message.chat.title,
+                        name: msg.chat.type === 'private' ? msg.from.first_name : msg.chat.title,
                     };
                     try {
                         troop.id = await Database_1.default.table('troops').insert(troop);
@@ -37,17 +53,17 @@ class Telebot1 extends standalone_1.BaseCommand {
                     catch (error) { }
                 }
                 else if (troop.blocked) {
-                    return ctx.reply('Maaf, Akun anda telah diblokir. \n\nAnda bisa melakukan pengajuan cabut blokir disini https://ts.belanabi.com/request-unblock');
+                    return bot.sendMessage(chatId, 'Maaf, Akun anda telah diblokir. \n\nAnda bisa melakukan pengajuan cabut blokir disini https://ts.belanabi.com/request-unblock');
                 }
                 const ott = (0, uuid_1.v4)();
                 await Redis_1.default.setex(`token:${ott}`, 600, troop.id);
-                await ctx.reply('Silakan gunakan token di bawah ini untuk login ke dalam Aplikasi. klik pada token untuk copy text');
+                await bot.sendMessage(chatId, 'Silakan gunakan token di bawah ini untuk login ke dalam Aplikasi. klik pada token untuk copy text');
                 setTimeout(() => {
-                    ctx.replyWithMarkdown(`\`${ott}\``);
+                    bot.sendMessage(chatId, `\`${ott}\``, { parseMode: 'Markdown' });
                 }, 100);
             }
             else if (text === 'help' || text === '/help') {
-                ctx.reply(`Beberapa perintah yang bisa dilakukan untuk bot:
+                bot.sendMessage(chatId, `Beberapa perintah yang bisa dilakukan untuk bot:
           
           /login - untuk mendapatkan token
           /check_id - untuk mendapatkan user_id anda
@@ -56,22 +72,22 @@ class Telebot1 extends standalone_1.BaseCommand {
           Terima kasih.`);
             }
             else if (text === 'CHECK ID' || text === '/check_id') {
-                ctx.replyWithMarkdown(`ID anda adalah \`${chatId}\``);
+                bot.sendMessage(chatId, `ID anda adalah \`${chatId}\``, { parseMode: 'Markdown' });
             }
             else if (text === 'DELETE AKUN' || text === '/delete_akun') {
                 let troop = await Database_1.default.from('troops').where('tg_id', chatId).first();
                 if (troop) {
                     if (troop.blocked) {
-                        return ctx.reply('Maaf, Akun anda telah diblokir. \n\nAnda bisa melakukan pengajuan cabut blokir disini https://ts.belanabi.com/request-unblock');
+                        return bot.sendMessage(chatId, 'Maaf, Akun anda telah diblokir. \n\nAnda bisa melakukan pengajuan cabut blokir disini https://ts.belanabi.com/request-unblock');
                     }
                     await Database_1.default.from('troops').where('tg_id', chatId).delete();
                 }
-                ctx.replyWithMarkdown(`ID \`${chatId}\` telah dihapus`);
+                bot.sendMessage(chatId, `ID \`${chatId}\` telah dihapus`, { parseMode: 'Markdown' });
             }
         });
-        bot.launch();
-        process.once('SIGINT', () => bot.stop('SIGINT'));
-        process.once('SIGTERM', () => bot.stop('SIGTERM'));
+        bot.start();
+        process.once('SIGINT', () => bot.stop());
+        process.once('SIGTERM', () => bot.stop());
     }
 }
 exports.default = Telebot1;
