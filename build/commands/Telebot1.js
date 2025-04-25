@@ -16,9 +16,10 @@ class Telebot1 extends standalone_1.BaseCommand {
                 webhook: {
                     url: process.env.TG_WEBHOOK_URL,
                     host: "0.0.0.0",
-                    port: process.env.TG_PORT,
+                    port: 8005,
                 },
             });
+            console.log("server run on localhost:8005");
         }
         else {
             bot = new TeleBot(TELEGRAM_BOT_TOKEN);

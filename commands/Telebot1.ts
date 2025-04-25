@@ -42,9 +42,10 @@ const TELEGRAM_BOT_TOKEN = "5956181108:AAHzvP-hAqqI9TY9bwxuQnDclkW80Njl0Wk"
               // Optional. Use webhook instead of polling.
               url: process.env.TG_WEBHOOK_URL, // HTTPS url to send updates to.
               host: "0.0.0.0", // Webhook server host.
-              port: process.env.TG_PORT, // Server port.
+              port: 8005, // Server port.
           },
       });
+      console.log("server run on localhost:8005")
   } else {
       bot = new TeleBot(TELEGRAM_BOT_TOKEN);
       console.log("bot started")
