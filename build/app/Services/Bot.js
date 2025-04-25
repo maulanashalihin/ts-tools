@@ -6,8 +6,14 @@ Object.defineProperty(exports, "__esModule", { value: true });
 const Redis_1 = __importDefault(global[Symbol.for('ioc.use')]("Adonis/Addons/Redis"));
 const Database_1 = __importDefault(global[Symbol.for('ioc.use')]("Adonis/Lucid/Database"));
 const uuid_1 = require("uuid");
+const Logger_1 = __importDefault(global[Symbol.for('ioc.use')]("Adonis/Core/Logger"));
 class Bot {
     constructor(bot) {
+        this.bot = bot;
+        bot.on('error', (error) => {
+            Logger_1.default.error(`Telegram bot error: ${error.message}`);
+            console.error('Telegram bot error:', error);
+        });
         bot.on("text", async (msg) => {
             const chatId = msg.chat.id;
             console.log(msg);
@@ -29,29 +35,35 @@ class Bot {
                 }
                 else {
                     if (troop.blocked) {
-                        bot.sendMessage(chatId, "Maaf, Akun anda telah diblokir. \n\nAnda bisa melakukan pengajuan cabut blokir disini https://ts.belanabi.com/request-unblock");
+                        this.sendMessage(chatId, "Maaf, Akun anda telah diblokir. \n\nAnda bisa melakukan pengajuan cabut blokir disini https://ts.belanabi.com/request-unblock");
                         return;
                     }
                 }
                 const ott = (0, uuid_1.v4)();
                 await Redis_1.default.setex(`token:` + ott, 600, troop.id);
-                bot.sendMessage(chatId, "Silakan gunakan token di bawah ini  untuk login ke dalam Aplikasi. klik pada token untuk copy text");
+                this.sendMessage(chatId, "Silakan gunakan token di bawah ini  untuk login ke dalam Aplikasi. klik pada token untuk copy text");
                 setTimeout(() => {
-                    bot.sendMessage(chatId, "`" + ott + "`", { parseMode: "MarkDown" });
+                    this.sendMessage(chatId, "`" + ott + "`", {
+                        parseMode: "MarkDown",
+                        reply_markup: this.getMainKeyboard()
+                    });
                 }, 100);
             }
             else if (msg.text == "/help") {
-                bot.sendMessage(chatId, `Beberapa perintah yang bisa dilakukan untuk bot :
+                this.sendMessage(chatId, `Beberapa perintah yang bisa dilakukan untuk bot :
             
                 /login - untuk mendapatkan token
                 /check_id - untuk mendapatkan user_id anda
                 /delete_akun - untuk menghapus akun
           
-                Terima kasih.`);
+                Terima kasih.`, {
+                    reply_markup: this.getMainKeyboard()
+                });
             }
             else if (msg.text == "CHECK ID" || msg.text == "/check_id") {
-                bot.sendMessage(chatId, "ID anda adalah `" + chatId + "`", {
+                this.sendMessage(chatId, "ID anda adalah `" + chatId + "`", {
                     parseMode: "MarkDown",
+                    reply_markup: this.getMainKeyboard()
                 });
             }
             else if (msg.text == "DELETE AKUN" || msg.text == "/delete_akun") {
@@ -60,27 +72,63 @@ class Bot {
                     .first();
                 if (troop) {
                     if (troop.blocked) {
-                        bot.sendMessage(chatId, "Maaf, Akun anda telah diblokir. \n\nAnda bisa melakukan pengajuan cabut blokir disini https://ts.belanabi.com/request-unblock");
+                        this.sendMessage(chatId, "Maaf, Akun anda telah diblokir. \n\nAnda bisa melakukan pengajuan cabut blokir disini https://ts.belanabi.com/request-unblock");
                         return;
                     }
                     await Database_1.default.from("troops").where("tg_id", chatId).delete();
                 }
-                bot.sendMessage(chatId, "ID `" + chatId + "` telah dihapus", {
+                this.sendMessage(chatId, "ID `" + chatId + "` telah dihapus", {
                     parseMode: "MarkDown",
+                    reply_markup: this.getMainKeyboard()
                 });
             }
             else {
-                bot.sendMessage(chatId, "Selamat datang di BOT OMOO. /help", {
-                    reply_markup: {
-                        keyboard: [
-                            ["LOGIN OMOO", "LOGIN TS"],
-                            ["CHECK ID", "DELETE AKUN"],
-                        ],
-                    },
+                this.sendMessage(chatId, "Selamat datang di BOT OMOO. /help", {
+                    reply_markup: this.getMainKeyboard()
                 });
             }
         });
         bot.start();
+    }
+    async sendMessage(chatId, text, options = {}) {
+        try {
+            return await this.bot.sendMessage(chatId, text, options);
+        }
+        catch (error) {
+            Logger_1.default.error(`Failed to send message to ${chatId}: ${error.message}`);
+            console.error(`Failed to send message to ${chatId}:`, error);
+            throw error;
+        }
+    }
+    async sendPhoto(chatId, photo, options = {}) {
+        try {
+            return await this.bot.sendPhoto(chatId, photo, options);
+        }
+        catch (error) {
+            Logger_1.default.error(`Failed to send photo to ${chatId}: ${error.message}`);
+            console.error(`Failed to send photo to ${chatId}:`, error);
+            throw error;
+        }
+    }
+    async sendDocument(chatId, document, options = {}) {
+        try {
+            return await this.bot.sendDocument(chatId, document, options);
+        }
+        catch (error) {
+            Logger_1.default.error(`Failed to send document to ${chatId}: ${error.message}`);
+            console.error(`Failed to send document to ${chatId}:`, error);
+            throw error;
+        }
+    }
+    getMainKeyboard() {
+        return {
+            keyboard: [
+                ["LOGIN OMOO", "LOGIN TS"],
+                ["CHECK ID", "DELETE AKUN"]
+            ],
+            resize_keyboard: true,
+            one_time_keyboard: false
+        };
     }
 }
 exports.default = Bot;
